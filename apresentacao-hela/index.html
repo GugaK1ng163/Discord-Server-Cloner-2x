@@ -1,0 +1,903 @@
+<title>A Célula que Esqueceu de Morrer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=IBM+Plex+Mono:wght@300;400;500&family=Newsreader:ital,opsz,wght@0,6..72,200;0,6..72,300;0,6..72,400;1,6..72,300&display=swap">
+
+<style>
+:root{
+  color-scheme: dark;
+  --ink:#08080B;
+  --ink-2:#0F0F16;
+  --ink-3:#171722;
+  --bone:#E9E3D7;
+  --bone-dim:#9E988B;
+  --slate:#736D7E;
+  --hema:#4A3F6B;
+  --hema-lt:#7B6BA8;
+  --eosin:#B06A70;
+  --eosin-dp:#6E383E;
+  --brass:#C6A46B;
+  --rule:rgba(233,227,215,.13);
+  --rule-2:rgba(233,227,215,.28);
+
+  --f-disp:"Bodoni Moda",Georgia,"Times New Roman",serif;
+  --f-body:"Newsreader",Georgia,serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+
+  --s1:8px; --s2:16px; --s3:24px; --s4:40px; --s5:64px; --s6:104px; --s7:168px;
+  --gut:clamp(20px,5vw,72px);
+}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--ink);
+  color:var(--bone);
+  font-family:var(--f-body);
+  font-weight:300;
+  font-size:17px;
+  line-height:1.62;
+  overflow-x:hidden;
+}
+::selection{background:var(--eosin-dp);color:var(--bone)}
+:focus-visible{outline:2px solid var(--brass);outline-offset:3px}
+
+/* ---------- textura de película ---------- */
+.grain{
+  position:fixed; inset:0; z-index:90; pointer-events:none;
+  opacity:.05; mix-blend-mode:overlay; background-repeat:repeat;
+}
+.vig{
+  position:fixed; inset:0; z-index:89; pointer-events:none;
+  background:radial-gradient(130% 95% at 50% 45%, transparent 38%, rgba(0,0,0,.55) 100%);
+}
+
+/* ---------- barra de progresso ---------- */
+.rail{position:fixed;top:0;left:0;right:0;height:2px;z-index:95;background:rgba(233,227,215,.07)}
+.rail i{display:block;height:100%;width:0;background:var(--brass);transform-origin:0 50%}
+
+/* ---------- abertura ---------- */
+.abertura{
+  position:relative;
+  padding:clamp(64px,13vh,140px) var(--gut) clamp(56px,10vh,110px);
+  border-bottom:1px solid var(--rule);
+  overflow:hidden;
+}
+.abertura::after{
+  content:"";position:absolute;inset:auto 0 0 0;height:320px;pointer-events:none;
+  background:radial-gradient(70% 100% at 50% 100%, rgba(74,63,107,.34), transparent 70%);
+}
+.eyebrow{
+  font-family:var(--f-mono);font-size:11px;font-weight:400;
+  letter-spacing:.22em;text-transform:uppercase;color:var(--slate);
+  display:flex;flex-wrap:wrap;gap:var(--s2) var(--s3);align-items:baseline;
+}
+.eyebrow b{color:var(--brass);font-weight:400}
+.titulo{
+  font-family:var(--f-disp);font-weight:400;font-style:normal;
+  font-size:clamp(3rem,11.5vw,9.2rem);
+  line-height:.86;letter-spacing:-.02em;margin:clamp(28px,6vh,60px) 0 0;
+  text-wrap:balance;
+}
+.titulo em{font-style:italic;color:var(--eosin)}
+.viveres{
+  margin-top:var(--s4);
+  display:flex;flex-wrap:wrap;gap:var(--s3) var(--s5);align-items:flex-start;
+  border-top:1px solid var(--rule);padding-top:var(--s3);
+}
+.datum{display:flex;flex-direction:column;gap:6px;min-width:112px}
+.datum dt{font-family:var(--f-mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--slate)}
+.datum dd{margin:0;font-family:var(--f-mono);font-size:15px;color:var(--bone);font-variant-numeric:tabular-nums}
+.lede{
+  margin:var(--s5) 0 0;max-width:62ch;
+  font-size:clamp(1.12rem,2.1vw,1.42rem);line-height:1.55;color:#CFC8BA;
+}
+.lede strong{font-weight:400;color:var(--bone);font-style:italic}
+.desca{
+  margin-top:var(--s5);display:flex;align-items:center;gap:var(--s2);
+  font-family:var(--f-mono);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--slate);
+}
+.desca span{display:block;width:56px;height:1px;background:var(--rule-2);position:relative;overflow:hidden}
+.desca span::after{content:"";position:absolute;inset:0;background:var(--brass);animation:sweep 3.4s cubic-bezier(.6,0,.2,1) infinite}
+@keyframes sweep{0%{transform:translateX(-100%)}60%,100%{transform:translateX(100%)}}
+
+/* ---------- atos ---------- */
+.ato{position:relative}
+#ato1{height:660vh}
+#ato2{height:430vh}
+.sticky{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;background:var(--ink)}
+.stage{
+  position:absolute;top:50%;left:50%;
+  width:calc(max(100vw,100vh) * 1.28);height:calc(max(100vw,100vh) * 1.28);
+  transform:translate(-50%,-50%);
+}
+.stage .lay{
+  position:absolute;inset:0;
+  transform-origin:50% 50%;
+  will-change:transform,opacity;
+  backface-visibility:hidden;
+}
+.stage .lay svg{width:100%;height:100%;display:block}
+.scrim{
+  position:absolute;inset:0;pointer-events:none;
+  background:
+    linear-gradient(to top, rgba(8,8,11,.93) 0%, rgba(8,8,11,.58) 23%, transparent 48%),
+    linear-gradient(to bottom, rgba(8,8,11,.78) 0%, rgba(8,8,11,.3) 9%, transparent 18%),
+    radial-gradient(120% 90% at 50% 50%, transparent 40%, rgba(8,8,11,.7) 100%);
+}
+
+/* HUD */
+.hud{position:absolute;inset:0;pointer-events:none}
+.hud-act{
+  position:absolute;top:clamp(18px,3.4vh,34px);left:var(--gut);
+  font-family:var(--f-mono);font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--slate);
+}
+.hud-act b{color:var(--bone);font-weight:400}
+.escala{
+  position:absolute;top:clamp(18px,3.4vh,34px);right:var(--gut);
+  text-align:right;display:flex;flex-direction:column;gap:5px;align-items:flex-end;
+}
+.escala .k{font-family:var(--f-mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--slate)}
+.escala .v{
+  font-family:var(--f-mono);font-size:clamp(20px,3.4vw,30px);font-weight:300;
+  color:var(--brass);font-variant-numeric:tabular-nums;line-height:1;
+}
+.escala .n{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--bone-dim)}
+.ruler{
+  position:absolute;right:var(--gut);top:clamp(96px,17vh,150px);bottom:clamp(120px,22vh,190px);
+  width:1px;background:var(--rule);
+}
+.ruler i{position:absolute;right:-1px;width:13px;height:1px;background:var(--brass);top:0;transition:none}
+.ruler u{position:absolute;right:0;width:7px;height:1px;background:var(--rule-2)}
+
+/* narração */
+.narr{
+  position:absolute;left:var(--gut);bottom:clamp(40px,8vh,84px);
+  width:min(46ch,calc(100% - var(--gut) * 2 - 120px));
+}
+.cue{position:absolute;left:0;bottom:0;width:100%;opacity:0;will-change:opacity,transform}
+.cue .kk{
+  font-family:var(--f-mono);font-size:10px;letter-spacing:.24em;text-transform:uppercase;
+  color:var(--eosin);margin-bottom:12px;display:block;
+}
+.cue p{
+  margin:0;font-family:var(--f-disp);font-weight:400;
+  font-size:clamp(1.42rem,3.55vw,2.85rem);line-height:1.12;letter-spacing:-.01em;
+  text-wrap:balance;
+}
+.cue p + p{
+  margin-top:14px;font-family:var(--f-body);font-weight:300;
+  font-size:clamp(.96rem,1.55vw,1.1rem);line-height:1.55;color:#B8B1A4;letter-spacing:0;
+}
+.cue em{font-style:italic;color:var(--eosin)}
+
+/* ---------- fecho ---------- */
+.fecho{padding:clamp(80px,16vh,170px) var(--gut) clamp(64px,12vh,120px);border-top:1px solid var(--rule)}
+.fecho h2{
+  font-family:var(--f-disp);font-weight:400;font-size:clamp(1.9rem,5vw,3.4rem);
+  line-height:1.04;margin:0 0 var(--s2);letter-spacing:-.015em;text-wrap:balance;
+}
+.fecho .sub{max-width:60ch;color:#B8B1A4;margin:0 0 var(--s6)}
+.roteiro{display:grid;grid-template-columns:repeat(auto-fill,minmax(248px,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule)}
+.card{background:var(--ink);padding:var(--s3) var(--s3) var(--s4);display:flex;flex-direction:column;gap:10px}
+.card .n{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.2em;color:var(--brass)}
+.card h3{font-family:var(--f-disp);font-weight:400;font-size:1.3rem;line-height:1.15;margin:0}
+.card p{margin:0;font-size:.95rem;line-height:1.5;color:#A39C90}
+.card.feito .n{color:var(--eosin)}
+.card.feito h3{color:var(--bone)}
+.fontes{margin-top:var(--s6);padding-top:var(--s3);border-top:1px solid var(--rule);
+  font-family:var(--f-mono);font-size:11.5px;line-height:1.85;color:var(--slate);letter-spacing:.02em;max-width:78ch}
+.fontes b{color:var(--bone-dim);font-weight:400;display:block;letter-spacing:.2em;text-transform:uppercase;font-size:10px;margin-bottom:10px}
+
+@media (max-width:760px){
+  .ruler{display:none}
+  .escala{top:auto;bottom:clamp(40px,8vh,84px);right:var(--gut);align-items:flex-end}
+  .narr{width:calc(100% - var(--gut) * 2);bottom:clamp(96px,17vh,140px)}
+  #ato1{height:760vh}
+  #ato2{height:500vh}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.001ms !important;animation-iteration-count:1 !important}
+  .desca span::after{display:none}
+}
+</style>
+
+<div class="rail"><i id="rail"></i></div>
+<div class="grain" id="grain"></div>
+<div class="vig"></div>
+
+<header class="abertura">
+  <div class="eyebrow">
+    <span>Trabalho bimestral &middot; Casos polêmicos da biotecnologia</span>
+    <span><b>Ensaio visual em três atos</b></span>
+  </div>
+
+  <h1 class="titulo">A célula que<br>esqueceu<br><em>de morrer</em></h1>
+
+  <dl class="viveres">
+    <div class="datum"><dt>Nome</dt><dd>Henrietta Lacks</dd></div>
+    <div class="datum"><dt>Viveu</dt><dd>1920 — 1951</dd></div>
+    <div class="datum"><dt>Idade</dt><dd>31 anos</dd></div>
+    <div class="datum"><dt>Linhagem</dt><dd>HeLa</dd></div>
+    <div class="datum"><dt>Coleta</dt><dd>08.02.1951</dd></div>
+    <div class="datum"><dt>Ainda viva</dt><dd id="agora">—</dd></div>
+  </dl>
+
+  <p class="lede">Em fevereiro de 1951, um médico do Johns Hopkins retirou dois fragmentos do colo do útero de uma lavradora de tabaco da Virgínia. Ela não foi avisada, não assinou nada e morreu oito meses depois. <strong>As células continuam se dividindo até hoje</strong> — e é sobre elas, e sobre o que se deve a ela, que este ensaio desce.</p>
+
+  <div class="desca"><span></span> Role para descer</div>
+</header>
+
+<section class="ato" id="ato1">
+  <div class="sticky">
+    <div class="stage" id="stage1"></div>
+    <div class="scrim"></div>
+    <div class="hud">
+      <div class="hud-act"><b>Ato I</b> &nbsp;/&nbsp; A descida</div>
+      <div class="escala">
+        <div class="k">Campo de visão</div>
+        <div class="v" id="esc1">4,00 m</div>
+        <div class="n" id="nom1">Ala hospitalar</div>
+      </div>
+      <div class="ruler" id="rul1"><i id="tick1"></i></div>
+      <div class="narr" id="narr1"></div>
+    </div>
+  </div>
+</section>
+
+<section class="ato" id="ato2">
+  <div class="sticky">
+    <div class="stage" id="stage2"></div>
+    <div class="scrim"></div>
+    <div class="hud">
+      <div class="hud-act"><b>Ato II</b> &nbsp;/&nbsp; A subida</div>
+      <div class="escala">
+        <div class="k">Toneladas cultivadas</div>
+        <div class="v" id="esc2">0</div>
+        <div class="n" id="nom2">1951</div>
+      </div>
+      <div class="ruler" id="rul2"><i id="tick2"></i></div>
+      <div class="narr" id="narr2"></div>
+    </div>
+  </div>
+</section>
+
+<footer class="fecho">
+  <h2>Isto é um teste de direção.</h2>
+  <p class="sub">Três atos construídos para checar linguagem, ritmo e tipografia antes de fechar a apresentação inteira. Abaixo, o roteiro completo proposto — cada bloco é uma continuação do mesmo movimento de câmera, nunca um slide solto.</p>
+
+  <div class="roteiro">
+    <article class="card feito"><span class="n">ATO I &middot; PRONTO</span><h3>A descida</h3><p>Do quarto em Baltimore até o telômero. Dez camadas de zoom contínuo, com a escala métrica real na lateral.</p></article>
+    <article class="card feito"><span class="n">ATO II &middot; PRONTO</span><h3>A subida</h3><p>Uma célula abre em frasco, estufa, mundo. O mesmo movimento, invertido: o infinitamente pequeno vira alcance global.</p></article>
+    <article class="card"><span class="n">ATO III</span><h3>As mãos que não assinaram</h3><p>A linha do tempo do consentimento: 1951, 1973, 1979 (Belmont), 1981, 2013, 2023. Um documento que se preenche conforme você rola.</p></article>
+    <article class="card"><span class="n">ATO IV</span><h3>O que HeLa construiu</h3><p>Pólio, fecundação in vitro, mapeamento cromossômico, HPV, covid-19. Cada conquista entra como uma camada sobre a mesma célula.</p></article>
+    <article class="card"><span class="n">ATO V</span><h3>A conta que ninguém pagou</h3><p>Lucro da indústria de linhagens celulares contra a família sem plano de saúde. Gráfico que cresce com o scroll.</p></article>
+    <article class="card"><span class="n">ATO VI</span><h3>O dilema, em aberto</h3><p>Os dois lados postos lado a lado, sem conclusão embrulhada: bem coletivo contra autonomia do corpo.</p></article>
+  </div>
+
+  <div class="fontes">
+    <b>Verificação</b>
+    Skloot, R. <i>A Vida Imortal de Henrietta Lacks</i> (2010). &middot; Adey, A. et al. <i>The haplotype-resolved genome and epigenome of the aneuploid HeLa cancer cell line</i>, Nature (2013): integração do HPV-18 em 8q24, a montante do MYC. &middot; Landry, J. et al. <i>The genomic and transcriptomic landscape of a HeLa cell line</i>, G3 (2013). &middot; NIH, acordo de acesso ao genoma HeLa com a família Lacks (2013). &middot; OMS, homenagem póstuma a Henrietta Lacks (2021). &middot; Acordo extrajudicial Lacks v. Thermo Fisher Scientific (2023).
+  </div>
+</footer>
+
+<script>
+(function(){
+"use strict";
+var NS="http://www.w3.org/2000/svg";
+var C={
+  ink:"#08080B", ink2:"#0F0F16", ink3:"#171722",
+  bone:"#E9E3D7", boneDim:"#9E988B", slate:"#736D7E",
+  hema:"#4A3F6B", hemaLt:"#7B6BA8", hemaDp:"#2A2340",
+  eos:"#B06A70", eosDp:"#6E383E", eosLt:"#D0949A",
+  brass:"#C6A46B"
+};
+
+/* ---------- utilidades ---------- */
+function S(t,a){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);return e;}
+function rng(seed){var a=seed>>>0;return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+function clamp(v,a,b){return v<a?a:v>b?b:v;}
+function smooth(a,b,x){var t=clamp((x-a)/(b-a),0,1);return t*t*(3-2*t);}
+function lerp(a,b,t){return a+(b-a)*t;}
+
+function ring(cx,cy,r,n,rand,irr){
+  var pts=[],i,ang,rr;
+  for(i=0;i<n;i++){ang=i/n*Math.PI*2;rr=r*(1+(rand()-0.5)*irr);pts.push([cx+Math.cos(ang)*rr,cy+Math.sin(ang)*rr]);}
+  return pts;
+}
+function closedPath(p){
+  var n=p.length,d="M"+p[0][0].toFixed(1)+","+p[0][1].toFixed(1),i,p0,p1,p2,p3,c1,c2;
+  for(i=0;i<n;i++){
+    p0=p[(i-1+n)%n];p1=p[i];p2=p[(i+1)%n];p3=p[(i+2)%n];
+    c1=[p1[0]+(p2[0]-p0[0])/6,p1[1]+(p2[1]-p0[1])/6];
+    c2=[p2[0]-(p3[0]-p1[0])/6,p2[1]-(p3[1]-p1[1])/6];
+    d+="C"+c1[0].toFixed(1)+","+c1[1].toFixed(1)+" "+c2[0].toFixed(1)+","+c2[1].toFixed(1)+" "+p2[0].toFixed(1)+","+p2[1].toFixed(1);
+  }
+  return d+"Z";
+}
+function blob(cx,cy,r,n,rand,irr){return closedPath(ring(cx,cy,r,n,rand,irr));}
+
+function root(){
+  var s=S("svg",{viewBox:"0 0 1000 1000",preserveAspectRatio:"xMidYMid meet"});
+  s.setAttribute("aria-hidden","true");
+  return s;
+}
+function bg(s,fill){s.appendChild(S("rect",{x:0,y:0,width:1000,height:1000,fill:fill||C.ink}));}
+function radial(s,id,stops,attrs){
+  var defs=s.querySelector("defs")||s.insertBefore(S("defs",{}),s.firstChild);
+  var g=S("radialGradient",attrs||{id:id,cx:"50%",cy:"50%",r:"62%"});
+  g.setAttribute("id",id);
+  stops.forEach(function(st){g.appendChild(S("stop",{offset:st[0],"stop-color":st[1],"stop-opacity":st[2]==null?1:st[2]}));});
+  defs.appendChild(g);return "url(#"+id+")";
+}
+function txt(s,x,y,str,size,fill,ls,anchor,fam){
+  var t=S("text",{x:x,y:y,fill:fill,"font-size":size,"font-family":fam||"IBM Plex Mono, monospace",
+    "letter-spacing":ls==null?2:ls,"text-anchor":anchor||"middle","font-weight":400});
+  t.textContent=str;s.appendChild(t);return t;
+}
+
+/* ================= ATO I — camadas ================= */
+
+function artSala(){
+  var s=root(),r=rng(11),i;
+  bg(s,"#07070A");
+  s.appendChild(S("rect",{x:0,y:0,width:1000,height:1000,fill:radial(s,"g-sala",[["0%","#191527"],["100%","#07070A"]],{id:"g-sala",cx:"50%",cy:"38%",r:"70%"})}));
+  /* janela com persiana */
+  var wx=306,wy=96,ww=388,wh=336;
+  s.appendChild(S("rect",{x:wx,y:wy,width:ww,height:wh,fill:"#2B2540"}));
+  s.appendChild(S("rect",{x:wx,y:wy,width:ww,height:wh,fill:radial(s,"g-jan",[["0%","#4A3F6B"],["100%","#1A1628"]],{id:"g-jan",cx:"50%",cy:"78%",r:"80%"})}));
+  for(i=0;i<13;i++) s.appendChild(S("rect",{x:wx,y:wy+i*26,width:ww,height:11,fill:"#0B0A11","fill-opacity":.62}));
+  s.appendChild(S("rect",{x:wx,y:wy,width:ww,height:wh,fill:"none",stroke:C.bone,"stroke-opacity":.16,"stroke-width":2}));
+  s.appendChild(S("line",{x1:500,y1:wy,x2:500,y2:wy+wh,stroke:C.bone,"stroke-opacity":.14,"stroke-width":2}));
+  /* piso e bancada */
+  s.appendChild(S("rect",{x:0,y:548,width:1000,height:452,fill:"#0A0910"}));
+  s.appendChild(S("rect",{x:120,y:548,width:760,height:9,fill:"#1C1926"}));
+  s.appendChild(S("line",{x1:120,y1:548,x2:880,y2:548,stroke:C.bone,"stroke-opacity":.20,"stroke-width":1.4}));
+  /* maca à esquerda */
+  s.appendChild(S("rect",{x:40,y:604,width:250,height:8,fill:"#16141F"}));
+  for(i=0;i<5;i++) s.appendChild(S("line",{x1:60+i*54,y1:612,x2:60+i*54,y2:700,stroke:"#16141F","stroke-width":5}));
+  /* suporte de soro à direita */
+  s.appendChild(S("line",{x1:860,y1:330,x2:860,y2:700,stroke:"#191622","stroke-width":5}));
+  s.appendChild(S("path",{d:"M840,330 h40 v54 q-20,26 -40,0 Z",fill:"#211C30"}));
+  /* partículas de poeira no facho */
+  for(i=0;i<46;i++){
+    s.appendChild(S("circle",{cx:280+r()*440,cy:120+r()*420,r:(0.7+r()*1.6).toFixed(2),fill:C.bone,"fill-opacity":(0.06+r()*0.2).toFixed(2)}));
+  }
+  /* o tubo, no centro exato */
+  s.appendChild(S("ellipse",{cx:500,cy:500,rx:74,ry:74,fill:radial(s,"g-halo",[["0%",C.bone,.22],["100%",C.bone,0]],{id:"g-halo",cx:"50%",cy:"50%",r:"50%"})}));
+  s.appendChild(S("rect",{x:489,y:452,width:22,height:96,rx:11,fill:"#14121C",stroke:C.bone,"stroke-opacity":.42,"stroke-width":1.4}));
+  s.appendChild(S("rect",{x:493,y:470,width:5,height:60,rx:2.5,fill:C.bone,"fill-opacity":.3}));
+  s.appendChild(S("circle",{cx:500,cy:518,r:6,fill:C.eos,"fill-opacity":.75}));
+  return s;
+}
+
+function artFrasco(){
+  var s=root(),r=rng(23),i;
+  bg(s,"#0A0912");
+  s.appendChild(S("rect",{x:0,y:0,width:1000,height:1000,fill:radial(s,"g-fr",[["0%","#1B1730"],["100%","#08070D"]],{id:"g-fr",cx:"50%",cy:"50%",r:"64%"})}));
+  /* vidro */
+  s.appendChild(S("path",{d:"M416,74 h168 v706 a84,84 0 0 1 -168,0 Z",fill:"#0E0C17","fill-opacity":.9}));
+  /* meio de cultura */
+  s.appendChild(S("path",{d:"M416,300 h168 v480 a84,84 0 0 1 -168,0 Z",fill:C.eosDp,"fill-opacity":.34}));
+  s.appendChild(S("ellipse",{cx:500,cy:300,rx:84,ry:15,fill:C.eos,"fill-opacity":.32}));
+  /* fragmento suspenso, no centro */
+  s.appendChild(S("path",{d:blob(500,500,46,11,r,.5),fill:C.eos,"fill-opacity":.9}));
+  s.appendChild(S("path",{d:blob(500,500,30,9,r,.45),fill:C.eosLt,"fill-opacity":.55}));
+  /* partículas em suspensão */
+  for(i=0;i<40;i++){
+    var a=r()*Math.PI*2,rr=70+r()*120;
+    s.appendChild(S("circle",{cx:(500+Math.cos(a)*rr*0.72).toFixed(1),cy:(520+Math.sin(a)*rr).toFixed(1),r:(1+r()*2.6).toFixed(2),fill:C.eosLt,"fill-opacity":(.1+r()*.35).toFixed(2)}));
+  }
+  /* vidro por cima */
+  s.appendChild(S("path",{d:"M416,74 h168 v706 a84,84 0 0 1 -168,0 Z",fill:"none",stroke:C.bone,"stroke-opacity":.34,"stroke-width":3}));
+  s.appendChild(S("ellipse",{cx:500,cy:74,rx:84,ry:16,fill:"none",stroke:C.bone,"stroke-opacity":.34,"stroke-width":3}));
+  s.appendChild(S("rect",{x:441,y:120,width:9,height:620,rx:4.5,fill:C.bone,"fill-opacity":.16}));
+  s.appendChild(S("rect",{x:552,y:200,width:4,height:420,rx:2,fill:C.bone,"fill-opacity":.09}));
+  /* etiqueta do laboratório de Gey */
+  s.appendChild(S("rect",{x:412,y:148,width:176,height:96,fill:"#DCD5C6"}));
+  s.appendChild(S("rect",{x:412,y:148,width:176,height:96,fill:"none",stroke:"#000","stroke-opacity":.18}));
+  txt(s,500,200,"HeLa",44,"#14121A",1,"middle","Bodoni Moda, serif");
+  txt(s,500,228,"2 · 8 · 51",13,"#3A3540",3);
+  return s;
+}
+
+function artFragmento(){
+  var s=root(),r=rng(37),i,a,rr;
+  bg(s,"#0B0810");
+  s.appendChild(S("rect",{x:0,y:0,width:1000,height:1000,fill:radial(s,"g-fg",[["0%","#2A1620"],["100%","#0A070E"]],{id:"g-fg",cx:"50%",cy:"50%",r:"70%"})}));
+  s.appendChild(S("path",{d:blob(500,500,430,16,r,.34),fill:C.eosDp,"fill-opacity":.55}));
+  s.appendChild(S("path",{d:blob(500,500,360,15,r,.3),fill:C.eos,"fill-opacity":.5}));
+  /* fibras de colágeno */
+  for(i=0;i<52;i++){
+    a=r()*Math.PI*2;rr=60+r()*330;
+    var x1=500+Math.cos(a)*rr,y1=500+Math.sin(a)*rr;
+    var x2=x1+Math.cos(a+1.2)*(40+r()*120),y2=y1+Math.sin(a+1.2)*(40+r()*120);
+    s.appendChild(S("path",{d:"M"+x1.toFixed(1)+","+y1.toFixed(1)+" Q"+((x1+x2)/2+ (r()-.5)*60).toFixed(1)+","+((y1+y2)/2+(r()-.5)*60).toFixed(1)+" "+x2.toFixed(1)+","+y2.toFixed(1),
+      fill:"none",stroke:C.eosLt,"stroke-opacity":(.08+r()*.22).toFixed(2),"stroke-width":(1+r()*2.4).toFixed(1)}));
+  }
+  /* núcleos dispersos */
+  for(i=0;i<120;i++){
+    a=r()*Math.PI*2;rr=r()*400;
+    s.appendChild(S("ellipse",{cx:(500+Math.cos(a)*rr).toFixed(1),cy:(500+Math.sin(a)*rr).toFixed(1),
+      rx:(4+r()*8).toFixed(1),ry:(3+r()*7).toFixed(1),transform:"rotate("+(r()*180).toFixed(0)+" "+(500+Math.cos(a)*rr).toFixed(1)+" "+(500+Math.sin(a)*rr).toFixed(1)+")",
+      fill:C.hema,"fill-opacity":(.45+r()*.45).toFixed(2)}));
+  }
+  /* adensamento central */
+  s.appendChild(S("circle",{cx:500,cy:500,r:150,fill:radial(s,"g-den",[["0%",C.hemaDp,.75],["100%",C.hemaDp,0]],{id:"g-den",cx:"50%",cy:"50%",r:"50%"})}));
+  return s;
+}
+
+function artTecido(){
+  var s=root(),r=rng(53),i,j;
+  bg(s,"#0C0812");
+  s.appendChild(S("rect",{x:0,y:0,width:1000,height:1000,fill:radial(s,"g-tc",[["0%","#331A25"],["100%","#0B070F"]],{id:"g-tc",cx:"50%",cy:"50%",r:"72%"})}));
+  /* epitélio estratificado: camadas de células */
+  var rows=[{y:120,h:120,n:16},{y:250,h:130,n:13},{y:390,h:150,n:11},{y:550,h:160,n:9},{y:720,h:190,n:7}];
+  rows.forEach(function(row,ri){
+    for(i=0;i<row.n;i++){
+      var w=1000/row.n, cx=w*i+w/2+(r()-.5)*w*.25, cy=row.y+row.h/2+(r()-.5)*row.h*.2;
+      var rx=w*0.52*(0.8+r()*0.35), ry=row.h*0.46*(0.8+r()*0.35);
+      s.appendChild(S("ellipse",{cx:cx.toFixed(1),cy:cy.toFixed(1),rx:rx.toFixed(1),ry:ry.toFixed(1),
+        fill:C.eos,"fill-opacity":(.18+r()*.2).toFixed(2),stroke:C.eosLt,"stroke-opacity":.16,"stroke-width":1.4}));
+      s.appendChild(S("ellipse",{cx:cx.toFixed(1),cy:cy.toFixed(1),rx:(rx*.36).toFixed(1),ry:(ry*.38).toFixed(1),
+        fill:C.hema,"fill-opacity":(.6+r()*.35).toFixed(2)}));
+    }
+  });
+  /* membrana basal */
+  s.appendChild(S("path",{d:"M0,930 Q250,900 500,928 T1000,914",fill:"none",stroke:C.brass,"stroke-opacity":.3,"stroke-width":4}));
+  /* célula em divisão, no centro */
+  s.appendChild(S("circle",{cx:500,cy:500,r:120,fill:radial(s,"g-mit",[["0%",C.eosLt,.35],["100%",C.eosLt,0]],{id:"g-mit",cx:"50%",cy:"50%",r:"50%"})}));
+  s.appendChild(S("ellipse",{cx:500,cy:500,rx:96,ry:74,fill:C.eos,"fill-opacity":.38,stroke:C.eosLt,"stroke-opacity":.4,"stroke-width":2}));
+  for(j=0;j<7;j++){
+    var yy=470+j*10;
+    s.appendChild(S("rect",{x:474,y:yy,width:52,height:4,rx:2,fill:C.hemaLt,"fill-opacity":.85}));
+  }
+  return s;
+}
+
+function artCampo(){
+  var s=root(),r=rng(71),i,j;
+  bg(s,"#0A0711");
+  s.appendChild(S("rect",{x:0,y:0,width:1000,height:1000,fill:radial(s,"g-cp",[["0%","#2C1824"],["100%","#090610"]],{id:"g-cp",cx:"50%",cy:"50%",r:"74%"})}));
+  var cols=7,rows=7,w=1000/cols,h=1000/rows;
+  for(j=0;j<rows;j++) for(i=0;i<cols;i++){
+    var cx=w*i+w/2+(r()-.5)*w*.55, cy=h*j+h/2+(r()-.5)*h*.55;
+    if(Math.abs(cx-500)<95&&Math.abs(cy-500)<95) continue;
+    var rr=w*0.46*(0.72+r()*0.5);
+    s.appendChild(S("path",{d:blob(cx,cy,rr,10,r,.45),fill:C.eos,"fill-opacity":(.14+r()*.16).toFixed(2),
+      stroke:C.eosLt,"stroke-opacity":.2,"stroke-width":1.6}));
+    s.appendChild(S("path",{d:blob(cx,cy,rr*0.34,9,r,.3),fill:C.hema,"fill-opacity":(.55+r()*.4).toFixed(2)}));
+    s.appendChild(S("circle",{cx:(cx+rr*.1).toFixed(1),cy:(cy-rr*.06).toFixed(1),r:(rr*.1).toFixed(1),fill:C.hemaDp,"fill-opacity":.9}));
+  }
+  /* a célula central */
+  s.appendChild(S("path",{d:blob(500,500,230,13,r,.34),fill:C.eos,"fill-opacity":.24,stroke:C.eosLt,"stroke-opacity":.42,"stroke-width":2.4}));
+  s.appendChild(S("path",{d:blob(500,500,86,11,r,.22),fill:C.hema,"fill-opacity":.92}));
+  return s;
+}
+
+function artCelula(){
+  var s=root(),r=rng(97),i,a,rr;
+  bg(s,"#0A0711");
+  s.appendChild(S("rect",{x:0,y:0,width:1000,height:1000,fill:radial(s,"g-ce0",[["0%","#20101C"],["100%","#080510"]],{id:"g-ce0",cx:"50%",cy:"50%",r:"76%"})}));
+  /* membrana */
+  s.appendChild(S("path",{d:blob(500,500,455,17,r,.16),fill:radial(s,"g-ce",[["0%",C.eos,.34],["70%",C.eosDp,.42],["100%",C.eosDp,.1]],{id:"g-ce",cx:"50%",cy:"50%",r:"56%"}),
+    stroke:C.eosLt,"stroke-opacity":.5,"stroke-width":3}));
+  /* citoesqueleto */
+  for(i=0;i<70;i++){
+    a=r()*Math.PI*2;rr=150+r()*280;
+    s.appendChild(S("line",{x1:(500+Math.cos(a)*120).toFixed(1),y1:(500+Math.sin(a)*120).toFixed(1),
+      x2:(500+Math.cos(a+ (r()-.5)*.5)*rr).toFixed(1),y2:(500+Math.sin(a+(r()-.5)*.5)*rr).toFixed(1),
+      stroke:C.eosLt,"stroke-opacity":(.07+r()*.16).toFixed(2),"stroke-width":(0.8+r()*1.6).toFixed(1)}));
+  }
+  /* mitocôndrias e vesículas */
+  for(i=0;i<40;i++){
+    a=r()*Math.PI*2;rr=170+r()*250;
+    var cx=500+Math.cos(a)*rr, cy=500+Math.sin(a)*rr;
+    s.appendChild(S("ellipse",{cx:cx.toFixed(1),cy:cy.toFixed(1),rx:(9+r()*20).toFixed(1),ry:(4+r()*7).toFixed(1),
+      transform:"rotate("+(r()*180).toFixed(0)+" "+cx.toFixed(1)+" "+cy.toFixed(1)+")",
+      fill:C.brass,"fill-opacity":(.12+r()*.3).toFixed(2)}));
+  }
+  /* núcleo, no centro */
+  s.appendChild(S("path",{d:blob(500,500,200,14,r,.1),fill:radial(s,"g-nu",[["0%",C.hemaLt,.95],["60%",C.hema,.95],["100%",C.hemaDp,.98]],{id:"g-nu",cx:"44%",cy:"40%",r:"66%"}),
+    stroke:C.hemaLt,"stroke-opacity":.6,"stroke-width":2.5}));
+  s.appendChild(S("circle",{cx:462,cy:472,r:40,fill:C.hemaDp,"fill-opacity":.8}));
+  s.appendChild(S("circle",{cx:552,cy:548,r:26,fill:C.hemaDp,"fill-opacity":.65}));
+  return s;
+}
+
+function artNucleo(){
+  var s=root(),r=rng(131),i,a,k;
+  bg(s,"#0A0713");
+  s.appendChild(S("rect",{x:0,y:0,width:1000,height:1000,fill:radial(s,"g-n0",[["0%","#221A38"],["100%","#090613"]],{id:"g-n0",cx:"50%",cy:"50%",r:"78%"})}));
+  s.appendChild(S("circle",{cx:500,cy:500,r:430,fill:radial(s,"g-n1",[["0%",C.hema,.7],["100%",C.hemaDp,.96]],{id:"g-n1",cx:"46%",cy:"42%",r:"62%"})}));
+  /* envelope nuclear com poros */
+  s.appendChild(S("circle",{cx:500,cy:500,r:430,fill:"none",stroke:C.hemaLt,"stroke-opacity":.55,"stroke-width":4}));
+  s.appendChild(S("circle",{cx:500,cy:500,r:414,fill:"none",stroke:C.hemaLt,"stroke-opacity":.28,"stroke-width":2}));
+  for(i=0;i<44;i++){
+    a=i/44*Math.PI*2;
+    s.appendChild(S("circle",{cx:(500+Math.cos(a)*422).toFixed(1),cy:(500+Math.sin(a)*422).toFixed(1),r:9,fill:C.ink,"fill-opacity":.7,stroke:C.hemaLt,"stroke-opacity":.5,"stroke-width":2}));
+  }
+  /* cromatina */
+  for(i=0;i<80;i++){
+    a=r()*Math.PI*2;var rr=r()*380;
+    var x=500+Math.cos(a)*rr,y=500+Math.sin(a)*rr,d="M"+x.toFixed(1)+","+y.toFixed(1);
+    var px=x,py=y;
+    for(k=0;k<3;k++){
+      var nx=px+(r()-.5)*90,ny=py+(r()-.5)*90;
+      d+=" Q"+(px+(r()-.5)*70).toFixed(1)+","+(py+(r()-.5)*70).toFixed(1)+" "+nx.toFixed(1)+","+ny.toFixed(1);
+      px=nx;py=ny;
+    }
+    s.appendChild(S("path",{d:d,fill:"none",stroke:i%9===0?C.brass:C.hemaLt,"stroke-opacity":(.12+r()*.34).toFixed(2),"stroke-width":(1.2+r()*3).toFixed(1),"stroke-linecap":"round"}));
+  }
+  /* par condensado no centro */
+  s.appendChild(S("circle",{cx:500,cy:500,r:150,fill:radial(s,"g-n2",[["0%",C.bone,.16],["100%",C.bone,0]],{id:"g-n2",cx:"50%",cy:"50%",r:"50%"})}));
+  s.appendChild(S("path",{d:"M470,430 q14,60 0,140 M530,430 q-14,60 0,140",fill:"none",stroke:C.hemaLt,"stroke-width":26,"stroke-linecap":"round","stroke-opacity":.95}));
+  return s;
+}
+
+function chrom(s,cx,cy,h,rot,op,color){
+  var g=S("g",{transform:"rotate("+rot+" "+cx+" "+cy+")","fill-opacity":op});
+  var w=h*0.19, waist=h*0.1;
+  ["-","+"].forEach(function(sg,i){
+    var dx=(i===0?-1:1)*w*0.62;
+    g.appendChild(S("path",{d:"M"+(cx+dx-w/2)+","+(cy-h/2)+" q"+(w/2)+",-"+(w*0.5)+" "+w+",0 v"+(h/2-waist)+" q-"+(w/2)+","+waist+" -"+w+",0 Z",fill:color}));
+    g.appendChild(S("path",{d:"M"+(cx+dx-w/2)+","+(cy+waist)+" q"+(w/2)+",-"+waist+" "+w+",0 v"+(h/2-waist)+" q-"+(w/2)+","+(w*0.5)+" -"+w+",0 Z",fill:color}));
+  });
+  s.appendChild(g);
+  return g;
+}
+
+function artCromossomo(){
+  var s=root(),r=rng(167),i;
+  bg(s,"#0B0816");
+  s.appendChild(S("rect",{x:0,y:0,width:1000,height:1000,fill:radial(s,"g-cr",[["0%","#241C3C"],["100%","#0A0714"]],{id:"g-cr",cx:"50%",cy:"50%",r:"78%"})}));
+  var pos=[[150,230,250,-22],[840,300,220,16],[230,800,230,10],[790,790,260,-14],[120,520,190,4],[890,560,180,-8]];
+  pos.forEach(function(p){chrom(s,p[0],p[1],p[2],p[3],0.42,C.hemaLt);});
+  /* cromossomo 8: posicionado para que a banda q24 caia no centro exato do quadro */
+  var CY=370,H=560,W=H*0.19,ARM=W*0.62+W/2,X0=500-ARM,WD=ARM*2;
+  chrom(s,500,CY,H,0,1,C.hemaLt);
+  /* bandeamento (braço curto acima, braço longo abaixo do centrômero) */
+  var bands=[[-.42,.05,.5],[-.31,.04,.28],[-.20,.06,.45],[.14,.04,.3],[.29,.05,.25],[.38,.04,.4]];
+  bands.forEach(function(b){
+    s.appendChild(S("rect",{x:X0.toFixed(1),y:(CY+b[0]*H).toFixed(1),width:WD.toFixed(1),height:(b[1]*H).toFixed(1),fill:C.hemaDp,"fill-opacity":b[2]}));
+  });
+  /* sítio de integração do HPV-18 em 8q24 */
+  s.appendChild(S("circle",{cx:500,cy:500,r:120,fill:radial(s,"g-hpv",[["0%",C.brass,.34],["100%",C.brass,0]],{id:"g-hpv",cx:"50%",cy:"50%",r:"50%"})}));
+  s.appendChild(S("rect",{x:X0.toFixed(1),y:478,width:WD.toFixed(1),height:44,fill:C.brass,"fill-opacity":.6}));
+  s.appendChild(S("rect",{x:X0.toFixed(1),y:478,width:WD.toFixed(1),height:44,fill:"none",stroke:C.bone,"stroke-opacity":.5,"stroke-width":1.6}));
+  s.appendChild(S("line",{x1:(X0+WD).toFixed(1),y1:500,x2:730,y2:500,stroke:C.brass,"stroke-opacity":.7,"stroke-width":1.6}));
+  s.appendChild(S("circle",{cx:730,cy:500,r:4,fill:C.brass}));
+  txt(s,748,494,"8q24",19,C.brass,3,"start");
+  txt(s,748,520,"HPV-18 / MYC",13,C.boneDim,2.4,"start");
+  txt(s,500,940,"46 cromossomos seriam o normal. HeLa tem entre 76 e 82.",15,C.boneDim,2);
+  return s;
+}
+
+function artDNA(){
+  var s=root(),r=rng(199),i;
+  bg(s,"#0A0714");
+  s.appendChild(S("rect",{x:0,y:0,width:1000,height:1000,fill:radial(s,"g-dn",[["0%","#1E1A38"],["100%","#080612"]],{id:"g-dn",cx:"50%",cy:"50%",r:"80%"})}));
+  var A=[],B=[],N=140,amp=210,turns=3.1;
+  for(i=0;i<=N;i++){
+    var t=i/N,y=t*1000,ph=t*Math.PI*2*turns;
+    A.push([500+Math.sin(ph)*amp,y]);
+    B.push([500+Math.sin(ph+Math.PI)*amp,y]);
+  }
+  function poly(p){return p.map(function(q,i){return (i?"L":"M")+q[0].toFixed(1)+","+q[1].toFixed(1);}).join(" ");}
+  /* pares de base */
+  for(i=4;i<=N-4;i+=4){
+    var a=A[i],b=B[i],depth=Math.abs(a[0]-b[0])/(amp*2);
+    var col=(i/4)%2===0?C.eos:C.hemaLt;
+    s.appendChild(S("line",{x1:a[0].toFixed(1),y1:a[1].toFixed(1),x2:b[0].toFixed(1),y2:b[1].toFixed(1),
+      stroke:col,"stroke-opacity":(0.18+depth*0.6).toFixed(2),"stroke-width":(3+depth*6).toFixed(1),"stroke-linecap":"round"}));
+  }
+  s.appendChild(S("path",{d:poly(A),fill:"none",stroke:C.bone,"stroke-opacity":.72,"stroke-width":9,"stroke-linecap":"round"}));
+  s.appendChild(S("path",{d:poly(B),fill:"none",stroke:C.boneDim,"stroke-opacity":.5,"stroke-width":9,"stroke-linecap":"round"}));
+  /* foco central */
+  s.appendChild(S("circle",{cx:500,cy:500,r:190,fill:radial(s,"g-dn2",[["0%",C.brass,.14],["100%",C.brass,0]],{id:"g-dn2",cx:"50%",cy:"50%",r:"50%"})}));
+  return s;
+}
+
+function artTelomero(){
+  var s=root(),r=rng(233),i;
+  bg(s,"#090613");
+  s.appendChild(S("rect",{x:0,y:0,width:1000,height:1000,fill:radial(s,"g-tl",[["0%","#2A2138"],["100%","#080513"]],{id:"g-tl",cx:"50%",cy:"50%",r:"82%"})}));
+  /* fita que termina e se repete */
+  for(i=0;i<9;i++){
+    var y=140+i*92;
+    var op=0.2+i*0.085;
+    s.appendChild(S("rect",{x:250,y:y,width:500,height:56,rx:6,fill:C.brass,"fill-opacity":(op*0.22).toFixed(2),
+      stroke:C.brass,"stroke-opacity":(op*0.75).toFixed(2),"stroke-width":1.6}));
+    txt(s,500,y+37,"T T A G G G",24,C.brass,10).setAttribute("fill-opacity",(0.3+op*0.6).toFixed(2));
+  }
+  s.appendChild(S("circle",{cx:500,cy:500,r:420,fill:radial(s,"g-tl2",[["0%",C.brass,.2],["55%",C.brass,.05],["100%",C.brass,0]],{id:"g-tl2",cx:"50%",cy:"50%",r:"50%"})}));
+  txt(s,500,60,"TELOMERASE ATIVA — A CONTAGEM NUNCA CHEGA A ZERO",13,C.boneDim,4.5);
+  return s;
+}
+
+/* ================= ATO II — camadas ================= */
+
+function artCelula2(){
+  var s=root(),r=rng(311),i,a,rr;
+  bg(s,"#0A0711");
+  s.appendChild(S("rect",{x:0,y:0,width:1000,height:1000,fill:radial(s,"g-c2b",[["0%","#20101C"],["100%","#080510"]],{id:"g-c2b",cx:"50%",cy:"50%",r:"76%"})}));
+  s.appendChild(S("path",{d:blob(500,500,440,17,r,.17),fill:C.eos,"fill-opacity":.3,stroke:C.eosLt,"stroke-opacity":.5,"stroke-width":3}));
+  for(i=0;i<34;i++){
+    a=r()*Math.PI*2;rr=150+r()*250;
+    s.appendChild(S("ellipse",{cx:(500+Math.cos(a)*rr).toFixed(1),cy:(500+Math.sin(a)*rr).toFixed(1),rx:(8+r()*18).toFixed(1),ry:(4+r()*6).toFixed(1),fill:C.brass,"fill-opacity":(.12+r()*.28).toFixed(2)}));
+  }
+  s.appendChild(S("path",{d:blob(500,500,175,14,r,.11),fill:C.hema,"fill-opacity":.95,stroke:C.hemaLt,"stroke-opacity":.6,"stroke-width":2.5}));
+  return s;
+}
+
+function artPlaca(){
+  var s=root(),r=rng(347),i,j;
+  bg(s,"#0A0810");
+  s.appendChild(S("rect",{x:0,y:0,width:1000,height:1000,fill:radial(s,"g-pl",[["0%","#1A1226"],["100%","#08060E"]],{id:"g-pl",cx:"50%",cy:"50%",r:"74%"})}));
+  /* frasco de cultura T-75 visto de cima */
+  s.appendChild(S("path",{d:"M190,250 h560 q40,0 40,40 v420 q0,40 -40,40 h-560 q-40,0 -40,-40 v-420 q0,-40 40,-40 Z",
+    fill:C.eosDp,"fill-opacity":.2,stroke:C.bone,"stroke-opacity":.34,"stroke-width":3}));
+  s.appendChild(S("rect",{x:430,y:170,width:140,height:84,rx:14,fill:"none",stroke:C.bone,"stroke-opacity":.34,"stroke-width":3}));
+  /* tapete confluente de células */
+  for(j=0;j<11;j++) for(i=0;i<15;i++){
+    var cx=196+i*40+(r()-.5)*16, cy=270+j*38+(r()-.5)*16;
+    if(cx<180||cx>780||cy<260||cy>710) continue;
+    s.appendChild(S("path",{d:blob(cx,cy,19*(0.7+r()*0.5),8,r,.42),fill:C.eos,"fill-opacity":(.2+r()*.24).toFixed(2),stroke:C.eosLt,"stroke-opacity":.18,"stroke-width":1}));
+    s.appendChild(S("circle",{cx:cx.toFixed(1),cy:cy.toFixed(1),r:(4+r()*3).toFixed(1),fill:C.hema,"fill-opacity":.8}));
+  }
+  txt(s,500,840,"CONFLUÊNCIA EM 24 HORAS",13,C.boneDim,5);
+  return s;
+}
+
+function artEstufa(){
+  var s=root(),r=rng(389),i,j;
+  bg(s,"#090810");
+  s.appendChild(S("rect",{x:0,y:0,width:1000,height:1000,fill:radial(s,"g-es",[["0%","#161425"],["100%","#07060D"]],{id:"g-es",cx:"50%",cy:"50%",r:"76%"})}));
+  /* prateleiras de estufa */
+  for(j=0;j<5;j++){
+    var y=150+j*170;
+    s.appendChild(S("rect",{x:80,y:y+120,width:840,height:7,fill:"#211E30"}));
+    for(i=0;i<7;i++){
+      var x=110+i*118;
+      s.appendChild(S("rect",{x:x,y:y+40,width:96,height:80,rx:8,fill:C.eosDp,"fill-opacity":(.18+r()*.24).toFixed(2),
+        stroke:C.bone,"stroke-opacity":.2,"stroke-width":1.6}));
+      s.appendChild(S("rect",{x:x+34,y:y+22,width:28,height:20,rx:5,fill:"none",stroke:C.bone,"stroke-opacity":.2,"stroke-width":1.6}));
+    }
+  }
+  s.appendChild(S("rect",{x:60,y:60,width:880,height:880,rx:10,fill:"none",stroke:C.bone,"stroke-opacity":.28,"stroke-width":4}));
+  s.appendChild(S("rect",{x:470,y:500,width:60,height:50,rx:6,fill:C.brass,"fill-opacity":.22,stroke:C.brass,"stroke-opacity":.8,"stroke-width":2}));
+  txt(s,500,985,"37 °C · 5% CO₂",13,C.boneDim,5);
+  return s;
+}
+
+function artMundo(){
+  var s=root(),r=rng(421),i;
+  bg(s,"#08070E");
+  s.appendChild(S("rect",{x:0,y:0,width:1000,height:1000,fill:radial(s,"g-mu",[["0%","#151327"],["100%","#07060C"]],{id:"g-mu",cx:"50%",cy:"50%",r:"80%"})}));
+  /* globo em linhas */
+  s.appendChild(S("circle",{cx:500,cy:500,r:380,fill:"#0C0A18",stroke:C.bone,"stroke-opacity":.2,"stroke-width":2}));
+  for(i=1;i<8;i++){
+    var yy=500-380+i*(760/8), rx=Math.sqrt(Math.max(0,380*380-(yy-500)*(yy-500)));
+    s.appendChild(S("line",{x1:(500-rx).toFixed(1),y1:yy.toFixed(1),x2:(500+rx).toFixed(1),y2:yy.toFixed(1),stroke:C.bone,"stroke-opacity":.1,"stroke-width":1.4}));
+  }
+  for(i=0;i<7;i++){
+    var k=(i/6)*2-1;
+    s.appendChild(S("ellipse",{cx:500,cy:500,rx:(380*Math.abs(k)).toFixed(1),ry:380,fill:"none",stroke:C.bone,"stroke-opacity":.1,"stroke-width":1.4}));
+  }
+  /* laboratórios */
+  for(i=0;i<210;i++){
+    var a=r()*Math.PI*2,rr=Math.sqrt(r())*372;
+    var x=500+Math.cos(a)*rr,y=500+Math.sin(a)*rr;
+    s.appendChild(S("circle",{cx:x.toFixed(1),cy:y.toFixed(1),r:(1.4+r()*3.2).toFixed(2),fill:C.eosLt,"fill-opacity":(.25+r()*.6).toFixed(2)}));
+  }
+  s.appendChild(S("circle",{cx:500,cy:500,r:400,fill:radial(s,"g-mu2",[["0%",C.eos,0],["78%",C.eos,.06],["100%",C.eos,.3]],{id:"g-mu2",cx:"50%",cy:"50%",r:"50%"})}));
+  return s;
+}
+
+function artConstelacao(){
+  var s=root(),r=rng(457),i;
+  bg(s,"#07060C");
+  for(i=0;i<620;i++){
+    var x=r()*1000,y=r()*1000,d=Math.hypot(x-500,y-500)/700;
+    s.appendChild(S("circle",{cx:x.toFixed(1),cy:y.toFixed(1),r:(0.6+r()*2.2).toFixed(2),
+      fill:i%11===0?C.brass:C.eosLt,"fill-opacity":(.12+r()*.5*(1-d*0.5)).toFixed(2)}));
+  }
+  s.appendChild(S("rect",{x:0,y:0,width:1000,height:1000,fill:radial(s,"g-cn",[["0%",C.hema,.22],["100%","#06050B",.9]],{id:"g-cn",cx:"50%",cy:"50%",r:"72%"})}));
+  return s;
+}
+
+/* ================= rig de zoom ================= */
+var BASE=6;
+
+function buildRig(stageEl, defs){
+  var layers=defs.map(function(d){
+    var div=document.createElement("div");
+    div.className="lay";
+    div.appendChild(d.art());
+    div.style.opacity="0";
+    stageEl.appendChild(div);
+    return {el:div,d:d.d,m:d.m,name:d.name};
+  });
+  return layers;
+}
+
+function applyRig(layers,Z){
+  for(var i=0;i<layers.length;i++){
+    var L=layers[i], s=Math.pow(BASE,Z-L.d);
+    if(s<0.125||s>4.35){ if(L.el.style.opacity!=="0"){L.el.style.opacity="0";L.el.style.visibility="hidden";} continue; }
+    var o=Math.min(smooth(0.14,0.62,s), 1-smooth(1.9,4.2,s));
+    L.el.style.visibility="visible";
+    L.el.style.opacity=o.toFixed(3);
+    L.el.style.transform="scale("+s.toFixed(4)+")";
+  }
+}
+
+function fmtLen(m){
+  var u=[[1,"m"],[1e-2,"cm"],[1e-3,"mm"],[1e-6,"µm"],[1e-9,"nm"]],i,v;
+  for(i=0;i<u.length;i++){
+    if(m>=u[i][0]*0.9995){
+      v=m/u[i][0];
+      return (v<10?v.toFixed(2):v<100?v.toFixed(1):String(Math.round(v))).replace(".",",")+" "+u[i][1];
+    }
+  }
+  return (m/1e-12).toFixed(0)+" pm";
+}
+function fmtNum(n){
+  return String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g,".");
+}
+
+function buildCues(box,cues){
+  return cues.map(function(c){
+    var d=document.createElement("div");
+    d.className="cue";
+    var html="";
+    if(c.k) html+='<span class="kk">'+c.k+"</span>";
+    html+="<p>"+c.t+"</p>";
+    if(c.s) html+="<p>"+c.s+"</p>";
+    d.innerHTML=html;
+    box.appendChild(d);
+    return {el:d,a:Math.min(c.a,c.b),b:Math.max(c.a,c.b)};
+  });
+}
+function applyCues(list,Z){
+  for(var i=0;i<list.length;i++){
+    var c=list[i],o=0;
+    if(Z>c.a-0.13 && Z<c.b+0.13){
+      o=Math.min(smooth(c.a-0.12,c.a+0.02,Z), 1-smooth(c.b,c.b+0.12,Z));
+    }
+    c.el.style.opacity=o.toFixed(3);
+    c.el.style.transform="translateY("+((1-o)*16).toFixed(1)+"px)";
+    c.el.style.visibility=o<0.005?"hidden":"visible";
+  }
+}
+
+/* ---------- dados dos atos ---------- */
+var L1=[
+  {d:0,m:4,     name:"Ala hospitalar", art:artSala},
+  {d:1,m:0.16,  name:"Tubo de cultura", art:artFrasco},
+  {d:2,m:0.021, name:"Fragmento de tecido", art:artFragmento},
+  {d:3,m:0.0013,name:"Epitélio cervical", art:artTecido},
+  {d:4,m:2.4e-4,name:"Campo celular", art:artCampo},
+  {d:5,m:4.2e-5,name:"Uma célula HeLa", art:artCelula},
+  {d:6,m:8.5e-6,name:"Núcleo", art:artNucleo},
+  {d:7,m:1.4e-6,name:"Cromossomo 8", art:artCromossomo},
+  {d:8,m:2.6e-8,name:"Dupla hélice", art:artDNA},
+  {d:9,m:4e-9,  name:"Telômero", art:artTelomero}
+];
+
+var CUES1=[
+  {a:0.00,b:0.68,k:"Baltimore · 8 de fevereiro de 1951",t:"Johns Hopkins. A ala dos <em>coloridos</em>.",s:"Era o único grande hospital em quilômetros que atendia pacientes negros. Henrietta Lacks, 31 anos, cinco filhos, tinha ido lá por causa de um nódulo que ela mesma descrevera como “um caroço dentro de mim”."},
+  {a:1.00,b:1.68,k:"A coleta",t:"Dois fragmentos foram retirados antes do tratamento.",s:"Um do tumor, outro de tecido saudável. Ninguém pediu autorização, e em 1951 nenhuma lei exigia que pedissem. O consentimento informado só viraria norma federal décadas depois."},
+  {a:2.00,b:2.68,k:"O laboratório de George Gey",t:"O tubo foi rotulado com duas letras de cada nome.",s:"<em>HE</em>nrietta <em>LA</em>cks. Foi assim que o nome dela desapareceu por 22 anos — e foi assim que ele sobreviveu."},
+  {a:3.00,b:3.68,k:"O que se esperava",t:"Toda cultura humana anterior morria em alguns dias.",s:"O laboratório de Gey vinha falhando havia quase trinta anos. As células se dividiam algumas vezes, paravam e morriam — o limite que Leonard Hayflick descreveria em 1961."},
+  {a:4.00,b:4.68,k:"O que aconteceu",t:"Estas não pararam.",s:"Dobravam de quantidade a cada 24 horas. Em poucas semanas havia mais células do que a bancada comportava, e Gey passou a distribuí-las de graça para qualquer laboratório que pedisse."},
+  {a:5.00,b:5.68,k:"Dentro de uma célula",t:"Toda a explicação cabe no núcleo.",s:"Não era vigor, nem sorte de laboratório. Era uma avaria específica, escrita no DNA, que a descida abaixo vai mostrar."},
+  {a:6.00,b:6.68,k:"A contagem errada",t:"Onde deveria haver 46 cromossomos, há cerca de 80.",s:"O genoma de HeLa foi sequenciado e publicado em 2013 — de novo sem consultar a família, de novo gerando protesto, e dessa vez gerando um acordo com o NIH."},
+  {a:7.00,b:7.68,k:"Cromossomo 8, braço longo",t:"O HPV-18 se integrou ao lado do gene MYC.",s:"A inserção do vírus amplificou um gene que manda a célula crescer. Foi esse mecanismo, estudado em HeLa e em linhagens irmãs, que levou Harald zur Hausen ao Nobel de 2008 e ao desenvolvimento da vacina contra o HPV."},
+  {a:8.00,b:8.38,k:"Nas pontas dos cromossomos",t:"Cada divisão normal encurta um pouco o telômero.",s:"É o relógio da célula: quando as pontas se esgotam, ela para de se dividir. Uma contagem regressiva que nenhuma célula humana saudável escapa."},
+  {a:8.62,b:9.40,k:"Telomerase",t:"O interruptor ficou preso na posição ligada.",s:"A enzima que reconstrói as pontas nunca se desliga. O relógio volta ao início a cada divisão. A célula não envelhece — ela esqueceu como morrer."}
+];
+
+var L2=[
+  {d:0,m:0,name:"Em toda parte", art:artConstelacao},
+  {d:1,m:0,name:"Laboratórios no mundo", art:artMundo},
+  {d:2,m:0,name:"Estufa", art:artEstufa},
+  {d:3,m:0,name:"Frasco de cultura", art:artPlaca},
+  {d:4,m:0,name:"Uma célula HeLa", art:artCelula2}
+];
+
+var CUES2=[
+  {a:4.06,b:3.40,k:"4 de outubro de 1951",t:"Henrietta morreu oito meses depois da coleta.",s:"Foi enterrada sem lápide num terreno da família, em Clover, Virgínia. Tinha 31 anos. O corpo parou; a cultura, não."},
+  {a:3.24,b:2.66,k:"1952",t:"A primeira fábrica de células da história foi montada para produzi-las.",s:"No Instituto Tuskegee, trilhões de células HeLa por semana serviram para testar em escala a vacina de Jonas Salk contra a poliomielite."},
+  {a:2.50,b:1.92,k:"O que HeLa tornou possível",t:"Mapeamento cromossômico, fecundação in vitro, quimioterapia, vacina do HPV, primeiros ensaios da covid-19.",s:"Também foram as primeiras células humanas clonadas e as primeiras enviadas ao espaço, para verificar o efeito da ausência de gravidade sobre tecido humano."},
+  {a:1.76,b:1.18,k:"A escala",t:"Estima-se que mais de 50 milhões de toneladas de HeLa já tenham sido cultivadas.",s:"Estão em mais de 110 mil publicações científicas e em praticamente todo laboratório de cultura celular do planeta. Nenhuma outra célula humana chegou perto disso."},
+  {a:1.02,b:0.46,k:"A conta",t:"A família descobriu tudo em 1973, por acaso, numa conversa de jantar.",s:"Passaram décadas sem plano de saúde enquanto as células eram vendidas mundialmente. Em 2023, um acordo extrajudicial com a Thermo Fisher encerrou o primeiro processo — em termos não revelados."},
+  {a:0.30,b:-0.25,k:"Agora",t:"Enquanto você leu isto, elas se dividiram outra vez.",s:"A pergunta que este trabalho coloca não é se HeLa deveria ter existido. É quem decide o que acontece com um pedaço do seu corpo depois que ele sai de você."}
+];
+
+/* ---------- montagem ---------- */
+var st1=document.getElementById("stage1"), st2=document.getElementById("stage2");
+var lay1=buildRig(st1,L1), lay2=buildRig(st2,L2);
+var cue1=buildCues(document.getElementById("narr1"),CUES1);
+var cue2=buildCues(document.getElementById("narr2"),CUES2);
+
+/* marcas de régua */
+(function(){
+  [["rul1",L1.length],["rul2",L2.length]].forEach(function(p){
+    var el=document.getElementById(p[0]);
+    for(var i=0;i<p[1];i++){
+      var u=document.createElement("u");
+      u.style.top=(i/(p[1]-1)*100)+"%";
+      el.appendChild(u);
+    }
+  });
+})();
+
+var esc1=document.getElementById("esc1"), nom1=document.getElementById("nom1"), tick1=document.getElementById("tick1");
+var esc2=document.getElementById("esc2"), nom2=document.getElementById("nom2"), tick2=document.getElementById("tick2");
+var rail=document.getElementById("rail");
+var a1=document.getElementById("ato1"), a2=document.getElementById("ato2");
+var MAX1=L1[L1.length-1].d, MAX2=L2[L2.length-1].d;
+
+function prog(sec){
+  var rect=sec.getBoundingClientRect();
+  var scrollable=sec.offsetHeight-window.innerHeight;
+  if(scrollable<=0) return 0;
+  return clamp(-rect.top/(scrollable*0.9),0,1);
+}
+
+function scaleAt(Z){
+  var i=clamp(Math.floor(Z),0,L1.length-2), f=clamp(Z-i,0,1);
+  var m0=Math.log10(L1[i].m), m1=Math.log10(L1[i+1].m);
+  return Math.pow(10,lerp(m0,m1,f));
+}
+
+function render(){
+  ticking=false;
+  var p1=prog(a1), p2=prog(a2);
+
+  var Z1=p1*MAX1;
+  applyRig(lay1,Z1); applyCues(cue1,Z1);
+  esc1.textContent=fmtLen(scaleAt(Z1));
+  nom1.textContent=L1[clamp(Math.round(Z1),0,L1.length-1)].name;
+  tick1.style.top=(p1*100).toFixed(2)+"%";
+
+  var Z2=(1-p2)*MAX2;
+  applyRig(lay2,Z2); applyCues(cue2,Z2);
+  esc2.textContent=fmtNum(Math.pow(p2,1.7)*50000000);
+  nom2.textContent=String(Math.round(lerp(1951,2026,p2)));
+  tick2.style.top=(p2*100).toFixed(2)+"%";
+
+  var doc=document.documentElement;
+  var total=doc.scrollHeight-window.innerHeight;
+  rail.style.width=(total>0?clamp(window.scrollY/total,0,1)*100:0).toFixed(2)+"%";
+}
+
+var ticking=false;
+function onScroll(){
+  if(document.hidden){ render(); return; }
+  if(!ticking){ ticking=true; requestAnimationFrame(render); }
+}
+window.addEventListener("scroll",onScroll,{passive:true});
+window.addEventListener("resize",onScroll);
+
+/* grão de película */
+(function(){
+  var c=document.createElement("canvas");c.width=c.height=140;
+  var x=c.getContext("2d"),d=x.createImageData(140,140),i;
+  for(i=0;i<d.data.length;i+=4){var v=(Math.random()*255)|0;d.data[i]=d.data[i+1]=d.data[i+2]=v;d.data[i+3]=255;}
+  x.putImageData(d,0,0);
+  document.getElementById("grain").style.backgroundImage="url("+c.toDataURL("image/png")+")";
+})();
+
+/* "ainda viva" — anos decorridos */
+(function(){
+  var d0=new Date(1951,9,4), now=new Date();
+  var anos=Math.floor((now-d0)/(365.2425*24*3600*1000));
+  document.getElementById("agora").textContent="há "+anos+" anos";
+})();
+
+render();
+})();
+</script>
