@@ -106,6 +106,10 @@ body{
 .ato{position:relative}
 #ato1{height:660vh}
 #ato2{height:430vh}
+#ato3{height:520vh}
+#ato4{height:430vh}
+#ato5{height:340vh}
+#ato6{height:420vh}
 .sticky{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;background:var(--ink)}
 .stage{
   position:absolute;top:50%;left:50%;
@@ -119,6 +123,7 @@ body{
   backface-visibility:hidden;
 }
 .stage .lay svg{width:100%;height:100%;display:block}
+.scrim.leve{background:radial-gradient(120% 92% at 50% 50%, transparent 52%, rgba(8,8,11,.6) 100%)}
 .scrim{
   position:absolute;inset:0;pointer-events:none;
   background:
@@ -196,7 +201,89 @@ body{
   .narr{width:calc(100% - var(--gut) * 2);bottom:clamp(96px,17vh,140px)}
   #ato1{height:760vh}
   #ato2{height:500vh}
+  #ato3{height:700vh}
+  #ato4{height:520vh}
+  #ato5{height:400vh}
+  #ato6{height:520vh}
 }
+
+/* ---------- Ato III: o documento ---------- */
+.papel-wrap{position:absolute;inset:clamp(74px,12vh,104px) 0 0 0;display:flex;justify-content:center;align-items:flex-start;overflow:hidden}
+.papel{
+  position:relative;width:min(700px,86vw);background:#E2DACA;color:#17151A;
+  padding:clamp(34px,5vw,60px) clamp(28px,4.6vw,56px) clamp(60px,9vw,110px);
+  box-shadow:0 40px 90px rgba(0,0,0,.6);will-change:transform;
+  font-family:var(--f-mono);font-size:13.5px;line-height:1.85;
+}
+.papel::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background:repeating-linear-gradient(0deg,rgba(23,21,26,.028) 0 1px,transparent 1px 3px)}
+.papel h3{font-family:var(--f-disp);font-weight:500;font-size:clamp(1.05rem,2.3vw,1.5rem);
+  line-height:1.2;margin:0 0 6px;letter-spacing:.01em;text-transform:uppercase}
+.papel .org{font-size:11px;letter-spacing:.14em;color:#5C5660;margin:0 0 28px;text-transform:uppercase}
+.papel hr{border:0;border-top:1px solid rgba(23,21,26,.24);margin:26px 0}
+.campo{display:flex;gap:10px;align-items:baseline}
+.campo dt{white-space:nowrap;color:#5C5660;text-transform:uppercase;font-size:10.5px;letter-spacing:.14em}
+.campo dd{margin:0;flex:1;border-bottom:1px dotted rgba(23,21,26,.4);min-height:1.4em}
+.campo dd.vazio{border-bottom:1px solid rgba(23,21,26,.55)}
+.campo dd i{font-style:normal;color:#8A2F38;letter-spacing:.1em;font-size:11px;text-transform:uppercase}
+.papel .secao{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:#5C5660;margin:34px 0 14px}
+.cl{margin:0 0 20px;display:grid;grid-template-columns:62px 1fr;gap:18px;opacity:0;will-change:opacity,transform}
+.cl b{font-weight:500;color:#8A2F38;font-variant-numeric:tabular-nums}
+.cl span{display:block}
+.cl em{font-style:normal;background:rgba(138,47,56,.12);padding:0 3px}
+.carimbo{
+  position:absolute;right:clamp(20px,5vw,60px);top:clamp(180px,26vw,260px);
+  border:3px solid #8A2F38;color:#8A2F38;padding:10px 18px;transform:rotate(-11deg) scale(.9);
+  font-size:clamp(13px,2.4vw,19px);letter-spacing:.16em;text-transform:uppercase;opacity:0;
+  box-shadow:0 0 0 2px rgba(138,47,56,.18) inset;
+}
+.assin{margin-top:40px}
+.assin .campo dd{min-height:2.6em}
+
+/* ---------- Ato IV: o que saiu do frasco ---------- */
+.orb{position:absolute;inset:0;display:grid;place-items:center}
+.orb svg{width:100%;height:100%}
+
+/* ---------- Ato V: a conta ---------- */
+.graf{position:absolute;inset:clamp(96px,16vh,150px) var(--gut) clamp(236px,35vh,320px) var(--gut);display:grid;place-items:center}
+#narr5{width:min(56ch,calc(100% - var(--gut) * 2 - 120px))}
+#narr5 .cue p{font-size:clamp(1.08rem,2.05vw,1.5rem);line-height:1.16}
+#narr5 .cue p + p{font-size:clamp(.9rem,1.4vw,1rem);margin-top:11px}
+#narr5 .cue .kk{margin-bottom:9px}
+.graf svg{width:100%;height:100%}
+.graf-tit{position:absolute;top:clamp(74px,12vh,116px);left:var(--gut);max-width:44ch}
+.graf-tit h4{font-family:var(--f-body);font-weight:400;font-size:clamp(.98rem,1.7vw,1.15rem);margin:0;color:var(--bone)}
+.graf-tit p{margin:5px 0 0;font-family:var(--f-mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--slate)}
+
+/* ---------- Ato VI: o dilema ---------- */
+.duelo{position:absolute;inset:clamp(84px,13vh,120px) var(--gut) clamp(150px,24vh,210px) var(--gut);
+  display:grid;grid-template-columns:1fr 1px 1fr;gap:clamp(20px,4vw,56px)}
+.duelo .col{display:flex;flex-direction:column;justify-content:center;gap:clamp(14px,2.4vh,26px)}
+.duelo .col.dir{text-align:right}
+.duelo h4{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;margin:0 0 4px;color:var(--slate)}
+.duelo .col.esq h4{color:var(--brass)}
+.duelo .col.dir h4{color:var(--eosin)}
+.duelo .it{opacity:0;will-change:opacity,transform;font-family:var(--f-body);font-weight:300;
+  font-size:clamp(.95rem,1.85vw,1.2rem);line-height:1.4;color:#CFC8BA}
+.duelo .it b{display:block;font-family:var(--f-mono);font-size:10.5px;letter-spacing:.16em;color:var(--slate);margin-bottom:3px;font-weight:400}
+.eixo{background:var(--rule);position:relative}
+.eixo i{position:absolute;left:-.5px;top:50%;width:2px;background:var(--brass);height:0;transform:translateY(-50%)}
+.final{position:absolute;inset:0;display:grid;place-items:center;text-align:center;opacity:0;padding:0 var(--gut)}
+.final .janela{position:absolute;inset:0;overflow:hidden;opacity:.34}
+.final .janela svg{width:100%;height:100%;object-fit:cover}
+.final .bloco{position:relative;max-width:26ch}
+.final .bloco .nome{font-family:var(--f-disp);font-weight:400;font-size:clamp(2.2rem,6.4vw,4.6rem);line-height:.98;margin:0;letter-spacing:-.015em}
+.final .bloco .dt{font-family:var(--f-mono);font-size:12px;letter-spacing:.3em;color:var(--brass);margin:18px 0 0}
+.final .bloco .ult{font-family:var(--f-body);font-style:italic;font-size:clamp(1rem,2vw,1.28rem);color:#BEB7A9;margin:28px auto 0;max-width:34ch}
+
+@media (max-width:760px){
+  .duelo{grid-template-columns:1fr;gap:var(--s3)}
+  .duelo .eixo{height:1px;width:100%}
+  .duelo .col.dir{text-align:left}
+  .papel-wrap{inset:clamp(62px,10vh,90px) 0 0 0}
+  .graf{inset:clamp(86px,14vh,120px) var(--gut) clamp(190px,30vh,250px) var(--gut)}
+}
+
 @media (prefers-reduced-motion:reduce){
   *{animation-duration:.001ms !important;animation-iteration-count:1 !important}
   .desca span::after{display:none}
@@ -263,22 +350,138 @@ body{
   </div>
 </section>
 
+
+<section class="ato" id="ato3">
+  <div class="sticky">
+    <div class="papel-wrap">
+      <article class="papel" id="doc3">
+        <h3>Formulário de consentimento informado</h3>
+        <p class="org">The Johns Hopkins Hospital &middot; Baltimore, Maryland &middot; Ala de pacientes de cor</p>
+
+        <dl>
+          <div class="campo"><dt>Paciente</dt><dd>Henrietta Lacks, 31 anos</dd></div>
+          <div class="campo"><dt>Data</dt><dd>8 de fevereiro de 1951</dd></div>
+          <div class="campo"><dt>Procedimento</dt><dd>Biópsia do colo do útero, antes da radioterapia</dd></div>
+          <div class="campo"><dt>Material coletado</dt><dd>Dois fragmentos: um do tumor, um de tecido saudável</dd></div>
+          <div class="campo"><dt>Destino do material</dt><dd class="vazio"><i>campo não preenchido</i></dd></div>
+          <div class="campo"><dt>Prazo de uso</dt><dd class="vazio"><i>campo não preenchido</i></dd></div>
+          <div class="campo"><dt>Direito a remuneração</dt><dd class="vazio"><i>campo não preenchido</i></dd></div>
+        </dl>
+
+        <div class="assin">
+          <div class="campo"><dt>Assinatura</dt><dd class="vazio">&nbsp;</dd></div>
+        </div>
+
+        <div class="carimbo" id="carimbo">Nunca foi pedido</div>
+
+        <hr>
+        <p class="secao">Histórico posterior do material</p>
+
+        <p class="cl"><b>1951</b><span>O cirurgião Lawrence Wharton Jr. corta os fragmentos e os envia ao laboratório de George Gey, no mesmo prédio. Henrietta está anestesiada. <em>Nenhuma lei da época exigia autorização</em> — e nenhuma foi pedida.</span></p>
+        <p class="cl"><b>1953</b><span>Gey distribui a linhagem gratuitamente a qualquer laboratório que escreva pedindo. A partir daí, o controle sobre o destino do material deixa de existir.</span></p>
+        <p class="cl"><b>1954</b><span>A Microbiological Associates começa a <em>vender</em> HeLa em escala industrial. O material passa a ter preço de catálogo.</span></p>
+        <p class="cl"><b>1966</b><span>Stanley Gartler demonstra que dezenas de linhagens celulares tidas como novas eram, na verdade, HeLa contaminando os frascos. Décadas de resultados precisam ser revistos.</span></p>
+        <p class="cl"><b>1973</b><span>Numa conversa de jantar, um parente ouve pela primeira vez que as células de Henrietta estão vivas. <em>Foram vinte e dois anos até a família saber.</em></span></p>
+        <p class="cl"><b>1973–1976</b><span>Pesquisadores coletam sangue dos filhos para estudar os marcadores genéticos de HeLa. A família entende que está sendo testada para saber se também tem câncer. Não estava.</span></p>
+        <p class="cl"><b>1979</b><span>O Relatório Belmont estabelece os três princípios da pesquisa com seres humanos: respeito às pessoas, beneficência e justiça. Vinte e oito anos depois da coleta.</span></p>
+        <p class="cl"><b>1981</b><span>A Common Rule torna o consentimento informado exigência federal nos Estados Unidos. O caso HeLa é um dos que empurram a norma.</span></p>
+        <p class="cl"><b>1990</b><span>No caso Moore contra a Universidade da Califórnia, a Suprema Corte estadual decide que <em>o paciente não é dono do tecido removido do próprio corpo</em>. O precedente vale até hoje.</span></p>
+        <p class="cl"><b>2010</b><span>Rebecca Skloot publica <i>A Vida Imortal de Henrietta Lacks</i>. Pela primeira vez, a mulher por trás da sigla tem nome, rosto e história fora do meio acadêmico.</span></p>
+        <p class="cl"><b>2013</b><span>Um laboratório alemão publica o genoma completo de HeLa na internet, aberto. Ele expõe informação hereditária dos descendentes vivos. Foi retirado do ar em poucos dias.</span></p>
+        <p class="cl"><b>2013</b><span>O NIH fecha acordo com a família: dois membros dos Lacks passam a integrar o comitê que decide quem acessa o genoma. <em>É a primeira vez que alguém lhes pergunta algo.</em></span></p>
+        <p class="cl"><b>2021</b><span>A Organização Mundial da Saúde presta homenagem póstuma a Henrietta Lacks e reconhece a injustiça histórica cometida contra ela.</span></p>
+        <p class="cl"><b>2023</b><span>A família fecha acordo extrajudicial com a Thermo Fisher Scientific, em termos não revelados. É o primeiro processo encerrado — outros seguem em curso.</span></p>
+      </article>
+    </div>
+    <div class="hud">
+      <div class="hud-act"><b>Ato III</b> &nbsp;/&nbsp; As mãos que não assinaram</div>
+      <div class="escala">
+        <div class="k">Registro</div>
+        <div class="v" id="esc3">1951</div>
+        <div class="n" id="nom3">Sem autorização</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="ato" id="ato4">
+  <div class="sticky">
+    <div class="orb" id="orb4"></div>
+    <div class="scrim leve"></div>
+    <div class="hud">
+      <div class="hud-act"><b>Ato IV</b> &nbsp;/&nbsp; O que saiu do frasco</div>
+      <div class="escala">
+        <div class="k">Artigos citando HeLa</div>
+        <div class="v" id="esc4">0</div>
+        <div class="n" id="nom4">1951</div>
+      </div>
+      <div class="narr" id="narr4"></div>
+    </div>
+  </div>
+</section>
+
+<section class="ato" id="ato5">
+  <div class="sticky">
+    <div class="graf-tit">
+      <h4>Artigos científicos citando HeLa, acumulado desde 1951.</h4>
+      <p>Curva reconstruída a partir do total publicado &middot; marcos datados conforme fontes</p>
+    </div>
+    <div class="graf" id="graf5"></div>
+    <div class="hud">
+      <div class="hud-act"><b>Ato V</b> &nbsp;/&nbsp; A conta que ninguém pagou</div>
+      <div class="escala">
+        <div class="k">Pago à família, 1951–2023</div>
+        <div class="v" id="esc5">US$ 0</div>
+        <div class="n" id="nom5">Setenta e dois anos</div>
+      </div>
+      <div class="narr" id="narr5"></div>
+    </div>
+  </div>
+</section>
+
+<section class="ato" id="ato6">
+  <div class="sticky">
+    <div class="duelo" id="duelo6">
+      <div class="col esq" id="col-esq"><h4>O que o mundo ganhou</h4></div>
+      <div class="eixo"><i id="eixo6"></i></div>
+      <div class="col dir" id="col-dir"><h4>O que foi tirado dela</h4></div>
+    </div>
+    <div class="final" id="final6">
+      <div class="janela" id="janela6"></div>
+      <div class="bloco">
+        <p class="nome">Henrietta Lacks</p>
+        <p class="dt">1920 — 1951</p>
+        <p class="ult">Ela entrou naquele hospital como paciente e saiu como matéria-prima. A ciência que veio depois é real, e a dívida também.</p>
+      </div>
+    </div>
+    <div class="hud">
+      <div class="hud-act"><b>Ato VI</b> &nbsp;/&nbsp; O dilema, em aberto</div>
+      <div class="narr" id="narr6"></div>
+    </div>
+  </div>
+</section>
+
 <footer class="fecho">
-  <h2>Isto é um teste de direção.</h2>
-  <p class="sub">Três atos construídos para checar linguagem, ritmo e tipografia antes de fechar a apresentação inteira. Abaixo, o roteiro completo proposto — cada bloco é uma continuação do mesmo movimento de câmera, nunca um slide solto.</p>
+  <h2>Seis atos, um único movimento de câmera.</h2>
+  <p class="sub">Nenhum bloco aqui é um slide solto: cada ato começa de onde o anterior parou. A descida ao infinitamente pequeno volta como alcance global, o alcance global vira um documento em branco, o documento vira a conta, e a conta termina na mesma janela de hospital onde tudo começou.</p>
 
   <div class="roteiro">
-    <article class="card feito"><span class="n">ATO I &middot; PRONTO</span><h3>A descida</h3><p>Do quarto em Baltimore até o telômero. Dez camadas de zoom contínuo, com a escala métrica real na lateral.</p></article>
-    <article class="card feito"><span class="n">ATO II &middot; PRONTO</span><h3>A subida</h3><p>Uma célula abre em frasco, estufa, mundo. O mesmo movimento, invertido: o infinitamente pequeno vira alcance global.</p></article>
-    <article class="card"><span class="n">ATO III</span><h3>As mãos que não assinaram</h3><p>A linha do tempo do consentimento: 1951, 1973, 1979 (Belmont), 1981, 2013, 2023. Um documento que se preenche conforme você rola.</p></article>
-    <article class="card"><span class="n">ATO IV</span><h3>O que HeLa construiu</h3><p>Pólio, fecundação in vitro, mapeamento cromossômico, HPV, covid-19. Cada conquista entra como uma camada sobre a mesma célula.</p></article>
-    <article class="card"><span class="n">ATO V</span><h3>A conta que ninguém pagou</h3><p>Lucro da indústria de linhagens celulares contra a família sem plano de saúde. Gráfico que cresce com o scroll.</p></article>
-    <article class="card"><span class="n">ATO VI</span><h3>O dilema, em aberto</h3><p>Os dois lados postos lado a lado, sem conclusão embrulhada: bem coletivo contra autonomia do corpo.</p></article>
+    <article class="card feito"><span class="n">ATO I</span><h3>A descida</h3><p>Dez camadas de zoom contínuo, da ala do Johns Hopkins ao telômero, com o campo de visão em unidades métricas reais.</p></article>
+    <article class="card feito"><span class="n">ATO II</span><h3>A subida</h3><p>O mesmo movimento invertido: uma célula abre em frasco, estufa e mundo enquanto o contador vai de 1951 a hoje.</p></article>
+    <article class="card feito"><span class="n">ATO III</span><h3>As mãos que não assinaram</h3><p>O formulário de consentimento que nunca existiu, com os campos decisivos em branco, e os setenta e dois anos seguintes registrados abaixo dele.</p></article>
+    <article class="card feito"><span class="n">ATO IV</span><h3>O que saiu do frasco</h3><p>Doze conquistas que voltam por uma linha até a mesma célula do centro. Nenhuma delas existiria sem o que aconteceu em 1951.</p></article>
+    <article class="card feito"><span class="n">ATO V</span><h3>A conta que ninguém pagou</h3><p>A curva de artigos científicos sobe até cerca de 110 mil enquanto a linha do que foi pago à família não sai do zero.</p></article>
+    <article class="card feito"><span class="n">ATO VI</span><h3>O dilema, em aberto</h3><p>As duas colunas frente a frente, sem conclusão embrulhada, e o retorno à janela do primeiro quadro.</p></article>
+  </div>
+
+  <div class="fontes">
+    <b>Como apresentar</b>
+    Role devagar: a animação obedece ao scroll, então dá para parar em qualquer quadro e falar em cima dele. Os pontos de parada naturais são o tubo rotulado HeLa (Ato I), o cromossomo 8 (Ato I), o carimbo do formulário (Ato III) e o cruzamento das duas linhas do gráfico (Ato V). Setas do teclado e Page Down também funcionam.
   </div>
 
   <div class="fontes">
     <b>Verificação</b>
-    Skloot, R. <i>A Vida Imortal de Henrietta Lacks</i> (2010). &middot; Adey, A. et al. <i>The haplotype-resolved genome and epigenome of the aneuploid HeLa cancer cell line</i>, Nature (2013): integração do HPV-18 em 8q24, a montante do MYC. &middot; Landry, J. et al. <i>The genomic and transcriptomic landscape of a HeLa cell line</i>, G3 (2013). &middot; NIH, acordo de acesso ao genoma HeLa com a família Lacks (2013). &middot; OMS, homenagem póstuma a Henrietta Lacks (2021). &middot; Acordo extrajudicial Lacks v. Thermo Fisher Scientific (2023).
+    Skloot, R. <i>A Vida Imortal de Henrietta Lacks</i> (2010). &middot; Adey, A. et al. <i>The haplotype-resolved genome and epigenome of the aneuploid HeLa cancer cell line</i>, Nature (2013): integração do HPV-18 em 8q24, a montante do MYC. &middot; Landry, J. et al. <i>The genomic and transcriptomic landscape of a HeLa cell line</i>, G3 (2013). &middot; Morin, G. <i>The human telomere terminal transferase enzyme is a ribonucleoprotein</i>, Cell (1989): telomerase humana caracterizada em extrato de HeLa. &middot; Gartler, S. (1966), sobre contaminação cruzada de linhagens. &middot; Relatório Belmont (1979) e Common Rule (1981). &middot; Moore v. Regents of the University of California (1990). &middot; NIH, acordo de acesso ao genoma HeLa com a família Lacks (2013). &middot; OMS, homenagem póstuma (2021). &middot; Acordo extrajudicial Lacks v. Thermo Fisher Scientific (2023). &middot; A curva do Ato V é uma reconstrução da forma de crescimento a partir do total acumulado de publicações; os marcos datados e o valor final seguem as fontes acima.
   </div>
 </footer>
 
@@ -330,6 +533,14 @@ function radial(s,id,stops,attrs){
   g.setAttribute("id",id);
   stops.forEach(function(st){g.appendChild(S("stop",{offset:st[0],"stop-color":st[1],"stop-opacity":st[2]==null?1:st[2]}));});
   defs.appendChild(g);return "url(#"+id+")";
+}
+function plate(s,x,y,str,size,fill,anchor,ls){
+  var sp=ls==null?1.2:ls;
+  var w=str.length*(size*0.615+sp)+18, h=size*1.5;
+  var x0=anchor==="end"?x-w+9:anchor==="middle"?x-w/2:x-9;
+  s.appendChild(S("rect",{x:x0.toFixed(1),y:(y-size+1).toFixed(1),width:w.toFixed(1),height:h.toFixed(1),
+    rx:3,fill:"#08080B","fill-opacity":.86}));
+  return txt(s,x,y,str,size,fill,ls==null?1.2:ls,anchor);
 }
 function txt(s,x,y,str,size,fill,ls,anchor,fam){
   var t=S("text",{x:x,y:y,fill:fill,"font-size":size,"font-family":fam||"IBM Plex Mono, monospace",
@@ -834,12 +1045,253 @@ var cue2=buildCues(document.getElementById("narr2"),CUES2);
   });
 })();
 
+
+/* ================= ATO III — o documento ================= */
+var a3=document.getElementById("ato3"), doc3=document.getElementById("doc3");
+var wrap3=doc3.parentNode, cls3=[].slice.call(doc3.querySelectorAll(".cl"));
+var car3=document.getElementById("carimbo");
+var esc3=document.getElementById("esc3"), nom3=document.getElementById("nom3");
+
+function up3(p){
+  var winH=wrap3.clientHeight, ty=-Math.max(0,doc3.offsetHeight-winH+140)*p;
+  doc3.style.transform="translateY("+ty.toFixed(1)+"px)";
+  car3.style.opacity=smooth(0.04,0.13,p).toFixed(3);
+  var ano="1951";
+  for(var i=0;i<cls3.length;i++){
+    var el=cls3[i], top=el.offsetTop+ty;
+    var o=Math.min(smooth(winH*0.95,winH*0.60,top), 1-smooth(-30,-130,top));
+    el.style.opacity=o.toFixed(3);
+    el.style.transform="translateY("+((1-o)*14).toFixed(1)+"px)";
+    if(top<winH*0.72&&top>-100) ano=el.firstChild.textContent;
+  }
+  var y=parseInt(ano,10);
+  esc3.textContent=ano;
+  nom3.textContent = y<1973?"Sem autorização" : y<2013?"A família descobre" : "Primeiros acordos";
+}
+
+/* ================= ATO IV — o que saiu do frasco ================= */
+var NODES4=[
+  {y:"1953",t:"Técnica que torna os cromossomos humanos visíveis ao microscópio"},
+  {y:"1954",t:"Vacina da poliomielite testada em escala industrial"},
+  {y:"1955",t:"Primeiras células humanas clonadas a partir de uma única"},
+  {y:"1960",t:"Primeiras células humanas enviadas ao espaço"},
+  {y:"1965",t:"Primeira célula híbrida humano-animal"},
+  {y:"1966",t:"Descoberta a contaminação que reescreve décadas de resultados"},
+  {y:"1973",t:"Primeiros mapas de genes por hibridação celular"},
+  {y:"1984",t:"HPV-18 isolado em células cervicais: Nobel de 2008"},
+  {y:"1986",t:"Estudos de entrada do HIV na célula humana"},
+  {y:"1989",t:"Telomerase humana identificada em extrato de HeLa"},
+  {y:"2006",t:"Vacina contra o HPV chega ao mercado"},
+  {y:"2020",t:"Ensaios de entrada do SARS-CoV-2 e testes de vacina"}
+];
+var ANG=[-69,-41,-14,14,41,69];
+
+function build4(){
+  var s=S("svg",{viewBox:"0 0 1440 1000",preserveAspectRatio:"xMidYMid meet"});
+  s.setAttribute("aria-hidden","true");
+  var r=rng(613),CX=720,CY=500,RC=132;
+  s.appendChild(S("circle",{cx:CX,cy:CY,r:250,fill:radial(s,"g-o1",[["0%",C.eosDp,.55],["100%",C.eosDp,0]],{id:"g-o1",cx:"50%",cy:"50%",r:"50%"})}));
+
+  var items=NODES4.map(function(n,i){
+    var right=i%2===0, slot=Math.floor(i/2);
+    var y=118+slot*152, DX=right?900:540;
+    var ax=DX-CX, ay=y-CY, L=Math.hypot(ax,ay);
+    var g=S("g",{opacity:0});
+    g.appendChild(S("line",{x1:(CX+ax/L*RC).toFixed(1),y1:(CY+ay/L*RC).toFixed(1),x2:DX,y2:y,
+      stroke:C.eosLt,"stroke-opacity":.38,"stroke-width":1.3}));
+    g.appendChild(S("circle",{cx:DX,cy:y,r:5,fill:C.brass}));
+    g.appendChild(S("circle",{cx:DX,cy:y,r:13,fill:"none",stroke:C.brass,"stroke-opacity":.32,"stroke-width":1.2}));
+    var tx=right?DX+22:DX-22, anc=right?"start":"end";
+    var t=S("text",{x:tx,y:y-14,fill:C.brass,"font-size":20,"font-family":"IBM Plex Mono, monospace",
+      "letter-spacing":2.6,"text-anchor":anc});
+    t.textContent=n.y; g.appendChild(t);
+    var words=n.t.split(" "),line="",lines=[];
+    words.forEach(function(w){
+      if((line+" "+w).trim().length>34){lines.push(line.trim());line=w;} else line+=" "+w;
+    });
+    if(line.trim())lines.push(line.trim());
+    lines.slice(0,2).forEach(function(L2,k){
+      var tt=S("text",{x:tx,y:y+11+k*24,fill:C.boneDim,"font-size":17.5,
+        "font-family":"Newsreader, Georgia, serif","text-anchor":anc});
+      tt.textContent=L2; g.appendChild(tt);
+    });
+    s.appendChild(g);
+    return g;
+  });
+
+  var cel=S("g",{});
+  cel.appendChild(S("path",{d:blob(CX,CY,RC,14,r,.15),fill:C.eos,"fill-opacity":.34,stroke:C.eosLt,"stroke-opacity":.62,"stroke-width":2.6}));
+  cel.appendChild(S("path",{d:blob(CX,CY,54,11,r,.12),fill:C.hema,"fill-opacity":.96,stroke:C.hemaLt,"stroke-opacity":.6,"stroke-width":1.8}));
+  s.appendChild(cel);
+  plate(s,CX,CY+192,"UM FRASCO · BALTIMORE, 1951",15,C.slate,"middle",4);
+  document.getElementById("orb4").appendChild(s);
+  return items;
+}
+var items4=build4();
+var a4=document.getElementById("ato4"), esc4=document.getElementById("esc4"), nom4=document.getElementById("nom4");
+function up4(p){
+  var n=items4.length;
+  for(var i=0;i<n;i++){
+    var a=i/n*0.86, o=smooth(a,a+0.075,p);
+    items4[i].setAttribute("opacity",o.toFixed(3));
+  }
+  esc4.textContent=fmtNum(Math.pow(p,2.4)*110000);
+  nom4.textContent=String(Math.round(lerp(1951,2026,p)));
+}
+
+/* ================= ATO V — a conta ================= */
+var MARCOS=[
+  {y:1973,t:"A família descobre",anc:"start",dx:14,dy:-22},
+  {y:2013,t:"Acordo com o NIH",anc:"end",dx:-16,dy:-22},
+  {y:2023,t:"Acordo Thermo Fisher",anc:"end",dx:-16,dy:44}
+];
+var PLOT={l:84,r:1000-40,t:34,b:520-78};
+function curva(t){return 110000*Math.pow(clamp((t-1951)/75,0,1),2.9);}
+function px(t){return PLOT.l+(t-1951)/75*(PLOT.r-PLOT.l);}
+function py(v){return PLOT.b-v/120000*(PLOT.b-PLOT.t);}
+
+function build5(){
+  var s=S("svg",{viewBox:"0 0 1000 520",preserveAspectRatio:"xMidYMid meet"});
+  s.setAttribute("role","img");
+  s.setAttribute("aria-label","Artigos científicos citando HeLa, acumulado de 1951 a 2026, chegando a cerca de 110 mil; pagamentos à família permanecem em zero durante todo o período.");
+  var defs=S("defs",{}); s.appendChild(defs);
+  var lg=S("linearGradient",{id:"g-area",x1:"0",y1:"0",x2:"0",y2:"1"});
+  lg.appendChild(S("stop",{offset:"0%","stop-color":C.eosLt,"stop-opacity":.42}));
+  lg.appendChild(S("stop",{offset:"100%","stop-color":C.eosLt,"stop-opacity":.02}));
+  defs.appendChild(lg);
+  var cp=S("clipPath",{id:"cp-graf"}); var cr=S("rect",{x:0,y:0,width:0,height:520}); cp.appendChild(cr); defs.appendChild(cp);
+
+  /* grade e eixo y */
+  [0,25000,50000,75000,100000].forEach(function(v){
+    s.appendChild(S("line",{x1:PLOT.l,y1:py(v).toFixed(1),x2:PLOT.r,y2:py(v).toFixed(1),
+      stroke:C.bone,"stroke-opacity":v===0?.26:.07,"stroke-width":1}));
+    var t=S("text",{x:PLOT.l-14,y:(py(v)+5).toFixed(1),fill:C.slate,"font-size":15,
+      "font-family":"IBM Plex Mono, monospace","text-anchor":"end"});
+    t.textContent=v===0?"0":(v/1000)+" mil"; s.appendChild(t);
+  });
+  /* eixo x */
+  [1951,1970,1990,2010,2026].forEach(function(y){
+    var t=S("text",{x:px(y).toFixed(1),y:PLOT.b+52,fill:C.slate,"font-size":15,
+      "font-family":"IBM Plex Mono, monospace","text-anchor":"middle"});
+    t.textContent=String(y); s.appendChild(t);
+  });
+
+  /* área + linha */
+  var pts=[],i;
+  for(i=1951;i<=2026;i++) pts.push([px(i),py(curva(i))]);
+  var line=pts.map(function(q,k){return (k?"L":"M")+q[0].toFixed(1)+","+q[1].toFixed(1);}).join(" ");
+  var area=line+" L"+PLOT.r.toFixed(1)+","+py(0).toFixed(1)+" L"+PLOT.l.toFixed(1)+","+py(0).toFixed(1)+" Z";
+  var gclip=S("g",{"clip-path":"url(#cp-graf)"});
+  gclip.appendChild(S("path",{d:area,fill:"url(#g-area)"}));
+  gclip.appendChild(S("path",{d:line,fill:"none",stroke:C.eosLt,"stroke-width":2.6,"stroke-linejoin":"round","stroke-linecap":"round"}));
+  s.appendChild(gclip);
+
+  /* referência: o que a família recebeu */
+  s.appendChild(S("line",{x1:PLOT.l,y1:py(0),x2:PLOT.r,y2:py(0),stroke:C.boneDim,"stroke-opacity":.75,
+    "stroke-width":2,"stroke-dasharray":"7 6"}));
+  var rl=S("text",{x:PLOT.l+8,y:py(0)+23,fill:C.boneDim,"font-size":16,"font-family":"IBM Plex Mono, monospace","letter-spacing":1.4});
+  rl.textContent="Pago à família: US$ 0"; s.appendChild(rl);
+
+  /* marcos */
+  var marks=MARCOS.map(function(m){
+    var g=S("g",{opacity:0}), x=px(m.y), yv=py(curva(m.y));
+    g.appendChild(S("line",{x1:x.toFixed(1),y1:py(0),x2:x.toFixed(1),y2:yv.toFixed(1),stroke:C.brass,"stroke-opacity":.45,"stroke-width":1.2,"stroke-dasharray":"3 4"}));
+    g.appendChild(S("circle",{cx:x.toFixed(1),cy:yv.toFixed(1),r:5.5,fill:C.brass,stroke:"#0A0714","stroke-width":2}));
+    plate(g,x+m.dx,yv+m.dy,m.y+" · "+m.t,16,C.brass,m.anc);
+    s.appendChild(g); return g;
+  });
+
+  /* rótulo direto no fim da série */
+  var eg=S("g",{opacity:0});
+  plate(eg,PLOT.r,py(curva(2026))-22,"≈ 110 mil artigos",18,C.eosLt,"end",1.4);
+  s.appendChild(eg); var end=eg;
+
+  document.getElementById("graf5").appendChild(s);
+  return {clip:cr,marks:marks,end:end};
+}
+var g5=build5();
+var a5=document.getElementById("ato5");
+var cue5=buildCues(document.getElementById("narr5"),[
+  {a:0.04,b:0.44,k:"A assimetria",t:"Uma linha sobe sem parar. A outra nunca sai do zero.",
+   s:"Células HeLa são vendidas em catálogo desde 1954. A família de Henrietta passou décadas sem plano de saúde enquanto isso acontecia."},
+  {a:0.52,b:1.10,k:"O que ainda está de pé",t:"Nenhum tribunal reconheceu direito de propriedade sobre tecido removido.",
+   s:"O precedente Moore, de 1990, continua valendo nos Estados Unidos. Os acordos que existem foram negociados caso a caso — são exceção, não direito."}
+]);
+function up5(p){
+  var q=clamp(p/0.88,0,1);
+  g5.clip.setAttribute("width",(PLOT.l+q*(PLOT.r-PLOT.l)+2).toFixed(1));
+  MARCOS.forEach(function(m,i){
+    var at=(m.y-1951)/75;
+    g5.marks[i].setAttribute("opacity",smooth(at,at+0.06,q).toFixed(3));
+  });
+  g5.end.setAttribute("opacity",smooth(0.94,1,q).toFixed(3));
+  applyCues(cue5,p);
+}
+
+/* ================= ATO VI — o dilema ================= */
+var GANHOU=[
+  ["1954","A vacina que acabou com a poliomielite pôde ser testada em escala"],
+  ["1965","A genética humana ganhou a ferramenta de fundir células"],
+  ["1989","A telomerase humana foi identificada — e com ela, o relógio do envelhecimento"],
+  ["2008","O Nobel pela ligação entre HPV e câncer, e a vacina que veio dela"],
+  ["2020","Os primeiros ensaios de entrada do coronavírus na célula"],
+  ["Hoje","Praticamente todo laboratório de cultura celular do planeta"]
+];
+var TIRARAM=[
+  ["1951","A escolha sobre o que sai do próprio corpo"],
+  ["1951","O nome, trocado por duas sílabas de catálogo"],
+  ["1973","Vinte e dois anos em que ninguém contou nada à família"],
+  ["1975","Sangue dos filhos coletado sob um mal-entendido que ninguém corrigiu"],
+  ["2013","Informação hereditária dos descendentes publicada em acesso aberto"],
+  ["Sempre","Qualquer parte do valor gerado com o corpo dela"]
+];
+function fill6(id,arr){
+  var box=document.getElementById(id);
+  return arr.map(function(x){
+    var d=document.createElement("div");
+    d.className="it";
+    d.innerHTML="<b>"+x[0]+"</b>"+x[1];
+    box.appendChild(d); return d;
+  });
+}
+var it6e=fill6("col-esq",GANHOU), it6d=fill6("col-dir",TIRARAM);
+var a6=document.getElementById("ato6"), duelo6=document.getElementById("duelo6"),
+    final6=document.getElementById("final6"), eixo6=document.getElementById("eixo6");
+var jan6=artSala(); jan6.setAttribute("preserveAspectRatio","xMidYMid slice");
+document.getElementById("janela6").appendChild(jan6);
+var cue6=buildCues(document.getElementById("narr6"),[
+  {a:0.60,b:0.72,k:"O dilema",t:"As duas colunas são verdadeiras ao mesmo tempo.",
+   s:"Uma não paga a outra. É esse desconforto — e não uma resposta pronta — que o caso HeLa deixou para a bioética."}
+]);
+
+function up6(p){
+  var n=it6e.length,i,o,a;
+  for(i=0;i<n;i++){
+    a=i/n*0.50;
+    o=smooth(a,a+0.08,p)*(1-smooth(0.62,0.74,p));
+    it6e[i].style.opacity=o.toFixed(3);
+    it6e[i].style.transform="translateX("+((1-o)*-16).toFixed(1)+"px)";
+    o=smooth(a+0.035,a+0.115,p)*(1-smooth(0.62,0.74,p));
+    it6d[i].style.opacity=o.toFixed(3);
+    it6d[i].style.transform="translateX("+((1-o)*16).toFixed(1)+"px)";
+  }
+  duelo6.style.opacity=(1-smooth(0.64,0.76,p)).toFixed(3);
+  eixo6.style.height=(smooth(0.02,0.60,p)*100).toFixed(1)+"%";
+  eixo6.style.opacity=(1-smooth(0.64,0.76,p)).toFixed(3);
+  final6.style.opacity=smooth(0.74,0.88,p).toFixed(3);
+  applyCues(cue6,p);
+}
+
 var esc1=document.getElementById("esc1"), nom1=document.getElementById("nom1"), tick1=document.getElementById("tick1");
 var esc2=document.getElementById("esc2"), nom2=document.getElementById("nom2"), tick2=document.getElementById("tick2");
 var rail=document.getElementById("rail");
 var a1=document.getElementById("ato1"), a2=document.getElementById("ato2");
 var MAX1=L1[L1.length-1].d, MAX2=L2[L2.length-1].d;
 
+function vis(sec){
+  var r=sec.getBoundingClientRect();
+  return r.bottom>-200 && r.top<window.innerHeight+200;
+}
 function prog(sec){
   var rect=sec.getBoundingClientRect();
   var scrollable=sec.offsetHeight-window.innerHeight;
@@ -868,6 +1320,11 @@ function render(){
   esc2.textContent=fmtNum(Math.pow(p2,1.7)*50000000);
   nom2.textContent=String(Math.round(lerp(1951,2026,p2)));
   tick2.style.top=(p2*100).toFixed(2)+"%";
+
+  if(vis(a3)) up3(prog(a3));
+  if(vis(a4)) up4(prog(a4));
+  if(vis(a5)) up5(prog(a5));
+  if(vis(a6)) up6(prog(a6));
 
   var doc=document.documentElement;
   var total=doc.scrollHeight-window.innerHeight;
