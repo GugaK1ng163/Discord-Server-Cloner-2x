@@ -4,416 +4,142 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Sensação de Segurança em SP</title>
-<meta name="description" content="Painel interativo com 292 respostas sobre segurança e violência em São Paulo.">
+<meta name="description" content="292 respostas sobre segurança e violência em São Paulo, em cenas visuais.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500;600&family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&display=swap">
 <style>
-/* Layout: linha de metrô noturna. O topo é o mapa da linha (índice); o corpo desce por um trilho âmbar
-   que liga 7 estações, cada uma um capítulo; frases de baldeação conectam um capítulo ao seguinte.
-   Tema único, escuro por escolha: a cidade à noite, sob luz de poste de sódio. */
+/* Layout: palco de tela cheia. 292 pontos (um por pessoa) se reorganizam a cada cena;
+   títulos em tipo condensado de cartaz, números gigantes, quase nenhum texto corrido. Tema único escuro. */
 :root{
-  color-scheme: dark;
-  --bg:#0b0e12; --bg-2:#10151b; --bg-3:#161c24;
-  --line:#222932; --axis:#38414c;
-  --ink:#f1efe8; --ink-2:#b5bcc5; --muted:#7e8893;
-  --amber:#f5a524; --amber-2:#ffc970; --glow:rgba(245,165,36,.16);
-  --s0:#5a9cea; --s1:#2f64a6; --s2:#4b515a; --s3:#a8453e; --s4:#ef6b5f;
+  color-scheme:dark;
+  --bg:#07080b; --bg-2:#0f1217; --bg-3:#171b22; --line:#232830; --line-2:#343a44;
+  --ink:#f4f2ec; --ink-2:#a8aeb7; --muted:#6b727c;
+  --s0:#6aa8f0; --s1:#3a70bd; --s2:#6a7079; --s3:#c24f47; --s4:#ff6b5e;
   --c0:#e45aa6; --c1:#d9722b; --c2:#8f78ea; --c3:#139c7e; --c4:#b48800;
-  --pol:#9fb3c8;
-  --f-display:"Archivo","Arial Narrow",system-ui,sans-serif;
-  --f-body:"Public Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
-  --f-mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
-  --rail:6px;
+  --pol:#9fb3c8; --prev:#f5a524;
+  --f:"Archivo","Arial Narrow","Helvetica Neue",Arial,sans-serif;
+  --pad:clamp(16px,3.6vw,56px);
 }
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
-body{background:var(--bg);color:var(--ink);font:400 16px/1.6 var(--f-body);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
-a{color:inherit}
-.wrap{max-width:1200px;margin:0 auto;padding-inline:clamp(16px,4vw,44px)}
-h1,h2,h3{margin:0;text-wrap:balance}
-p{margin:0}
-.mono{font-family:var(--f-mono)}
-.tag{font:500 .72rem/1.3 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
-strong.hl{color:var(--amber-2);font-weight:700}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:500 15px/1.4 var(--f);overflow:hidden;-webkit-font-smoothing:antialiased;-webkit-user-select:none;user-select:none}
+button{font:inherit;color:inherit}
 
-/* ---------- HERO ---------- */
-.hero{position:relative;overflow:hidden;padding-block:clamp(24px,4vw,48px) 0}
-.hero::before{content:"";position:absolute;right:-12%;top:-30%;width:min(1000px,90vw);aspect-ratio:1;max-width:100%;
-  background:radial-gradient(closest-side,var(--glow),rgba(245,165,36,.05) 55%,transparent 72%);pointer-events:none}
-.topline{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 24px;border-bottom:1px solid var(--line);padding-bottom:12px}
-.topline .tag b{color:var(--amber);font-weight:600}
-.hero-grid{position:relative;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:clamp(16px,3vw,40px);align-items:center;padding-block:clamp(20px,3vw,36px) 8px}
-.hero-copy{min-width:0}
-.big{font-family:var(--f-display);font-stretch:125%;font-weight:900;line-height:.82;letter-spacing:-.045em;
-  font-size:clamp(5.5rem,15vw,11.5rem);color:var(--ink);display:flex;align-items:flex-start;gap:.04em}
-.big sup{font-size:.38em;line-height:1;margin-top:.12em;color:var(--amber);letter-spacing:0}
-h1{font-family:var(--f-display);font-stretch:112%;font-weight:750;font-size:clamp(1.55rem,3vw,2.35rem);line-height:1.08;letter-spacing:-.015em;margin-top:14px;max-width:18ch}
-.lede{margin-top:16px;color:var(--ink-2);font-size:1.05rem;max-width:52ch}
-.city-fig{min-width:0;position:relative}
-#city{width:100%;height:clamp(340px,46vw,540px)}
-.city-cap{display:flex;flex-wrap:wrap;gap:6px 16px;align-items:center;font-size:.8rem;color:var(--ink-2)}
-.city-cap .tag{margin-right:auto}
-.sw{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px}
-.fallback{display:grid;place-items:center;height:100%;padding:24px;text-align:center;color:var(--muted);border:1px dashed var(--axis);border-radius:6px}
+.stage{position:relative;width:100%;height:100%;overflow:hidden;background:radial-gradient(110% 85% at 50% 48%,#0e1117 0%,#0a0c10 45%,var(--bg) 80%)}
+.stage::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:6;opacity:.07;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+#dots{position:absolute;inset:0;width:100%;height:100%;z-index:1;touch-action:none}
 
-/* ---------- MAPA DA LINHA (índice) ---------- */
-.map{margin-top:clamp(18px,3vw,28px);border-top:1px solid var(--line);padding-block:18px 26px}
-.map-head{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}
-.map ol{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));position:relative}
-.map ol::before{content:"";position:absolute;left:7px;right:7px;top:7px;height:var(--rail);background:var(--amber);border-radius:3px}
-.map li{min-width:0}
-.map a{display:grid;gap:2px;text-decoration:none;padding:0 10px 4px 0;border-radius:4px}
-.map a:focus-visible{outline:2px solid var(--amber);outline-offset:4px}
-.map .dot{width:20px;height:20px;border-radius:50%;background:var(--ink);border:5px solid var(--bg);box-shadow:0 0 0 2px var(--amber);position:relative;z-index:1;margin-bottom:10px}
-.map a:hover .dot{background:var(--amber-2)}
-.map .no{font:600 .7rem/1 var(--f-mono);letter-spacing:.12em;color:var(--muted)}
-.map .v{font:850 clamp(1.5rem,2.4vw,2.05rem)/1.05 var(--f-display);font-stretch:118%;letter-spacing:-.02em;color:var(--ink);display:inline-block;transform-origin:50% 60%}
-.map .nm{font-weight:600;font-size:.92rem;line-height:1.25}
-.map small{color:var(--muted);font-size:.78rem;line-height:1.3}
-.flip{animation:flip .45s cubic-bezier(.2,.8,.2,1)}
-@keyframes flip{0%{transform:perspective(300px) rotateX(-88deg);opacity:.15}100%{transform:none;opacity:1}}
-@media (prefers-reduced-motion:reduce){.flip{animation:none}}
+.head{position:absolute;left:0;right:0;top:0;z-index:4;padding:var(--pad) var(--pad) 0;display:flex;justify-content:space-between;align-items:flex-start;gap:12px 28px;pointer-events:none}
+.head-l{min-width:0}
+.title{margin:0;font-family:var(--f);font-weight:900;font-stretch:62%;text-transform:uppercase;line-height:.84;letter-spacing:-.005em;font-size:clamp(2.3rem,6.4vw,6.4rem)}
+.title .ln{display:block;overflow:hidden;padding:.13em 0 .05em;margin:-.13em 0 -.05em}
+.title .ln>span{display:block;animation:rise .75s cubic-bezier(.2,.85,.2,1) both}
+.title .ln:nth-child(2)>span{animation-delay:.07s}
+@keyframes rise{from{transform:translateY(108%)}to{transform:none}}
+.sub{margin:12px 0 0;color:var(--ink-2);font-size:clamp(.85rem,1.1vw,1rem);font-weight:450;max-width:46ch;animation:fade .8s .2s both}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.stat{text-align:right;flex:none;animation:fade .9s .25s both}
+.stat b{display:block;font-weight:900;font-stretch:62%;line-height:.78;font-size:clamp(3.4rem,10vw,9.5rem);letter-spacing:-.01em}
+.stat span{display:block;margin:10px 0 0 auto;color:var(--ink-2);font-size:clamp(.82rem,1.05vw,.98rem);max-width:17ch;text-wrap:balance}
+.toggles{pointer-events:auto;display:flex;flex-wrap:wrap;gap:6px;margin-top:16px;animation:fade .8s .3s both}
+.toggles button{padding:8px 13px;border-radius:999px;border:1px solid var(--line-2);background:rgba(15,18,23,.8);color:var(--ink-2);cursor:pointer;font-weight:550;font-size:.84rem}
+.toggles button:hover{color:var(--ink);border-color:var(--ink-2)}
+.toggles button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
 
-/* ---------- FILTROS ---------- */
-.filters{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:var(--bg);background:color-mix(in oklab,var(--bg) 90%,transparent);
-  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-block:1px solid var(--line)}
-.filters .wrap{display:flex;flex-wrap:wrap;align-items:center;gap:8px 20px;padding-block:10px}
-.fgroup{display:flex;align-items:center;gap:8px;min-width:0;max-width:100%}
-.fgroup > .tag{flex:none}
-.chips{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;min-width:0}
-.chips::-webkit-scrollbar{display:none}
-.chip{font:500 .8rem/1 var(--f-body);padding:8px 11px;border-radius:3px;border:1px solid var(--line);background:var(--bg-2);color:var(--ink-2);cursor:pointer;white-space:nowrap}
-.chip:hover{border-color:var(--axis);color:var(--ink)}
-.chip[aria-pressed="true"]{background:var(--amber);border-color:var(--amber);color:#16110a;font-weight:600}
-.chip:focus-visible,.tab:focus-visible{outline:2px solid var(--amber-2);outline-offset:2px}
-.nout{margin-left:auto;font:500 .8rem/1.2 var(--f-mono);color:var(--ink-2);white-space:nowrap}
-.nout b{color:var(--ink)}
-.warn{display:inline-block;margin-left:8px;padding:2px 6px;border:1px solid var(--s4);color:var(--s4);border-radius:3px;font-size:.7rem;letter-spacing:.06em;text-transform:uppercase}
-.fnote{flex-basis:100%;font-size:.74rem;color:var(--muted);margin-top:-2px}
+.intro{position:absolute;inset:0;z-index:4;display:grid;place-items:center;text-align:center;pointer-events:none;padding:var(--pad) var(--pad) 90px}
+.intro .n{font-weight:900;font-stretch:62%;line-height:.76;font-size:clamp(9rem,36vh,26rem);letter-spacing:-.02em;animation:fade 1.2s both;text-shadow:0 0 70px rgba(7,8,11,.95)}
+.intro p{margin:16px auto 0;font-weight:850;font-stretch:62%;text-transform:uppercase;font-size:clamp(1.4rem,3.4vw,2.8rem);line-height:.95;max-width:17ch;animation:fade 1.2s .2s both;text-shadow:0 0 30px rgba(7,8,11,.95)}
+.intro small{display:block;margin-top:22px;color:var(--ink-2);font-size:.9rem;font-weight:450;animation:fade 1.2s .6s both}
+.intro kbd{font:inherit;border:1px solid var(--line-2);border-radius:4px;padding:1px 6px;margin:0 2px}
 
-/* ---------- TRILHO + ESTAÇÕES ---------- */
-.rail{position:relative;padding-left:72px;padding-block:18px 8px}
-.rail::before{content:"";position:absolute;left:24px;top:0;bottom:0;width:var(--rail);background:var(--amber);border-radius:3px}
-.station{position:relative;padding-block:34px 18px;scroll-margin-top:90px}
-.st-dot{position:absolute;left:-60px;top:36px;width:30px;height:30px;border-radius:50%;background:var(--ink);border:7px solid var(--bg);box-shadow:0 0 0 3px var(--amber)}
-.st-no{font:600 .74rem/1 var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--amber)}
-.st-no span{color:var(--muted)}
-h2{font-family:var(--f-display);font-stretch:118%;font-weight:820;font-size:clamp(1.75rem,3.8vw,2.9rem);line-height:1.02;letter-spacing:-.022em;margin-top:10px;max-width:22ch}
-.st-lede{margin-top:14px;color:var(--ink-2);max-width:66ch;font-size:1.02rem}
-.q{margin-top:14px;display:inline-block;font-size:.84rem;color:var(--ink-2);border:1px solid var(--line);background:var(--bg-2);padding:6px 10px;border-radius:3px}
-.q .tag{margin-right:8px;color:var(--amber)}
+.glabels{position:absolute;inset:0;z-index:3;pointer-events:none}
+.gl{position:absolute;transform:translateX(-50%);text-align:center;white-space:nowrap;animation:fade .8s .35s both}
+.gl b{display:block;font-weight:900;font-stretch:62%;line-height:.86;font-size:var(--fs,40px);letter-spacing:-.01em}
+.gl span{display:block;margin-top:5px;color:var(--ink-2);font-size:clamp(.72rem,.95vw,.86rem);font-weight:550}
+.gl.hot b{color:var(--hot)}
 
-.figs{display:grid;gap:clamp(18px,3vw,34px);margin-top:26px}
-.figs.two{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
-.figs.lr{grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr)}
-.figs.rl{grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr)}
-@media (max-width:900px){.figs.two,.figs.lr,.figs.rl{grid-template-columns:minmax(0,1fr)}}
-figure{margin:0;min-width:0;border-top:1px solid var(--line);padding-top:12px}
-figcaption{display:grid;gap:3px;margin-bottom:6px}
-figcaption h3{font:650 1.02rem/1.3 var(--f-body)}
-figcaption p{font-size:.84rem;color:var(--muted)}
-.chart{width:100%;height:340px}
-.insight{margin-top:10px;font-size:.95rem;color:var(--ink-2);max-width:62ch}
-.insight b{color:var(--ink)}
+.chartbox{position:absolute;left:0;right:0;z-index:2;opacity:0;visibility:hidden;transition:opacity .7s,visibility 0s .7s}
+.chartbox.on{opacity:1;visibility:visible;transition:opacity .7s}
 
-.tabs{display:flex;flex-wrap:wrap;gap:4px;margin:4px 0 10px}
-.tab{font:500 .82rem/1 var(--f-body);padding:9px 12px;background:transparent;border:1px solid var(--line);color:var(--ink-2);border-radius:3px;cursor:pointer}
-.tab:hover{color:var(--ink);border-color:var(--axis)}
-.tab[aria-pressed="true"]{color:var(--ink);border-color:var(--ink);background:var(--bg-3)}
-.poles{display:flex;justify-content:space-between;font:500 .72rem/1 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding-inline:4px}
-.poles .l{color:var(--s0)} .poles .r{color:var(--s4)}
+.legend{position:absolute;left:var(--pad);bottom:78px;z-index:4;display:flex;flex-wrap:wrap;gap:6px 16px;font-size:.8rem;color:var(--ink-2);max-width:calc(100% - 2*var(--pad));pointer-events:none;animation:fade .8s both}
+.legend i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px}
+.legend .note{color:var(--muted)}
 
-/* cabo de guerra */
-.tug{margin:6px 0 4px}
-.tug-bar{position:relative;display:flex;height:34px;gap:3px}
-.tug-bar span{display:block;border-radius:3px;transition:flex-grow .6s cubic-bezier(.2,.8,.2,1)}
-.tug-a{background:var(--pol)} .tug-b{background:var(--amber)}
-.tug-bar::after{content:"";position:absolute;left:50%;top:-6px;bottom:-6px;width:2px;background:var(--ink);transform:translateX(-1px)}
-.tug-lab{display:flex;justify-content:space-between;gap:12px;margin-top:10px;font-size:.88rem;color:var(--ink-2)}
-.tug-lab b{font:850 1.6rem/1 var(--f-display);font-stretch:115%;color:var(--ink);display:block}
-.tug-lab div:last-child{text-align:right}
+.finale{position:absolute;left:var(--pad);right:var(--pad);bottom:84px;z-index:4;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;pointer-events:none}
+.finale div{animation:fade .8s both}
+.finale div:nth-child(2){animation-delay:.12s}.finale div:nth-child(3){animation-delay:.24s}.finale div:nth-child(4){animation-delay:.36s}
+.finale b{text-shadow:0 0 28px rgba(7,8,11,.9);display:block;font-weight:900;font-stretch:62%;line-height:.82;font-size:clamp(2.4rem,5.4vw,5rem)}
+.finale span{display:block;margin-top:6px;color:var(--ink-2);font-size:.85rem;max-width:20ch}
+.foot{position:absolute;right:var(--pad);top:calc(var(--pad) + 4px);z-index:4;margin:0;color:var(--muted);font-size:.74rem;max-width:30ch;text-align:right;animation:fade 1s .5s both}
 
-.hint{font:500 .72rem/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.nav{position:absolute;left:0;right:0;bottom:0;z-index:5;display:flex;align-items:center;gap:14px;padding:14px var(--pad) calc(16px + env(safe-area-inset-bottom,0px))}
+.count{font-weight:850;font-stretch:62%;font-size:1.25rem;line-height:1;color:var(--muted);min-width:4.2ch;font-variant-numeric:tabular-nums}
+.count b{color:var(--ink)}
+.track{flex:1;display:flex;gap:5px;min-width:0}
+.track button{flex:1;min-width:0;height:26px;border:0;background:none;padding:0;cursor:pointer;position:relative}
+.track button::before{content:"";position:absolute;left:0;right:0;top:11px;height:4px;border-radius:2px;background:var(--line);transition:background .4s}
+.track button.done::before{background:var(--line-2)}
+.track button[aria-current="step"]::before{background:var(--ink)}
+.track button:hover::before{background:var(--ink-2)}
+.track button span{position:absolute;left:0;bottom:24px;font-size:.72rem;color:var(--ink-2);white-space:nowrap;opacity:0;transition:opacity .2s;pointer-events:none}
+.track button:hover span,.track button:focus-visible span{opacity:1}
+.arrow,.pill{height:42px;border-radius:999px;border:1px solid var(--line-2);background:rgba(15,18,23,.85);cursor:pointer;display:grid;place-items:center;flex:none}
+.arrow{width:42px}
+.arrow:hover,.pill:hover{border-color:var(--ink-2)}
+.arrow:disabled{opacity:.3;cursor:default}
+.arrow svg{width:18px;height:18px}
+.pill{padding:0 14px;font-size:.8rem;font-weight:600;color:var(--ink-2)}
+button:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 
-/* baldeação */
-.transfer{position:relative;display:flex;gap:14px;align-items:flex-start;padding-block:14px;max-width:70ch}
-.transfer::before{content:"";position:absolute;left:-55px;top:18px;width:20px;height:20px;background:var(--bg);border:3px solid var(--amber);transform:rotate(45deg)}
-.transfer .tag{flex:none;color:var(--amber);padding-top:4px}
-.transfer p{font-style:italic;color:var(--ink);font-size:1.05rem;line-height:1.5}
+.tip{position:fixed;left:0;top:0;z-index:20;pointer-events:none;background:rgba(18,21,27,.96);border:1px solid var(--line-2);border-radius:8px;padding:10px 12px;font-size:.8rem;line-height:1.5;min-width:200px;box-shadow:0 16px 40px rgba(0,0,0,.5);opacity:0;transition:opacity .12s}
+.tip.on{opacity:1}
 
-/* tabelas */
-details.data{margin-top:12px}
-details.data summary{cursor:pointer;width:max-content;max-width:100%;font:500 .74rem/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);padding:8px 0}
-details.data summary:hover{color:var(--amber-2)}
-details.data summary:focus-visible{outline:2px solid var(--amber-2);outline-offset:2px}
-.tbl{overflow-x:auto;margin-top:6px}
-table{border-collapse:collapse;width:100%;font-size:.84rem;font-variant-numeric:tabular-nums}
-th,td{padding:7px 10px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
-th{font:500 .7rem/1.2 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
-th:first-child,td:first-child{text-align:left}
-td:first-child{color:var(--ink)}
+.data{position:absolute;right:var(--pad);bottom:76px;z-index:7;width:min(560px,calc(100% - 2*var(--pad)));max-height:min(60vh,520px);overflow:auto;background:rgba(14,17,22,.97);border:1px solid var(--line-2);border-radius:10px;padding:14px 16px 16px;box-shadow:0 20px 50px rgba(0,0,0,.55);-webkit-user-select:text;user-select:text}
+.data h3{margin:0 0 8px;font-weight:850;font-stretch:70%;font-size:1.05rem;text-transform:uppercase}
+.data table{border-collapse:collapse;width:100%;font-size:.82rem;font-variant-numeric:tabular-nums}
+.data th,.data td{padding:6px 8px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+.data th{color:var(--muted);font-weight:600}
+.data th:first-child,.data td:first-child{text-align:left}
+.data td:first-child{color:var(--ink)}
+.data .x{float:right;background:none;border:0;color:var(--ink-2);cursor:pointer;font-size:1.3rem;line-height:1;padding:0 2px}
+.fallback{display:grid;place-items:center;height:100%;padding:24px;text-align:center;color:var(--muted)}
 
-/* terminal */
-.terminal{position:relative;padding-block:34px 10px}
-.terminal .st-dot{width:40px;height:40px;left:-65px;background:var(--amber);border-width:9px}
-.facts{list-style:none;margin:26px 0 0;padding:0;border-top:1px solid var(--line)}
-.facts li{display:grid;grid-template-columns:minmax(0,15rem) minmax(0,1fr);gap:8px 28px;padding-block:18px;border-bottom:1px solid var(--line);align-items:baseline}
-.facts .n{font:880 clamp(2rem,4.2vw,3.1rem)/1 var(--f-display);font-stretch:120%;letter-spacing:-.03em}
-.facts p{color:var(--ink-2);max-width:62ch}
-.facts p b{color:var(--ink)}
-@media (max-width:640px){.facts li{grid-template-columns:minmax(0,1fr)}}
-
-footer{border-top:1px solid var(--line);margin-top:30px;padding-block:22px 40px;color:var(--muted);font-size:.84rem}
-footer .wrap{display:grid;gap:8px}
-footer p{max-width:90ch}
-
-/* ---------- RESPONSIVO ---------- */
-@media (max-width:980px){
-  .hero-grid{grid-template-columns:minmax(0,1fr)}
-  .map ol{grid-template-columns:minmax(0,1fr);gap:14px;padding-left:34px}
-  .map ol::before{left:7px;right:auto;top:6px;bottom:6px;width:var(--rail);height:auto}
-  .map a{grid-template-columns:6.6rem minmax(0,1fr);column-gap:12px;align-items:baseline}
-  .map .dot{position:absolute;left:0;margin:0}
-  .map li{position:relative}
-  .map a{padding-left:0}
-  .map .no{grid-column:1}
-  .map .v{grid-column:1;grid-row:2 / span 2}
-  .map .nm{grid-column:2;grid-row:1 / span 2;align-self:end}
-  .map small{grid-column:2}
+@media (max-width:760px){
+  .head{flex-direction:column}
+  .stat{text-align:left}
+  .stat span{margin-left:0;max-width:26ch}
+  .stat b{font-size:clamp(2.8rem,14vw,4.6rem)}
+  .finale{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+  .foot,.pill{display:none}
+  .legend{bottom:72px;font-size:.74rem;gap:4px 12px}
+  .toggles{margin-top:12px}
+  .toggles button{padding:7px 10px;font-size:.78rem}
 }
-@media (max-width:980px){ .map li .dot{left:-34px;top:2px} }
-@media (max-width:700px){
-  .rail{padding-left:36px}
-  .rail::before{left:9px;width:4px}
-  .st-dot{left:-36px;width:22px;height:22px;border-width:5px;box-shadow:0 0 0 2px var(--amber)}
-  .transfer::before{left:-34px;width:14px;height:14px;border-width:2px}
-  .terminal .st-dot{left:-40px;width:30px;height:30px;border-width:7px}
-  .nout{margin-left:0}
-  .chart{height:300px}
-}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-delay:0s!important;transition-duration:.01ms!important}}
 </style>
 </head>
 <body>
 
 
-<header class="hero">
-  <div class="wrap">
-    <div class="topline">
-      <span class="tag"><b>Pesquisa 3MMD071</b> · Segurança e violência em São Paulo</span>
-      <span class="tag">292 respostas · 17 a 22 set. 2026</span>
-    </div>
-    <div class="hero-grid">
-      <div class="hero-copy">
-        <div class="big" aria-label="47 por cento"><span id="hBig">47</span><sup>%</sup></div>
-        <h1>raramente ou nunca se sentem seguros andando por São Paulo.</h1>
-        <p class="lede">Perguntamos a <b id="hN">292</b> pessoas como se sentem na cidade, que crime mais temem e o que mudariam. Este painel segue esse medo por sete estações. Cada uma responde à pergunta que a anterior deixou.</p>
-      </div>
-      <figure class="city-fig" style="border:0;padding:0">
-        <div id="city" role="img" aria-label="Cidade 3D com 292 prédios, um por respondente. A altura e a cor indicam com que frequência a pessoa se sente segura."></div>
-        <figcaption class="city-cap" style="display:flex">
-          <span class="tag">Uma cidade de 292 prédios · altura = medo · arraste para girar</span>
-          <span><i class="sw" style="background:var(--s0)"></i>Sempre</span>
-          <span><i class="sw" style="background:var(--s1)"></i>Frequente</span>
-          <span><i class="sw" style="background:var(--s2)"></i>Às vezes</span>
-          <span><i class="sw" style="background:var(--s3)"></i>Raramente</span>
-          <span><i class="sw" style="background:var(--s4)"></i>Nunca</span>
-        </figcaption>
-      </figure>
-    </div>
-
-    <nav class="map" aria-label="Mapa da linha: estações do painel">
-      <div class="map-head">
-        <span class="tag">Mapa da linha · sentido Terminal</span>
-        <span class="tag">Os números seguem o filtro abaixo</span>
-      </div>
-      <ol>
-        <li><a href="#e1"><i class="dot"></i><span class="no">01</span><b class="v" data-k="k1">18%</b><span class="nm">A sensação</span><small>sentem-se seguros com frequência</small></a></li>
-        <li><a href="#e2"><i class="dot"></i><span class="no">02</span><b class="v" data-k="k2">58%</b><span class="nm">O rosto do medo</span><small>das mulheres raramente ou nunca</small></a></li>
-        <li><a href="#e3"><i class="dot"></i><span class="no">03</span><b class="v" data-k="k3">38%</b><span class="nm">O que tira o sono</span><small>temem mais a agressão contra mulheres</small></a></li>
-        <li><a href="#e4"><i class="dot"></i><span class="no">04</span><b class="v" data-k="k4">101×98</b><span class="nm">O que fazer</span><small>policiamento contra prevenção</small></a></li>
-        <li><a href="#e5"><i class="dot"></i><span class="no">05</span><b class="v" data-k="k5">46</b><span class="nm">Medo × solução</span><small>pessoas na maior torre 3D</small></a></li>
-        <li><a href="#e6"><i class="dot"></i><span class="no">06</span><b class="v" data-k="k6">292</b><span class="nm">O percurso inteiro</span><small>caminhos do sentimento à solução</small></a></li>
-        <li><a href="#e7"><i class="dot"></i><span class="no">07</span><b class="v" data-k="k7">67%</b><span class="nm">A cidade ao redor</span><small>inseguros onde a zeladoria falha sempre</small></a></li>
-      </ol>
-    </nav>
-  </div>
-</header>
-
-<div class="filters" role="region" aria-label="Filtrar respondentes">
-  <div class="wrap">
-    <div class="fgroup"><span class="tag">Gênero</span><div class="chips" id="fG" role="group" aria-label="Filtrar por gênero"></div></div>
-    <div class="fgroup"><span class="tag">Idade</span><div class="chips" id="fA" role="group" aria-label="Filtrar por faixa etária"></div></div>
-    <output class="nout" id="nOut" aria-live="polite"><b>292</b> de 292 respondentes</output>
-  </div>
+<div class="stage" id="stage">
+  <canvas id="dots" aria-hidden="true"></canvas>
+  <div class="chartbox" id="bars3d" role="img" aria-label="Barras 3D: crime que mais preocupa por medida defendida"></div>
+  <div class="chartbox" id="sankey" role="img" aria-label="Fluxo: sensação de segurança, crime temido e medida defendida"></div>
+  <div class="chartbox" id="city" role="img" aria-label="Cidade 3D com 292 prédios, um por respondente; a altura indica o medo"></div>
+  <div class="glabels" id="glabels"></div>
+  <div id="overlay"></div>
+  <nav class="nav" aria-label="Cenas">
+    <span class="count" id="count"><b>01</b>/10</span>
+    <button class="arrow" id="prev" type="button" aria-label="Cena anterior"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+    <div class="track" id="track"></div>
+    <button class="arrow" id="next" type="button" aria-label="Próxima cena"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
+    <button class="pill" id="dataBtn" type="button" aria-expanded="false">Números</button>
+  </nav>
+  <div class="data" id="data" hidden></div>
+  <div class="tip" id="tip" role="status"></div>
 </div>
-
-<main class="wrap">
-  <div class="rail">
-
-    <!-- ESTAÇÃO 1 -->
-    <section class="station" id="e1">
-      <i class="st-dot" aria-hidden="true"></i>
-      <p class="st-no">Estação 01 <span>· Pergunta 1</span></p>
-      <h2>A sensação: a cidade mora entre o “às vezes” e o “raramente”</h2>
-      <p class="st-lede">Só <strong class="hl">16 pessoas</strong> (5%) dizem se sentir sempre seguras. A resposta mais comum é “às vezes” (35%), mas o lado do medo pesa mais: <strong class="hl">47%</strong> ficam em “raramente” ou “nunca”, contra 18% em “frequentemente” ou “sempre”.</p>
-      <p class="q"><span class="tag">P1</span>Com que frequência você se sente seguro(a) ao circular pela cidade de São Paulo?</p>
-      <div class="figs lr">
-        <figure>
-          <figcaption><span class="tag">Fig. 1.1</span><h3>Índice de segurança</h3><p>Média das respostas: nunca = 0, raramente = 1, às vezes = 2, frequentemente = 3, sempre = 4.</p></figcaption>
-          <div class="chart" id="gauge" style="height:300px"></div>
-        </figure>
-        <figure>
-          <figcaption><span class="tag">Fig. 1.2</span><h3>Distribuição das respostas</h3><p>Percentual de respondentes em cada frequência.</p></figcaption>
-          <div class="chart" id="dist" style="height:300px"></div>
-        </figure>
-      </div>
-      <p class="insight" id="s1Insight"></p>
-      <details class="data"><summary>Ver dados em tabela</summary><div class="tbl" id="t1"></div></details>
-    </section>
-
-    <div class="transfer"><span class="tag">Baldeação</span><p>Se a média é “raramente, às vezes”, quem puxa esse número para baixo?</p></div>
-
-    <!-- ESTAÇÃO 2 -->
-    <section class="station" id="e2">
-      <i class="st-dot" aria-hidden="true"></i>
-      <p class="st-no">Estação 02 <span>· P1 × perfil</span></p>
-      <h2>O rosto do medo é feminino e tem mais de 45 anos</h2>
-      <p class="st-lede"><strong class="hl">58%</strong> das mulheres raramente ou nunca se sentem seguras. Entre os homens, 33%. São 25 pontos de distância. Entre pessoas não binárias (15 respostas) a taxa chega a 67%. Por idade, quem tem 45 anos ou mais é o grupo mais inseguro (62%).</p>
-      <figure>
-        <figcaption><span class="tag">Fig. 2.1</span><h3>Sensação de segurança por perfil</h3><p>Barras divergentes: à esquerda do eixo, quem se sente seguro; à direita, quem não se sente. “Às vezes” fica dividido ao meio.</p></figcaption>
-        <div class="tabs" id="dimTabs" role="group" aria-label="Comparar por"></div>
-        <div class="poles" aria-hidden="true"><span class="l">← seguro(a)</span><span class="r">inseguro(a) →</span></div>
-        <div class="chart" id="likert"></div>
-      </figure>
-      <p class="insight" id="s2Insight"></p>
-      <details class="data"><summary>Ver dados em tabela</summary><div class="tbl" id="t2"></div></details>
-    </section>
-
-    <div class="transfer"><span class="tag">Baldeação</span><p>As mulheres são as que menos se sentem seguras. O crime que mais preocupa a amostra explica por quê.</p></div>
-
-    <!-- ESTAÇÃO 3 -->
-    <section class="station" id="e3">
-      <i class="st-dot" aria-hidden="true"></i>
-      <p class="st-no">Estação 03 <span>· Pergunta 3</span></p>
-      <h2>O que tira o sono: agressão contra mulheres lidera</h2>
-      <p class="st-lede"><strong class="hl">111 pessoas</strong> (38%) apontam a agressão contra mulheres como o crime que mais preocupa, à frente de roubo (26%) e homicídio (20%). Entre as mulheres são 52%. Entre os homens, 23%, em terceiro lugar, atrás de roubo (33%) e homicídio (24%).</p>
-      <p class="q"><span class="tag">P3</span>Qual destes tipos de crime mais preocupa você atualmente?</p>
-      <div class="figs two">
-        <figure>
-          <figcaption><span class="tag">Fig. 3.1</span><h3>Crime que mais preocupa</h3><p>Rosa de Nightingale: o raio de cada pétala é proporcional ao número de respostas.</p></figcaption>
-          <div class="chart" id="rose" style="height:380px"></div>
-        </figure>
-        <figure>
-          <figcaption><span class="tag">Fig. 3.2</span><h3>Mulheres × homens</h3><p>Percentual dentro de cada gênero. Não binários (15 respostas) estão na tabela.</p></figcaption>
-          <div class="chart" id="butterfly" style="height:380px"></div>
-        </figure>
-      </div>
-      <details class="data"><summary>Ver dados em tabela</summary><div class="tbl" id="t3"></div></details>
-    </section>
-
-    <div class="transfer"><span class="tag">Baldeação</span><p>Se o medo tem nome, qual é o remédio? Aqui a amostra se divide quase ao meio.</p></div>
-
-    <!-- ESTAÇÃO 4 -->
-    <section class="station" id="e4">
-      <i class="st-dot" aria-hidden="true"></i>
-      <p class="st-no">Estação 04 <span>· Pergunta 2</span></p>
-      <h2>O que fazer: mais polícia ou mais prevenção? Empate técnico</h2>
-      <p class="st-lede">Aumentar o policiamento tem <strong class="hl">101 votos</strong>; investir em prevenção da violência, <strong class="hl">98</strong>. Juntas, somam 68% das respostas. O desempate está em quem vota: quem <b>nunca</b> se sente seguro pede polícia (49%), enquanto quem se sente seguro “às vezes” prefere prevenção (40%).</p>
-      <p class="q"><span class="tag">P2</span>Na sua opinião, qual medida poderia contribuir mais para aumentar a segurança na cidade de São Paulo?</p>
-      <div class="figs rl">
-        <figure>
-          <figcaption><span class="tag">Fig. 4.1</span><h3>Medida mais votada</h3><p>Número de respostas e percentual do total.</p></figcaption>
-          <div class="tug" aria-hidden="true">
-            <div class="tug-bar"><span class="tug-a" id="tugA" style="flex-grow:101"></span><span class="tug-b" id="tugB" style="flex-grow:98"></span></div>
-            <div class="tug-lab"><div><b id="tugAv">101</b>Policiamento</div><div><b id="tugBv">98</b>Prevenção</div></div>
-          </div>
-          <div class="chart" id="measures" style="height:250px"></div>
-        </figure>
-        <figure>
-          <figcaption><span class="tag">Fig. 4.2</span><h3>Quanto menos seguro, mais polícia</h3><p>Percentual que escolhe cada medida, por frequência com que a pessoa se sente segura.</p></figcaption>
-          <div class="chart" id="crossline" style="height:380px"></div>
-        </figure>
-      </div>
-      <details class="data"><summary>Ver dados em tabela</summary><div class="tbl" id="t4"></div></details>
-    </section>
-
-    <div class="transfer"><span class="tag">Baldeação</span><p>Cada medo pede uma resposta diferente. Cruzando crime e medida, a cidade ganha relevo.</p></div>
-
-    <!-- ESTAÇÃO 5 -->
-    <section class="station" id="e5">
-      <i class="st-dot" aria-hidden="true"></i>
-      <p class="st-no">Estação 05 <span>· P3 × P2 em 3D</span></p>
-      <h2>Quem teme o quê pede o quê</h2>
-      <p class="st-lede">A torre mais alta junta <strong class="hl">agressão contra mulheres</strong> e <strong class="hl">prevenção</strong>: 46 pessoas, 41% de quem teme esse crime. Quem teme roubo, furto ou homicídio vai para o outro lado e pede policiamento em primeiro lugar.</p>
-      <figure>
-        <figcaption><span class="tag">Fig. 5.1</span><h3>Crime que mais preocupa × medida defendida</h3><p>Altura = número de pessoas. Cor = crime.</p></figcaption>
-        <p class="hint">Arraste para girar · passe o mouse numa torre</p>
-        <div class="chart" id="bars3d" style="height:clamp(360px,46vw,520px)" role="img" aria-label="Gráfico 3D de barras cruzando crime temido e medida defendida"></div>
-      </figure>
-      <p class="insight" id="s5Insight"></p>
-      <details class="data"><summary>Ver dados em tabela</summary><div class="tbl" id="t5"></div></details>
-    </section>
-
-    <div class="transfer"><span class="tag">Baldeação</span><p>Juntando as três perguntas: do sentimento ao crime temido e à solução pedida, pessoa por pessoa.</p></div>
-
-    <!-- ESTAÇÃO 6 -->
-    <section class="station" id="e6">
-      <i class="st-dot" aria-hidden="true"></i>
-      <p class="st-no">Estação 06 <span>· P1 → P3 → P2</span></p>
-      <h2>O percurso inteiro, em um só fluxo</h2>
-      <p class="st-lede">Cada faixa é um grupo de pessoas que fez o mesmo caminho. Siga a faixa vermelha do “nunca”: ela se espalha por todos os crimes, mas converge para policiamento. A faixa rosa da agressão contra mulheres é a que mais alimenta a prevenção.</p>
-      <figure>
-        <figcaption><span class="tag">Fig. 6.1</span><h3>Sensação → crime temido → medida</h3><p>Passe o mouse num bloco para destacar os caminhos ligados a ele.</p></figcaption>
-        <div class="chart" id="sankey" style="height:580px"></div>
-      </figure>
-    </section>
-
-    <div class="transfer"><span class="tag">Baldeação</span><p>O medo não vem só do crime. A rua malcuidada também pesa.</p></div>
-
-    <!-- ESTAÇÃO 7 -->
-    <section class="station" id="e7">
-      <i class="st-dot" aria-hidden="true"></i>
-      <p class="st-no">Estação 07 <span>· P1 × cidade</span></p>
-      <h2>A cidade ao redor: onde a rua é abandonada, o medo cresce</h2>
-      <p class="st-lede">Entre quem <b>nunca</b> vê problemas de zeladoria no bairro, só <strong class="hl">16%</strong> se sentem inseguros. Entre quem vê <b>sempre</b>, <strong class="hl">67%</strong>. É a ideia das “janelas quebradas”: o abandono do espaço público comunica perigo. O mesmo vale para a mobilidade. Quem aponta a falta de acessibilidade como o maior problema é o grupo mais inseguro (73%).</p>
-      <div class="figs two">
-        <figure>
-          <figcaption><span class="tag">Fig. 7.1</span><h3>Falta de zeladoria × insegurança</h3><p>% que raramente ou nunca se sente seguro, por frequência com que vê problemas de zeladoria.</p></figcaption>
-          <div class="chart" id="zel" style="height:340px"></div>
-        </figure>
-        <figure>
-          <figcaption><span class="tag">Fig. 7.2</span><h3>Maior problema de mobilidade × insegurança</h3><p>% que raramente ou nunca se sente seguro, por problema apontado.</p></figcaption>
-          <div class="chart" id="mob" style="height:340px"></div>
-        </figure>
-      </div>
-      <details class="data"><summary>Ver dados em tabela</summary><div class="tbl" id="t7"></div></details>
-    </section>
-
-    <!-- TERMINAL -->
-    <section class="terminal" id="fim">
-      <i class="st-dot" aria-hidden="true"></i>
-      <p class="st-no">Terminal <span>· fim da linha</span></p>
-      <h2>O que as 292 respostas dizem</h2>
-      <ol class="facts">
-        <li><span class="n">18%</span><p>se sentem seguros <b>sempre ou com frequência</b>. O índice médio, 1,59 de 4, fica entre “raramente” e “às vezes”.</p></li>
-        <li><span class="n">25 pts</span><p>separam <b>mulheres</b> (58% inseguras) de <b>homens</b> (33%). Pessoas não binárias chegam a 67%, e quem tem 45 anos ou mais, a 62%.</p></li>
-        <li><span class="n">38%</span><p>temem mais a <b>agressão contra mulheres</b>, o crime nº 1 da amostra. Entre as mulheres, 52%.</p></li>
-        <li><span class="n">101 × 98</span><p><b>Policiamento e prevenção</b> empatam. Quem nunca se sente seguro pede polícia (49%). Quem teme agressão contra mulheres pede prevenção (41%).</p></li>
-        <li><span class="n">4×</span><p>mais insegurança onde a <b>zeladoria falha sempre</b> (67%) do que onde nunca falha (16%). Cuidar da rua também é política de segurança.</p></li>
-      </ol>
-    </section>
-  </div>
-</main>
-
-<footer>
-  <div class="wrap">
-    <span class="tag">Sobre os dados</span>
-    <p>Fonte: Formulário 3MMD071, 292 respostas coletadas entre 17 e 22 de setembro de 2026. Amostra por conveniência: 53% dos respondentes têm entre 15 e 17 anos, então os resultados descrevem este grupo, não toda a população de São Paulo. Grupos com menos de 30 pessoas (como não binários, n = 15) devem ser lidos com cautela.</p>
-    <p>“Inseguro(a)” = respondeu “raramente” ou “nunca” na pergunta 1. “Seguro(a)” = “sempre” ou “frequentemente”. As faixas de renda seguem as opções do formulário.</p>
-  </div>
-</footer>
 
 <script>
 /*
@@ -466,352 +192,330 @@ var Fr={},Gr={};var Wr,Hr=function(){function t(t,e,n){var i=this;this._sleepAft
 (function(){
 const RAW=[[1,17,1,0,2,0,2,3,1,1,0],[0,17,0,0,2,3,4,1,0,1,1],[1,17,0,2,0,2,2,0,1,4,2],[0,15,1,1,1,2,2,2,0,2,1],[0,17,0,0,2,2,3,0,2,2,2],[0,17,0,0,1,0,3,0,0,2,1],[0,17,0,1,1,0,1,0,0,4,2],[1,17,2,0,2,0,2,3,1,4,2],[1,17,2,0,0,2,1,2,4,0,1],[0,17,0,0,1,0,4,0,1,1,3],[1,17,1,1,4,0,3,4,2,1,3],[2,17,3,1,2,0,3,1,4,3,3],[0,17,1,0,1,3,1,2,0,1,2],[0,17,1,0,1,0,2,2,0,1,2],[1,17,1,0,0,0,1,4,2,2,2],[0,46,0,1,2,0,2,1,0,2,2],[1,16,1,2,1,1,2,0,3,2,1],[0,16,1,2,0,2,4,1,0,1,3],[0,16,2,3,0,2,0,0,3,1,4],[0,16,0,0,2,3,3,3,2,2,2],[0,17,1,2,2,0,4,2,0,3,2],[1,17,1,0,1,0,2,0,3,1,3],[0,15,0,0,0,2,3,1,0,2,1],[0,17,0,1,1,1,3,1,0,1,2],[0,18,3,0,1,1,1,1,0,0,2],[0,17,0,0,1,0,4,0,2,2,1],[1,15,2,0,0,0,3,1,3,0,0],[1,17,0,1,1,3,3,0,3,2,1],[0,17,3,0,1,0,1,1,4,1,1],[1,26,0,2,2,1,2,3,2,1,2],[1,17,0,2,0,1,2,0,2,0,1],[0,17,0,1,0,0,2,4,0,2,2],[1,18,0,0,0,2,3,2,0,2,2],[1,16,1,2,2,1,4,0,0,1,4],[1,51,2,0,3,0,4,1,1,1,3],[2,15,2,0,3,0,4,4,2,0,1],[1,18,0,2,2,0,3,2,1,1,1],[1,16,1,0,1,0,3,0,1,3,1],[0,18,0,1,1,3,4,1,0,0,1],[0,15,2,3,0,2,4,0,1,2,3],[1,18,0,0,2,0,2,4,0,0,2],[2,18,0,1,1,0,2,1,1,0,1],[1,18,2,2,0,0,2,0,2,1,3],[0,17,0,0,1,0,2,1,3,0,2],[1,18,1,0,0,0,3,2,0,1,2],[0,18,0,0,0,0,3,2,2,0,1],[0,57,2,0,0,3,2,0,0,2,3],[0,166,0,4,0,1,3,0,0,0,2],[1,51,2,0,3,0,4,1,0,1,4],[1,17,0,2,1,1,1,3,1,1,2],[0,17,1,2,1,1,4,0,2,1,2],[0,32,2,0,1,0,2,1,0,1,2],[1,16,2,1,2,1,2,0,2,2,2],[1,33,1,1,2,1,3,0,0,0,2],[1,18,2,1,2,0,2,3,2,1,4],[1,17,0,2,0,4,3,1,1,4,2],[1,23,1,4,1,3,2,2,4,1,2],[1,20,0,1,1,1,3,1,2,2,1],[0,17,0,0,1,0,3,4,0,2,1],[1,16,0,2,0,4,0,3,0,4,1],[0,16,1,0,0,0,3,0,2,0,1],[0,16,0,2,1,1,2,1,0,1,2],[1,17,1,2,1,1,2,0,1,1,2],[2,11,3,0,4,4,4,4,2,4,4],[1,17,0,2,0,1,3,0,2,4,4],[0,16,0,0,1,1,2,1,0,1,2],[1,17,0,1,1,1,4,3,1,1,1],[1,15,1,2,1,0,3,0,0,2,2],[0,17,0,0,3,1,2,2,0,3,1],[1,17,3,0,3,0,1,0,3,1,1],[0,17,0,1,3,0,3,1,0,1,1],[1,36,1,4,0,2,2,0,1,2,2],[1,17,1,2,2,3,3,0,2,0,2],[0,16,0,2,0,1,3,0,0,3,0],[0,17,1,0,1,0,1,3,4,1,1],[0,17,2,0,1,0,4,0,0,0,1],[2,20,0,1,1,0,2,4,0,2,4],[0,17,2,0,1,1,2,0,2,0,0],[1,44,1,1,3,1,1,2,1,2,1],[0,15,1,0,3,0,4,4,0,2,2],[1,15,0,0,2,0,2,1,0,1,1],[0,18,2,0,3,2,0,3,3,1,0],[1,19,0,4,4,1,3,1,0,3,3],[0,15,2,0,2,1,3,1,0,1,3],[0,17,0,1,3,3,1,3,4,2,3],[1,19,2,1,0,0,1,1,4,0,0],[1,17,0,1,0,1,2,3,1,1,3],[0,16,1,0,1,0,1,1,0,1,2],[1,17,0,1,1,2,2,0,2,3,1],[0,17,3,4,0,2,3,0,1,2,3],[0,18,1,1,1,2,3,2,2,0,2],[0,49,1,2,1,3,2,0,3,2,3],[1,29,0,0,1,0,2,1,1,1,2],[1,17,1,3,1,0,0,0,0,0,1],[0,17,0,1,1,2,3,1,0,2,2],[0,41,0,1,2,1,4,4,0,2,2],[0,18,1,1,3,0,3,0,0,2,2],[1,19,1,0,2,1,1,0,4,1,2],[1,18,2,1,2,0,2,3,1,1,3],[0,16,0,2,0,2,3,0,1,1,2],[2,19,2,3,3,0,4,0,3,0,4],[1,17,3,1,0,0,2,3,2,2,1],[2,25,0,1,1,1,2,1,2,0,2],[0,16,0,2,0,1,2,2,2,3,2],[1,18,0,0,2,0,2,0,1,2,2],[0,20,0,0,1,2,3,0,0,2,2],[0,53,0,1,1,0,3,0,0,1,2],[1,57,1,2,2,1,4,0,2,2,3],[0,16,2,0,1,1,4,3,0,3,3],[1,30,1,2,1,2,3,1,0,2,2],[0,15,0,0,2,0,3,0,1,1,2],[1,45,3,2,1,1,2,3,4,2,1],[0,18,1,1,1,3,3,1,1,3,1],[0,18,2,2,1,1,2,1,0,3,1],[0,15,0,0,3,0,2,1,2,2,2],[0,17,2,2,3,3,3,1,4,0,1],[1,18,1,0,2,0,3,0,3,2,4],[1,18,0,0,1,1,2,1,1,2,1],[0,15,0,0,1,0,3,3,1,0,1],[0,18,1,1,1,2,2,3,2,0,2],[2,17,0,0,2,0,3,2,3,2,1],[1,21,2,0,1,1,2,0,1,1,2],[0,15,0,2,1,1,3,0,0,0,3],[1,27,1,3,0,0,2,1,2,3,0],[1,62,2,2,2,1,1,0,0,2,2],[0,53,1,0,0,0,4,1,2,0,4],[1,17,0,2,0,1,1,1,4,1,3],[0,27,3,4,0,2,3,1,4,3,1],[0,32,0,2,1,3,3,1,0,4,2],[1,15,2,1,3,2,3,0,0,1,3],[1,18,0,2,4,4,2,4,2,4,2],[1,17,0,2,0,2,2,1,2,3,1],[0,17,0,1,3,0,4,0,3,2,2],[1,27,0,3,1,0,2,1,1,2,3],[0,17,2,0,1,0,3,2,1,1,1],[1,47,0,2,0,1,0,0,1,2,2],[2,16,1,3,1,3,3,3,0,1,2],[0,15,1,2,1,0,4,1,0,0,3],[0,33,1,1,0,1,3,1,1,1,3],[1,18,1,0,0,0,3,3,0,1,2],[1,26,2,0,1,0,2,1,2,1,2],[1,16,0,3,0,0,2,2,0,1,2],[1,34,2,2,1,1,2,0,4,3,3],[1,15,0,1,4,2,0,0,1,4,0],[0,15,0,0,1,1,2,1,0,1,1],[1,17,0,3,1,2,1,2,4,2,0],[1,17,0,2,1,2,0,0,3,2,4],[1,15,1,1,0,1,2,2,3,1,2],[0,15,0,2,1,1,2,0,0,1,1],[0,15,0,2,1,4,2,0,1,2,2],[0,15,0,0,1,0,4,0,0,0,2],[0,19,3,0,2,2,2,0,3,2,2],[1,15,1,0,3,0,3,1,0,0,3],[0,15,0,0,1,0,4,1,0,4,2],[1,18,1,0,0,0,3,3,0,1,2],[1,17,1,0,2,0,1,0,2,2,0],[2,67,1,1,4,3,3,4,0,1,3],[1,45,1,4,4,0,2,4,2,0,2],[0,17,0,1,1,1,2,1,0,1,2],[0,15,0,2,3,2,2,1,0,0,1],[1,15,0,0,1,0,1,1,1,2,1],[0,18,0,0,1,0,2,0,2,1,1],[1,15,0,1,1,0,2,0,1,2,1],[0,45,2,2,1,1,4,1,1,4,2],[1,15,0,2,1,1,2,1,1,1,2],[0,52,0,0,1,0,4,0,0,0,0],[1,26,2,0,1,0,2,1,3,1,2],[1,15,0,2,1,1,1,0,1,4,0],[0,30,3,3,3,2,2,2,0,1,4],[1,10,0,4,0,1,0,0,0,3,1],[1,16,0,2,0,2,2,1,0,0,0],[0,15,2,0,0,0,2,2,1,2,2],[0,17,1,0,2,1,1,4,0,1,3],[2,16,1,1,2,3,4,0,0,1,1],[2,46,0,4,1,0,1,2,1,1,1],[1,17,2,1,2,3,4,2,3,1,1],[0,20,1,3,3,0,4,0,4,2,1],[1,15,0,3,1,2,3,3,3,2,2],[1,18,1,0,1,0,2,1,2,0,1],[1,16,1,2,2,0,2,0,1,2,1],[1,26,2,0,1,0,2,1,2,1,2],[1,40,0,4,1,1,3,1,0,2,3],[1,18,3,3,2,3,0,1,3,3,4],[0,17,0,1,1,2,2,4,0,2,3],[1,16,1,3,1,4,1,1,1,1,3],[0,16,2,0,0,1,1,4,1,2,0],[0,38,2,1,3,0,3,1,2,2,4],[0,15,2,1,0,3,3,2,1,0,1],[0,17,3,2,4,1,0,4,0,3,4],[1,18,2,1,1,3,3,0,1,2,3],[1,62,0,2,2,1,2,1,0,4,3],[0,19,1,3,1,2,2,2,2,1,1],[0,16,3,1,0,2,0,0,3,0,0],[2,15,2,1,4,0,2,2,1,0,1],[1,16,0,1,2,0,1,3,1,3,2],[0,56,2,2,1,1,2,0,0,3,2],[0,17,0,1,2,3,4,1,2,2,3],[0,16,0,2,0,1,3,4,0,2,1],[1,18,2,3,1,0,4,1,3,3,4],[0,29,0,2,0,3,3,4,4,0,4],[0,65,0,1,1,1,3,1,1,2,3],[0,15,0,2,1,0,2,3,3,2,1],[1,18,2,0,1,2,2,2,3,3,0],[1,17,0,0,2,0,2,0,2,2,1],[0,17,3,1,1,3,3,0,0,1,1],[2,16,3,0,2,3,4,0,2,2,2],[1,17,2,0,2,0,1,0,1,0,1],[1,18,2,0,3,0,1,0,2,2,0],[1,19,0,3,0,2,1,3,1,1,0],[1,18,3,4,0,2,1,2,0,1,0],[1,56,1,4,1,2,2,3,0,3,2],[1,17,1,4,1,1,3,4,1,0,1],[0,46,0,1,1,1,2,1,1,2,3],[1,17,0,0,3,1,2,1,2,1,2],[0,20,1,4,1,3,2,4,2,1,1],[1,20,1,0,3,1,4,3,2,3,1],[1,15,1,1,1,3,0,0,3,0,0],[1,33,0,1,1,0,2,1,2,1,3],[0,18,1,1,3,1,4,1,0,1,2],[1,16,0,1,2,1,3,2,1,2,0],[0,15,0,2,0,1,2,1,0,4,1],[1,32,0,2,0,0,2,1,2,3,0],[1,18,1,1,3,2,1,2,3,0,3],[0,17,0,1,2,1,2,1,0,2,2],[0,18,1,0,1,0,1,0,0,3,2],[1,18,1,0,0,0,3,3,2,2,3],[0,17,1,2,0,1,3,0,0,4,1],[0,49,0,3,0,2,3,0,1,4,2],[0,16,0,0,2,0,2,4,2,0,2],[1,18,0,0,2,0,3,4,2,2,1],[0,15,0,1,1,0,4,0,1,2,4],[0,32,2,0,0,2,0,0,3,0,0],[1,17,0,2,0,2,1,2,1,4,1],[2,18,1,2,1,1,4,0,4,2,2],[0,21,1,1,2,0,0,1,0,2,0],[1,18,1,1,1,1,3,0,1,2,4],[0,15,1,1,1,2,3,4,2,2,2],[0,15,1,0,2,1,3,2,1,1,2],[1,17,1,0,0,0,2,1,2,2,2],[1,28,0,0,3,1,2,1,0,2,2],[1,17,1,0,2,1,2,0,2,2,0],[1,31,2,4,2,2,4,1,1,3,2],[0,17,0,0,0,1,4,0,0,3,3],[1,17,2,0,2,1,1,2,0,3,2],[1,37,3,2,0,2,1,4,0,4,2],[1,17,0,0,0,2,3,2,1,2,2],[0,42,1,1,2,3,4,0,0,2,2],[0,17,1,0,2,1,2,1,0,1,2],[0,41,0,1,1,0,3,0,1,2,2],[0,40,1,1,1,1,4,0,1,3,3],[0,49,0,2,2,1,3,1,0,4,3],[1,36,0,4,1,1,2,0,1,1,3],[1,17,0,0,2,0,3,1,1,2,2],[0,71,0,2,2,1,4,0,2,3,3],[1,18,0,0,3,0,3,1,1,0,2],[1,65,0,2,1,1,2,1,1,3,3],[0,16,0,2,1,1,4,0,0,1,3],[0,16,0,1,1,0,3,3,0,1,2],[1,17,0,1,1,1,2,0,1,1,1],[0,73,3,1,2,1,4,0,1,2,1],[0,37,0,2,1,0,3,1,1,2,3],[0,30,0,1,3,1,0,1,0,3,3],[0,54,1,0,2,2,4,0,0,0,4],[1,15,1,0,1,0,1,0,4,1,1],[0,71,1,0,3,2,3,0,0,0,1],[0,27,1,0,1,2,2,4,1,1,3],[1,34,0,2,2,1,2,1,0,3,1],[1,17,0,2,0,1,4,0,1,2,3],[0,67,0,3,0,2,3,1,0,0,2],[0,61,3,0,1,3,4,1,3,0,4],[0,65,0,1,1,3,3,1,2,2,2],[0,67,0,3,1,2,3,1,0,0,3],[0,17,1,0,2,1,2,1,0,1,1],[0,37,0,2,1,0,3,1,0,4,3],[1,15,1,1,2,3,3,4,0,0,2],[0,17,3,1,2,1,1,1,0,1,2],[0,18,1,0,1,0,2,2,0,2,2],[0,41,0,1,3,1,2,0,2,3,2],[0,65,3,1,1,3,1,1,1,4,1],[1,16,1,0,3,1,2,1,0,1,1],[0,17,3,4,3,0,0,0,0,3,2],[0,17,0,0,2,3,4,0,0,1,1],[0,74,3,1,1,0,3,3,1,2,2],[0,19,1,0,2,0,2,1,1,0,2],[1,43,0,0,1,2,2,0,1,2,1],[0,14,0,0,2,0,3,0,2,0,3],[0,20,1,4,1,1,4,1,4,1,2],[0,60,3,1,1,2,4,1,1,2,3],[1,68,3,2,0,3,3,3,0,3,2],[0,29,0,1,2,2,2,1,0,3,3],[1,17,2,0,2,0,2,1,2,3,2],[0,28,1,1,3,0,4,1,0,1,3]];
 const L={
-  G:['Mulher','Homem','Não binário'],
-  Gp:['Mulheres','Homens','Não binários'],
-  AG:['15–17','18–24','25–44','45+'],
+  G:['Mulher','Homem','Não binário'],Gp:['Mulheres','Homens','Não binários'],
+  AG:['15 a 17','18 a 24','25 a 44','45 ou mais'],
   R:['Branca','Parda','Preta','Amarela'],
-  T:['Ônibus','Metrô/trem','Carro','A pé / bicicleta','Moto'],
-  D:['Menos de 30 min','30 min a 1 h','1 h a 1 h 30','1 h 30 a 2 h','Mais de 2 h'],
-  P:['Ônibus lotados e atrasados','Trânsito e lentidão','Calçadas e travessias inseguras','Falta de acessibilidade','Falta de faixas de ônibus'],
+  T:['Ônibus','Metrô/trem','Carro','A pé/bike','Moto'],
   S:['Sempre','Frequentemente','Às vezes','Raramente','Nunca'],
   M:['Aumentar o policiamento','Investir em prevenção da violência','Melhorar a iluminação pública','Instalar mais câmeras','Melhorar o atendimento às vítimas'],
   Ms:['Policiamento','Prevenção','Iluminação','Câmeras','Atend. às vítimas'],
   C:['Agressão contra mulheres','Roubo','Homicídio','Furto','Furto ou roubo de veículos'],
-  Cs:['Agressão c/ mulheres','Roubo','Homicídio','Furto','Veículos'],
-  I:['Até 1 SM','2 a 3 SM','3 a 5 SM','5 a 10 SM','Mais de 10 SM'],
-  Z:['Nunca','Raramente','Às vezes','Frequentemente','Sempre']
+  Cs:['Agressão contra mulheres','Roubo','Homicídio','Furto','Veículos'],
+  I:['Até 1 SM','2 a 3 SM','3 a 5 SM','5 a 10 SM','+10 SM'],
+  Z:['Nunca','Raramente','Às vezes','Frequente','Sempre']
 };
 const rows=RAW.map((r,k)=>({id:k+1,g:r[0],a:r[1],ag:r[1]<=17?0:r[1]<=24?1:r[1]<=44?2:3,r:r[2],t:r[3],d:r[4],p:r[5],s:r[6],m:r[7],c:r[8],i:r[9],z:r[10]}));
+const N=rows.length;
 const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
-const state={g:-1,ag:-1,dim:'g'};
-const match=r=>(state.g<0||r.g===state.g)&&(state.ag<0||r.ag===state.ag);
-const sel=()=>rows.filter(match);
+const $=id=>document.getElementById(id);
 const pct=(a,b)=>b?a/b*100:0;
-const f0=v=>Math.round(v).toLocaleString('pt-BR')+'%';
-const f1=v=>v.toLocaleString('pt-BR',{minimumFractionDigits:1,maximumFractionDigits:1})+'%';
+const f0=v=>Math.round(v)+'%';
 const cnt=(arr,key,k)=>{const c=Array(k).fill(0);arr.forEach(r=>c[r[key]]++);return c};
 const unsafe=a=>a.filter(r=>r.s>=3).length;
-const $=id=>document.getElementById(id);
-const esc=s=>String(s).replace(/[&<>"]/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch]));
+const cs=getComputedStyle(document.documentElement),tk=n=>cs.getPropertyValue('--'+n).trim();
+const T={ink:tk('ink'),ink2:tk('ink-2'),muted:tk('muted'),line:tk('line'),line2:tk('line-2'),bg:tk('bg'),bg3:tk('bg-3'),
+  S:[0,1,2,3,4].map(i=>tk('s'+i)),C:[0,1,2,3,4].map(i=>tk('c'+i)),pol:tk('pol'),prev:tk('prev'),f:tk('f')};
+const rgb=h=>{h=h.replace('#','');return[parseInt(h.slice(0,2),16),parseInt(h.slice(2,4),16),parseInt(h.slice(4,6),16)]};
+const SR=T.S.map(rgb),CR=T.C.map(rgb),LIGHT=[255,224,168];
+const mCol=i=>i===0?T.pol:i===1?T.prev:T.line2;
+const narrow=()=>innerWidth<760;
+function rng(seed){return()=>{seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
 
-let T={};
-function readTokens(){
-  const cs=getComputedStyle(document.documentElement),g=n=>cs.getPropertyValue('--'+n).trim();
-  T={ink:g('ink'),ink2:g('ink-2'),muted:g('muted'),line:g('line'),axis:g('axis'),bg:g('bg'),bg2:g('bg-2'),bg3:g('bg-3'),
-     amber:g('amber'),amber2:g('amber-2'),pol:g('pol'),S:[0,1,2,3,4].map(i=>g('s'+i)),C:[0,1,2,3,4].map(i=>g('c'+i)),
-     body:g('f-body'),mono:g('f-mono'),display:g('f-display')};
+/* ---------- partículas: 1 ponto = 1 pessoa ---------- */
+const cv=$('dots'),ctx=cv.getContext('2d');let W=0,H=0,DPR=1;
+const R0=rng(7);
+const parts=rows.map(r=>({r,x:0,y:0,sx:0,sy:0,tx:0,ty:0,c:LIGHT.slice(),sc:LIGHT.slice(),tc:LIGHT.slice(),a:0,sa:0,ta:1,rad:2,srad:2,trad:2,d:0,ph:R0()*6.283,sp:.4+R0()*1.2,ix:R0(),iy:R0()}));
+let t0=0,hover=null,mode='dots',scene=0;
+const DUR=RM?1:1300;
+function resizeCanvas(){const b=$('stage').getBoundingClientRect();W=b.width;H=b.height;DPR=Math.min(2,devicePixelRatio||1);cv.width=Math.round(W*DPR);cv.height=Math.round(H*DPR);ctx.setTransform(DPR,0,0,DPR,0,0)}
+const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+function retarget(instant){
+  t0=performance.now();
+  parts.forEach((p,k)=>{p.sx=p.x;p.sy=p.y;p.sc=p.c.slice();p.sa=p.a;p.srad=p.rad;p.d=instant||RM?0:(p.ix*420+(k%7)*12);
+    if(instant){p.x=p.sx=p.tx;p.y=p.sy=p.ty;p.c=p.tc.slice();p.sc=p.tc.slice();p.a=p.sa=p.ta;p.rad=p.srad=p.trad}});
 }
-const narrow=()=>window.innerWidth<700;
-let _cv;const tw=(t,font)=>{_cv=_cv||document.createElement('canvas').getContext('2d');_cv.font=font;return _cv.measureText(t).width};
-const lblW=(arr,size,weight)=>Math.ceil(Math.max(0,...arr.map(t=>tw(String(t),`${weight||600} ${size||12}px ${T.body}`))))+12;
-
-/* ---------- ECharts helpers ---------- */
-const charts={};
-function ch(id){
-  if(!charts[id]){
-    const el=$(id);charts[id]=echarts.init(el);
-    if(window.ResizeObserver)new ResizeObserver(()=>charts[id]&&charts[id].resize()).observe(el);
+function frame(now){
+  ctx.clearRect(0,0,W,H);
+  const intro=scene===0;
+  for(const p of parts){
+    const e=ease(Math.min(1,Math.max(0,(now-t0-p.d)/DUR)));
+    p.x=p.sx+(p.tx-p.sx)*e;p.y=p.sy+(p.ty-p.sy)*e;p.rad=p.srad+(p.trad-p.srad)*e;p.a=p.sa+(p.ta-p.sa)*e;
+    for(let j=0;j<3;j++)p.c[j]=p.sc[j]+(p.tc[j]-p.sc[j])*e;
+    if(p.a<.01)continue;
+    let x=p.x,y=p.y,a=p.a;
+    if(intro&&!RM){x+=Math.sin(now*.00025*p.sp+p.ph)*6;y+=Math.cos(now*.0002*p.sp+p.ph)*4;a*=.4+.6*Math.abs(Math.sin(now*.0008*p.sp+p.ph))}
+    ctx.globalAlpha=a;ctx.fillStyle=`rgb(${p.c[0]|0},${p.c[1]|0},${p.c[2]|0})`;
+    if(intro){ctx.shadowColor=ctx.fillStyle;ctx.shadowBlur=10}
+    ctx.beginPath();ctx.arc(x,y,p.rad,0,6.2832);ctx.fill();
   }
-  return charts[id];
-}
-const tip=o=>Object.assign({backgroundColor:T.bg3,borderColor:T.axis,borderWidth:1,padding:[10,12],
-  textStyle:{color:T.ink,fontFamily:T.body,fontSize:12},extraCssText:'border-radius:4px;box-shadow:0 14px 34px rgba(0,0,0,.45);'},o||{});
-const base=o=>Object.assign({animation:!RM,animationDuration:900,animationEasing:'cubicOut',textStyle:{fontFamily:T.body,color:T.ink2},tooltip:tip()},o);
-const ax=o=>Object.assign({axisLine:{lineStyle:{color:T.axis}},axisTick:{show:false},axisLabel:{color:T.ink2,fontFamily:T.body,fontSize:12},splitLine:{lineStyle:{color:T.line}}},o||{});
-const key=(c,w)=>`<span style="display:inline-block;width:${w||12}px;height:3px;border-radius:2px;background:${c};vertical-align:middle;margin-right:7px"></span>`;
-const rowTip=(c,label,val)=>`<div style="display:flex;justify-content:space-between;gap:18px;align-items:center"><span style="color:${T.ink2}">${key(c)}${esc(label)}</span><b style="color:${T.ink}">${val}</b></div>`;
-
-function table(id,head,body){
-  const host=$(id);if(!host)return;host.textContent='';
-  const t=document.createElement('table'),th=document.createElement('thead'),tr=document.createElement('tr');
-  head.forEach(h=>{const c=document.createElement('th');c.scope='col';c.textContent=h;tr.appendChild(c)});th.appendChild(tr);t.appendChild(th);
-  const tb=document.createElement('tbody');
-  body.forEach(r=>{const tr=document.createElement('tr');r.forEach((v,k)=>{const c=document.createElement(k?'td':'th');if(!k){c.scope='row';c.style.cssText='font:inherit;letter-spacing:0;text-transform:none;color:'+T.ink}c.textContent=v;tr.appendChild(c)});tb.appendChild(tr)});
-  t.appendChild(tb);host.appendChild(t);
+  ctx.shadowBlur=0;ctx.globalAlpha=1;
+  if(hover&&hover.a>.5){ctx.strokeStyle=T.ink;ctx.lineWidth=2;ctx.beginPath();ctx.arc(hover.x,hover.y,hover.rad+3.5,0,6.2832);ctx.stroke()}
+  requestAnimationFrame(frame);
 }
 
-/* ---------- filtros ---------- */
-function buildChips(host,labels,prop){
-  const all=document.createElement('button');all.type='button';all.className='chip';all.textContent='Todos';all.dataset.v=-1;host.appendChild(all);
-  labels.forEach((l,i)=>{const b=document.createElement('button');b.type='button';b.className='chip';b.textContent=l;b.dataset.v=i;host.appendChild(b)});
-  host.addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;state[prop]=+b.dataset.v;syncChips();renderAll(true)});
+/* grupos em girassol (filotaxia): cada ponto ocupa a mesma área, então o tamanho do grupo = número de pessoas */
+const GA=Math.PI*(3-Math.sqrt(5));
+function box(){
+  const sb=$('stage').getBoundingClientRect();
+  const head=document.querySelector('.head');const top=(head?head.getBoundingClientRect().bottom-sb.top:H*.25)+(narrow()?16:26);
+  const leg=document.querySelector('.legend');const bot=(leg?leg.getBoundingClientRect().top-sb.top:H-90)-12;
+  const px=narrow()?16:Math.max(24,W*.045);
+  return{x:px,y:top,w:W-2*px,h:Math.max(120,bot-top)};
 }
-function syncChips(){
-  [['fG','g'],['fA','ag']].forEach(([id,p])=>$(id).querySelectorAll('.chip').forEach(b=>b.setAttribute('aria-pressed',String(+b.dataset.v===state[p]))));
+function pack(groups,B,labelH){
+  const G=groups.length,K=1.03;let best=null;
+  for(let rn=1;rn<=Math.min(3,G);rn++){
+    const per=Math.ceil(G/rn),rws=[];for(let k=0;k<G;k+=per)rws.push(groups.slice(k,k+per));
+    const gap=Math.max(20,B.w*.035),rowGap=narrow()?10:18;
+    let sW=Infinity;rws.forEach(rw=>{const sum=rw.reduce((a,g)=>a+Math.sqrt(Math.max(1,g.items.length)),0);sW=Math.min(sW,(B.w-gap*(rw.length-1))/(2*sum*K))});
+    const sumMax=rws.reduce((a,rw)=>a+2*K*Math.sqrt(Math.max(...rw.map(g=>Math.max(1,g.items.length)))),0);
+    const sH=(B.h-rws.length*labelH-(rws.length-1)*rowGap)/sumMax;
+    const s=Math.min(sW,sH,30);
+    if(!best||s>best.s)best={s,rws,gap,rowGap};
+  }
+  const{s,rws,gap,rowGap}=best;
+  const hts=rws.map(rw=>2*s*K*Math.sqrt(Math.max(...rw.map(g=>Math.max(1,g.items.length))))+labelH);
+  const tot=hts.reduce((a,b)=>a+b,0)+rowGap*(rws.length-1);
+  let y=B.y+Math.max(0,(B.h-tot)/2);
+  rws.forEach((rw,ri)=>{
+    const Rs=rw.map(g=>s*K*Math.sqrt(Math.max(1,g.items.length))),Rm=Math.max(...Rs);
+    const w0=Rs.reduce((a,b)=>a+2*b,0)+gap*(rw.length-1);
+    const g2=rw.length>1?gap+Math.max(0,Math.min((B.w-w0)/(rw.length-1),B.w*.07)):0;
+    const w1=Rs.reduce((a,b)=>a+2*b,0)+g2*(rw.length-1);
+    let x=B.x+(B.w-w1)/2;
+    rw.forEach((g,k)=>{g.R=Rs[k];g.cx=x+Rs[k];g.cy=y+Rm;g.ly=y+2*Rm+10;x+=2*Rs[k]+g2});
+    y+=hts[ri]+rowGap;
+  });
+  return s;
 }
-
-/* ---------- KPIs / mapa ---------- */
-function setK(k,val,animate){
-  document.querySelectorAll('[data-k="'+k+'"]').forEach(el=>{
-    if(el.textContent===val)return;el.textContent=val;
-    if(animate&&!RM){el.classList.remove('flip');void el.offsetWidth;el.classList.add('flip')}
+function setGroups(groups,colorOf,orderOf){
+  const B=box(),labelH=narrow()?52:76;
+  const s=pack(groups,B,labelH),rad=Math.max(1.6,s*.4);
+  const seen=new Set();
+  groups.forEach(g=>{
+    g.items.slice().sort((a,b)=>orderOf(a)-orderOf(b)||a.id-b.id).forEach((r,k)=>{
+      const p=parts[r.id-1],d=s*Math.sqrt(k+.5),th=k*GA;
+      p.tx=g.cx+d*Math.cos(th);p.ty=g.cy+d*Math.sin(th);p.tc=colorOf(r).slice();p.ta=1;p.trad=rad;seen.add(r.id);
+    });
+  });
+  parts.forEach(p=>{if(!seen.has(p.r.id))p.ta=0});
+  const fs=Math.round(Math.max(narrow()?20:26,Math.min(narrow()?30:58,labelH-24)));
+  const host=$('glabels');host.textContent='';
+  groups.forEach(g=>{
+    const el=document.createElement('div');el.className='gl'+(g.hot?' hot':'');el.style.left=g.cx+'px';el.style.top=g.ly+'px';el.style.setProperty('--fs',fs+'px');
+    if(g.hot)el.style.setProperty('--hot',g.hot);
+    const b=document.createElement('b');b.textContent=g.value;const sp=document.createElement('span');sp.textContent=g.label;
+    el.append(b,sp);host.appendChild(el);
   });
 }
-function renderKPIs(d,anim){
-  const n=d.length,s=cnt(d,'s',5),c=cnt(d,'c',5),m=cnt(d,'m',5);
-  $('hBig').textContent=Math.round(pct(s[3]+s[4],n));$('hN').textContent=n;
-  setK('k1',f0(pct(s[0]+s[1],n)),anim);
-  const W=d.filter(r=>r.g===0);
-  setK('k2',W.length?f0(pct(unsafe(W),W.length)):'—',anim);
-  setK('k3',f0(pct(c[0],n)),anim);
-  setK('k4',m[0]+'×'+m[1],anim);
-  let mx=0;for(let a=0;a<5;a++)for(let b=0;b<5;b++)mx=Math.max(mx,d.filter(r=>r.c===a&&r.m===b).length);
-  setK('k5',String(mx),anim);
-  setK('k6',String(n),anim);
-  const zs=d.filter(r=>r.z===4);setK('k7',zs.length?f0(pct(unsafe(zs),zs.length)):'—',anim);
-  $('nOut').innerHTML='<b>'+n+'</b> de 292 respondentes'+(n<30?'<span class="warn">amostra pequena</span>':'');
+function introLayout(){
+  const rnd=rng(11);
+  parts.forEach(p=>{const ang=rnd()*6.283,rr=Math.pow(rnd(),.7);
+    p.tx=W/2+Math.cos(ang)*rr*W*.47;p.ty=H*.47+Math.sin(ang)*rr*H*.4;p.tc=LIGHT.slice();p.ta=.9;p.trad=narrow()?1.8:2.5});
+  $('glabels').textContent='';
 }
+function hideDots(){parts.forEach(p=>{p.ta=0;p.tx=p.x;p.ty=p.y});$('glabels').textContent=''}
 
-/* ---------- HERO: cidade 3D ---------- */
-function cityLayout(n){const pts=[],st=v=>((v%4)+4)%4===0,nz=(x,y)=>(((x*73856093)^(y*19349663))>>>0)%1000/1000*1.4;
+/* ---------- ECharts ---------- */
+const charts={};
+function chart(id){if(!charts[id]){charts[id]=echarts.init($(id));if(window.ResizeObserver)new ResizeObserver(()=>charts[id]&&charts[id].resize()).observe($(id))}return charts[id]}
+const glOK=(()=>{try{const c=document.createElement('canvas');return!!(window.WebGLRenderingContext&&(c.getContext('webgl')||c.getContext('experimental-webgl')))}catch(e){return false}})();
+const tipCss={backgroundColor:'rgba(18,21,27,.96)',borderColor:T.line2,borderWidth:1,padding:[10,12],textStyle:{color:T.ink,fontFamily:T.f,fontSize:12},extraCssText:'border-radius:8px;box-shadow:0 16px 40px rgba(0,0,0,.5);'};
+const dot=c=>`<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${c};margin-right:6px"></span>`;
+const bigNum=t=>`<div style="font:900 24px ${T.f};font-stretch:62%;line-height:1;margin-bottom:4px">${t}</div>`;
+function placeBox(id){
+  const sb=$('stage').getBoundingClientRect(),head=document.querySelector('.head'),low=id==='city'?document.querySelector('.nav'):(document.querySelector('.finale')||document.querySelector('.legend'));
+  const top=head?head.getBoundingClientRect().bottom-sb.top+6:80,bot=low?low.getBoundingClientRect().top-sb.top-6:H-80;
+  const el=$(id);el.style.top=top+'px';el.style.height=Math.max(220,bot-top)+'px';
+  if(charts[id])charts[id].resize();
+}
+function noGL(id){if(charts[id]){charts[id].dispose();delete charts[id]}$(id).innerHTML='<div class="fallback">Este navegador não liberou gráficos 3D (WebGL). Use o botão “Números” para ver os dados.</div>'}
+
+function drawBars3d(){
+  if(!glOK)return noGL('bars3d');
+  const grid=L.C.map((_,a)=>L.M.map((_,b)=>rows.filter(r=>r.c===a&&r.m===b).length)),tot=grid.map(r=>r.reduce((x,y)=>x+y,0));
+  const data=[];grid.forEach((r,a)=>r.forEach((v,b)=>data.push({value:[a,b,v],itemStyle:{color:T.C[a]}})));
+  const al={color:T.ink2,fontSize:narrow()?10:13,fontFamily:T.f,fontWeight:600};
+  const axis3=o=>Object.assign({axisLine:{lineStyle:{color:T.line2}},splitLine:{lineStyle:{color:T.line}},axisTick:{show:false},axisPointer:{show:false}},o);
+  chart('bars3d').setOption({
+    tooltip:Object.assign({},tipCss,{formatter:p=>{const[a,b,v]=p.value;return bigNum(v+' pessoas')+`${dot(T.C[a])}temem ${L.C[a].toLowerCase()}<br>${dot(mCol(b))}pedem ${L.Ms[b].toLowerCase()}<br><span style="color:${T.muted}">${f0(pct(v,tot[a]))} de quem teme este crime</span>`}}),
+    xAxis3D:axis3({type:'category',data:L.Cs.map(x=>x==='Agressão contra mulheres'?'Agressão c/ mulheres':x),name:'',axisLabel:{textStyle:al,interval:0}}),
+    yAxis3D:axis3({type:'category',data:L.Ms,name:'',axisLabel:{textStyle:al,interval:0}}),
+    zAxis3D:axis3({type:'value',name:'',axisLabel:{textStyle:{color:T.muted,fontSize:10}}}),
+    grid3D:{boxWidth:125,boxDepth:100,boxHeight:72,top:-24,environment:'none',splitArea:{show:false},
+      viewControl:{alpha:22,beta:40,distance:narrow()?300:205,minAlpha:5,maxAlpha:85,zoomSensitivity:0,panSensitivity:0,autoRotate:!RM,autoRotateSpeed:3,autoRotateAfterStill:5,animationDurationUpdate:900},
+      light:{main:{intensity:1.35,shadow:true,shadowQuality:'high',alpha:55,beta:-25},ambient:{intensity:.42}},
+      postEffect:{enable:!narrow(),SSAO:{enable:true,radius:3,intensity:1.15,quality:'medium'}},temporalSuperSampling:{enable:true}},
+    series:[{type:'bar3D',data,shading:'lambert',bevelSize:.25,bevelSmoothness:2,barSize:[11,11],label:{show:false},
+      emphasis:{label:{show:true,formatter:p=>String(p.value[2]),textStyle:{color:T.ink,fontSize:16,fontWeight:800,backgroundColor:T.bg3,padding:5,borderRadius:4}},itemStyle:{color:'#ffffff'}}}]
+  },true);
+}
+function drawSankey(){
+  const nodes=[].concat(L.S.map((l,i)=>({name:l,depth:0,itemStyle:{color:T.S[i],borderColor:T.S[i]}})),
+    L.Cs.map((l,i)=>({name:l,depth:1,itemStyle:{color:T.C[i],borderColor:T.C[i]}})),
+    L.Ms.map((l,i)=>({name:l,depth:2,itemStyle:{color:mCol(i),borderColor:mCol(i)}})));
+  const links=[];
+  L.S.forEach((sl,s)=>L.Cs.forEach((cl,c)=>{const v=rows.filter(r=>r.s===s&&r.c===c).length;if(v)links.push({source:sl,target:cl,value:v})}));
+  L.Cs.forEach((cl,c)=>L.Ms.forEach((ml,m)=>{const v=rows.filter(r=>r.c===c&&r.m===m).length;if(v)links.push({source:cl,target:ml,value:v})}));
+  const nw=narrow(),short=n=>n==='Agressão contra mulheres'?'Agressão':n==='Atend. às vítimas'?'Atend.':n==='Frequentemente'?'Frequente':n;
+  chart('sankey').setOption({
+    tooltip:Object.assign({},tipCss,{trigger:'item',formatter:p=>p.dataType==='edge'?bigNum(p.value+' pessoas')+`${p.data.source} → ${p.data.target}`:bigNum(p.value+' pessoas')+p.name}),
+    series:[{type:'sankey',left:nw?16:'5%',right:nw?86:'14%',top:8,bottom:8,nodeWidth:nw?10:18,nodeGap:nw?8:12,layoutIterations:0,draggable:false,
+      data:nodes,links,lineStyle:{color:'source',opacity:.38,curveness:.5},emphasis:{focus:'adjacency',lineStyle:{opacity:.75}},
+      label:{color:T.ink,fontFamily:T.f,fontSize:nw?10:15,fontWeight:750,formatter:p=>nw?short(p.name):`${p.name}  {v|${p.value}}`,rich:{v:{color:T.muted,fontSize:13,fontWeight:500}}}}]
+  },true);
+}
+const cityPos=(()=>{const pts=[],st=v=>((v%4)+4)%4===0,nz=(x,y)=>(((x*73856093)^(y*19349663))>>>0)%1000/1000*1.4;
   for(let x=-13;x<=13;x++)for(let y=-13;y<=13;y++)if(!st(x)&&!st(y))pts.push([x,y,Math.hypot(x,y)+nz(x,y)]);
-  return pts.sort((a,b)=>a[2]-b[2]).slice(0,n)}
-const cityOrder=rows.slice().sort((a,b)=>b.s-a.s||a.c-b.c||a.id-b.id);
-const cityPos=cityLayout(rows.length);
-const glOK=(()=>{try{const c=document.createElement('canvas');return !!(window.WebGLRenderingContext&&(c.getContext('webgl')||c.getContext('experimental-webgl')))}catch(e){return false}})();
-function noGL(id,msg){const el=$(id);if(charts[id]){charts[id].dispose();delete charts[id]}el.innerHTML='<div class="fallback">'+msg+'</div>'}
-const hidden3={axisLine:{show:false},axisLabel:{show:false},axisTick:{show:false},splitLine:{show:false},splitArea:{show:false},axisPointer:{show:false}};
-function renderCity(){
-  if(!glOK)return noGL('city',NOGL_CITY);
-  const data=cityOrder.map((r,k)=>{const on=match(r);return{value:[cityPos[k][0],cityPos[k][1],on?r.s+1:.18],r,itemStyle:{color:on?T.S[r.s]:T.axis,opacity:on?1:.35}}});
-  ch('city').setOption({
-    animation:!RM,
-    tooltip:tip({formatter:p=>{const r=p.data&&p.data.r;if(!r)return'';return `<div style="font:600 11px ${T.mono};letter-spacing:.1em;color:${T.muted};margin-bottom:4px">RESPONDENTE #${r.id}</div>
-      <div style="margin-bottom:6px">${L.G[r.g]}, ${r.a} anos</div>
-      ${rowTip(T.S[r.s],'Sente-se seguro(a)',L.S[r.s])}${rowTip(T.C[r.c],'Crime que mais teme',L.Cs[r.c])}${rowTip(r.m===0?T.pol:r.m===1?T.amber:T.muted,'Medida',L.Ms[r.m])}`}}),
-    xAxis3D:Object.assign({type:'value',min:-13.5,max:13.5},hidden3),
-    yAxis3D:Object.assign({type:'value',min:-13.5,max:13.5},hidden3),
-    zAxis3D:Object.assign({type:'value',min:0,max:5.2},hidden3),
-    grid3D:{show:false,boxWidth:100,boxDepth:100,boxHeight:34,top:-6,environment:'none',
-      viewControl:{autoRotate:!RM,autoRotateSpeed:4,autoRotateAfterStill:3,distance:narrow()?150:122,alpha:32,beta:35,minAlpha:8,maxAlpha:85,zoomSensitivity:0,panSensitivity:0,animationDurationUpdate:900},
+  return pts.sort((a,b)=>a[2]-b[2]).slice(0,N)})();
+function drawCity(){
+  if(!glOK)return noGL('city');
+  const order=rows.slice().sort((a,b)=>b.s-a.s||a.c-b.c||a.id-b.id);
+  const hid={axisLine:{show:false},axisLabel:{show:false},axisTick:{show:false},splitLine:{show:false},splitArea:{show:false},axisPointer:{show:false}};
+  chart('city').setOption({
+    tooltip:Object.assign({},tipCss,{formatter:p=>{const r=p.data&&p.data.r;return r?personHTML(r):''}}),
+    xAxis3D:Object.assign({type:'value',min:-13.5,max:13.5},hid),yAxis3D:Object.assign({type:'value',min:-13.5,max:13.5},hid),zAxis3D:Object.assign({type:'value',min:0,max:5.2},hid),
+    grid3D:{show:false,boxWidth:100,boxDepth:100,boxHeight:36,top:narrow()?-40:-60,environment:'none',
+      viewControl:{autoRotate:!RM,autoRotateSpeed:4,autoRotateAfterStill:3,distance:narrow()?160:112,alpha:30,beta:30,minAlpha:8,maxAlpha:85,zoomSensitivity:0,panSensitivity:0},
       light:{main:{intensity:1.35,shadow:true,shadowQuality:'high',alpha:50,beta:20},ambient:{intensity:.42}},
       postEffect:{enable:!narrow(),SSAO:{enable:true,radius:2.2,intensity:1.2,quality:'medium'}},temporalSuperSampling:{enable:true}},
-    series:[{type:'bar3D',data,shading:'lambert',barSize:2.9,bevelSize:.18,bevelSmoothness:2,
-      emphasis:{itemStyle:{color:T.amber2},label:{show:false}},animationDurationUpdate:700}]
-  },true);
-}
-const NOGL_CITY='Este navegador não liberou gráficos 3D (WebGL). Os mesmos dados aparecem na Estação 01.';
-const NOGL_BARS='Este navegador não liberou gráficos 3D (WebGL). Abra a tabela abaixo para ver os mesmos números.';
-
-/* ---------- ESTAÇÃO 1 ---------- */
-function renderS1(d){
-  const n=d.length,s=cnt(d,'s',5),idx=n?(s[0]*4+s[1]*3+s[2]*2+s[3])/n:0;
-  const near=idx<.5?'nunca':idx<1.5?'raramente':idx<2.5?'às vezes':idx<3.5?'frequentemente':'sempre';
-  ch('gauge').setOption(base({tooltip:{show:false},series:[{type:'gauge',min:0,max:4,splitNumber:4,startAngle:205,endAngle:-25,radius:'92%',center:['50%','58%'],
-    axisLine:{lineStyle:{width:16,color:[[.125,T.S[4]],[.375,T.S[3]],[.625,T.S[2]],[.875,T.S[1]],[1,T.S[0]]]}},
-    pointer:{length:'64%',width:4,itemStyle:{color:T.ink}},anchor:{show:true,size:16,showAbove:true,itemStyle:{color:T.ink,borderColor:T.bg,borderWidth:4}},
-    axisTick:{show:false},splitLine:{distance:-16,length:16,lineStyle:{color:T.bg,width:3}},
-    axisLabel:{distance:22,color:T.ink2,fontSize:narrow()?10:11,fontFamily:T.body,formatter:v=>['Nunca','Raramente','Às vezes','Frequente','Sempre'][v]||''},
-    title:{offsetCenter:[0,'66%'],color:T.muted,fontSize:12,fontFamily:T.body},
-    detail:{valueAnimation:!RM,offsetCenter:[0,'36%'],fontFamily:T.display,fontSize:narrow()?40:50,fontWeight:850,color:T.ink,formatter:v=>v.toFixed(2).replace('.',',')},
-    data:[{value:+idx.toFixed(2),name:'perto de “'+near+'”'}]}]}),true);
-  ch('dist').setOption(base({
-    tooltip:tip({trigger:'item',formatter:p=>`<b style="font-size:15px">${f1(p.value)}</b><br><span style="color:${T.ink2}">${key(T.S[p.dataIndex])}${L.S[p.dataIndex]} · ${s[p.dataIndex]} pessoas</span>`}),
-    grid:{left:4,right:8,top:30,bottom:8,containLabel:true},
-    xAxis:ax({type:'category',data:L.S,axisLabel:{color:T.ink2,fontSize:narrow()?10:12,interval:0,formatter:v=>narrow()&&v==='Frequentemente'?'Frequente':v}}),
-    yAxis:ax({type:'value',max:v=>Math.ceil((v.max+6)/10)*10,axisLabel:{color:T.muted,formatter:'{value}%'}}),
-    series:[{type:'bar',barWidth:'58%',data:s.map((v,i)=>({value:pct(v,n),itemStyle:{color:T.S[i],borderRadius:[4,4,0,0]}})),
-      label:{show:true,position:'top',color:T.ink,fontFamily:T.display,fontWeight:800,fontSize:15,formatter:p=>f0(p.value)}}]}),true);
-  $('s1Insight').innerHTML=n?`No recorte atual (<b>${n}</b> pessoas): <b>${f0(pct(s[3]+s[4],n))}</b> raramente ou nunca se sentem seguras, <b>${f0(pct(s[0]+s[1],n))}</b> sempre ou com frequência. Índice médio <b>${idx.toFixed(2).replace('.',',')}</b>.`:'Nenhum respondente neste recorte.';
-  table('t1',['Frequência','Pessoas','%'],L.S.map((l,i)=>[l,s[i],f1(pct(s[i],n))]).concat([['Total',n,'100%']]));
-}
-
-/* ---------- ESTAÇÃO 2 ---------- */
-const DIMS=[['g','Gênero',L.G],['ag','Idade',L.AG],['r','Raça/cor',L.R],['i','Renda familiar',L.I],['t','Transporte',L.T],['d','Tempo no trajeto',L.D]];
-function buildTabs(){
-  const host=$('dimTabs');
-  DIMS.forEach(([k,l])=>{const b=document.createElement('button');b.type='button';b.className='tab';b.textContent=l;b.dataset.k=k;host.appendChild(b)});
-  host.addEventListener('click',e=>{const b=e.target.closest('.tab');if(!b)return;state.dim=b.dataset.k;syncTabs();renderS2(sel())});
-  syncTabs();
-}
-function syncTabs(){$('dimTabs').querySelectorAll('.tab').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.k===state.dim)))}
-function renderS2(d){
-  const dim=DIMS.find(x=>x[0]===state.dim),k=dim[0];
-  const cats=dim[2].map((name,i)=>({name,rs:d.filter(r=>r[k]===i)})).filter(c=>c.rs.length);
-  const P=cats.map(c=>{const n=c.rs.length,s=cnt(c.rs,'s',5);return{name:c.name,n,s,p:s.map(v=>pct(v,n))}});
-  const el=$('likert');el.style.height=(Math.max(P.length,1)*(narrow()?50:56)+(narrow()?96:70))+'px';
-  let M=0;P.forEach(x=>{M=Math.max(M,x.p[0]+x.p[1]+x.p[2]/2,x.p[3]+x.p[4]+x.p[2]/2)});M=Math.min(100,Math.ceil((M+14)/20)*20);
-  const LW=Math.max(lblW(P.map(x=>x.name),narrow()?11:13),lblW(['n = 145'],11,400));
-  const lab={show:true,color:T.ink,fontFamily:T.display,fontWeight:800,fontSize:13};
-  const mk=(name,i,sign,extra)=>Object.assign({name,type:'bar',stack:'L',barWidth:narrow()?'62%':'56%',data:P.map(x=>sign*(i===2?x.p[2]/2:x.p[i])),
-    itemStyle:{color:T.S[i],borderColor:T.bg,borderWidth:1.5},emphasis:{focus:'none'}},extra||{});
-  const series=[
-    mk('Às vezes',2,-1,{markLine:{silent:true,symbol:'none',lineStyle:{color:T.ink2,width:1,type:'solid'},label:{show:false},data:[{xAxis:0}]}}),
-    mk('Frequentemente',1,-1),
-    mk('Sempre',0,-1,{label:Object.assign({position:'left',formatter:p=>f0(P[p.dataIndex].p[0]+P[p.dataIndex].p[1])},lab)}),
-    mk('Às vezes',2,1),mk('Raramente',3,1),
-    mk('Nunca',4,1,{label:Object.assign({position:'right',formatter:p=>f0(P[p.dataIndex].p[3]+P[p.dataIndex].p[4])},lab)})
-  ];
-  ch('likert').setOption(base({
-    legend:{data:L.S,top:0,left:0,itemWidth:12,itemHeight:10,itemGap:14,icon:'roundRect',textStyle:{color:T.ink2,fontSize:narrow()?11:12}},
-    grid:{left:LW,right:10,top:narrow()?62:36,bottom:26,containLabel:false},
-    tooltip:tip({trigger:'axis',axisPointer:{type:'shadow',shadowStyle:{color:'rgba(245,165,36,.07)'}},formatter:ps=>{const x=P[ps[0].dataIndex];
-      return `<div style="font-weight:600;margin-bottom:6px">${esc(x.name)} <span style="color:${T.muted};font-weight:400">· n = ${x.n}</span></div>`+
-      L.S.map((l,i)=>rowTip(T.S[i],l,`${f0(x.p[i])} <span style="color:${T.muted};font-weight:400">(${x.s[i]})</span>`)).join('')}}),
-    xAxis:ax({type:'value',min:-M,max:M,interval:narrow()?40:20,axisLabel:{color:T.muted,fontSize:narrow()?10:12,formatter:v=>Math.abs(v)+'%'}}),
-    yAxis:ax({type:'category',inverse:true,data:P.map(x=>x.name),axisLine:{show:false},
-      axisLabel:{color:T.ink,fontSize:narrow()?11:13,fontWeight:600,formatter:(v,i)=>`${v}\n{n|n = ${P[i].n}}`,rich:{n:{color:T.muted,fontSize:11,fontWeight:400,fontFamily:T.mono,padding:[4,0,0,0]}},lineHeight:16}}),
-    series}),true);
-  const big=P.filter(x=>x.n>=10).map(x=>({name:x.name,v:pct(x.s[3]+x.s[4],x.n),n:x.n})).sort((a,b)=>b.v-a.v);
-  $('s2Insight').innerHTML=big.length>1?`Por <b>${dim[1].toLowerCase()}</b>: o grupo mais inseguro é <b>${esc(big[0].name)}</b> (${f0(big[0].v)} raramente/nunca, n = ${big[0].n}); o menos inseguro é <b>${esc(big[big.length-1].name)}</b> (${f0(big[big.length-1].v)}, n = ${big[big.length-1].n}). Grupos com menos de 10 pessoas ficam fora desta comparação.`:'Com o filtro atual, esta dimensão tem só um grupo com 10 ou mais pessoas.';
-  table('t2',[dim[1],'n'].concat(L.S).concat(['Inseguros']),P.map(x=>[x.name,x.n].concat(x.p.map(f0)).concat([f0(x.p[3]+x.p[4])])));
-}
-
-/* ---------- ESTAÇÃO 3 ---------- */
-function renderS3(d){
-  const n=d.length,c=cnt(d,'c',5);
-  ch('rose').setOption(base({
-    tooltip:tip({trigger:'item',formatter:p=>`<b style="font-size:15px">${f1(pct(p.value,n))}</b><br><span style="color:${T.ink2}">${key(T.C[p.dataIndex])}${L.C[p.dataIndex]} · ${p.value} pessoas</span>`}),
-    series:[{type:'pie',roseType:'area',radius:narrow()?['12%','62%']:['14%','70%'],center:['50%','52%'],startAngle:100,
-      itemStyle:{borderRadius:5,borderColor:T.bg,borderWidth:2},
-      label:{color:T.ink2,fontFamily:T.body,fontSize:narrow()?10:12,lineHeight:16,formatter:p=>`${L.Cs[p.dataIndex]}\n{v|${f0(pct(p.value,n))}}`,
-        rich:{v:{fontFamily:T.display,fontWeight:850,fontSize:narrow()?15:19,color:T.ink,lineHeight:22}}},
-      labelLine:{length:8,length2:10,lineStyle:{color:T.axis}},
-      data:c.map((v,i)=>({value:v,name:L.C[i],itemStyle:{color:T.C[i]}}))}]}),true);
-  const W=d.filter(r=>r.g===0),H=d.filter(r=>r.g===1),N=d.filter(r=>r.g===2);
-  const pw=cnt(W,'c',5).map(v=>pct(v,W.length)),ph=cnt(H,'c',5).map(v=>pct(v,H.length));
-  const M=Math.min(100,Math.ceil((Math.max(...pw,...ph,10)+14)/20)*20),BW=lblW(L.Cs,narrow()?11:12);
-  const lab={show:true,color:T.ink,fontFamily:T.display,fontWeight:800,fontSize:13};
-  ch('butterfly').setOption(base({
-    grid:{left:BW,right:10,top:34,bottom:26,containLabel:false},
-    graphic:[{type:'text',left:BW,top:4,style:{text:'← Mulheres · n = '+W.length,fill:T.ink2,font:`600 12px ${T.body}`}},
-             {type:'text',right:14,top:4,style:{text:'Homens · n = '+H.length+' →',fill:T.ink2,font:`600 12px ${T.body}`}}],
-    tooltip:tip({trigger:'axis',axisPointer:{type:'shadow',shadowStyle:{color:'rgba(245,165,36,.07)'}},formatter:ps=>{const i=ps[0].dataIndex;
-      return `<div style="font-weight:600;margin-bottom:6px">${key(T.C[i])}${L.C[i]}</div>`+rowTip(T.C[i],'Mulheres',W.length?f1(pw[i]):'—')+rowTip(T.C[i],'Homens',H.length?f1(ph[i]):'—')}}),
-    xAxis:ax({type:'value',min:-M,max:M,interval:narrow()?40:20,axisLabel:{color:T.muted,fontSize:narrow()?10:12,formatter:v=>Math.abs(v)+'%'}}),
-    yAxis:ax({type:'category',inverse:true,data:L.Cs,axisLine:{show:false},axisLabel:{color:T.ink,fontWeight:600,fontSize:narrow()?11:12}}),
-    series:[
-      {name:'Mulheres',type:'bar',stack:'b',barWidth:'58%',data:pw.map((v,i)=>({value:-v,itemStyle:{color:T.C[i],borderRadius:[4,0,0,4]}})),label:Object.assign({position:'left',formatter:p=>W.length?f0(-p.value):''},lab),
-        markLine:{silent:true,symbol:'none',lineStyle:{color:T.ink2,width:1,type:'solid'},label:{show:false},data:[{xAxis:0}]}},
-      {name:'Homens',type:'bar',stack:'b',barWidth:'58%',data:ph.map((v,i)=>({value:v,itemStyle:{color:T.C[i],borderRadius:[0,4,4,0]}})),label:Object.assign({position:'right',formatter:p=>H.length?f0(p.value):''},lab)}
-    ]}),true);
-  const pn=cnt(N,'c',5);
-  table('t3',['Crime','Total','% total','Mulheres','Homens','Não binários'],L.C.map((l,i)=>[l,c[i],f1(pct(c[i],n)),W.length?f0(pw[i]):'—',H.length?f0(ph[i]):'—',N.length?f0(pct(pn[i],N.length)):'—']));
-}
-
-/* ---------- ESTAÇÃO 4 ---------- */
-const mColor=i=>i===0?T.pol:i===1?T.amber:T.axis;
-function renderS4(d){
-  const n=d.length,m=cnt(d,'m',5);
-  $('tugA').style.flexGrow=Math.max(m[0],.001);$('tugB').style.flexGrow=Math.max(m[1],.001);$('tugAv').textContent=m[0];$('tugBv').textContent=m[1];
-  ch('measures').setOption(base({
-    grid:{left:lblW(L.Ms,12),right:84,top:6,bottom:6,containLabel:false},
-    tooltip:tip({trigger:'item',formatter:p=>`<b style="font-size:15px">${p.value} pessoas</b><br><span style="color:${T.ink2}">${key(mColor(p.dataIndex))}${L.M[p.dataIndex]} · ${f1(pct(p.value,n))}</span>`}),
-    xAxis:ax({type:'value',show:false,max:v=>v.max*1.02}),
-    yAxis:ax({type:'category',inverse:true,data:L.Ms,axisLine:{show:false},axisLabel:{color:T.ink,fontWeight:600,fontSize:12}}),
-    series:[{type:'bar',barWidth:'60%',data:m.map((v,i)=>({value:v,itemStyle:{color:mColor(i),borderRadius:[0,4,4,0]}})),
-      label:{show:true,position:'right',color:T.ink2,fontSize:12,formatter:p=>`{v|${p.value}}  ${f0(pct(p.value,n))}`,rich:{v:{fontFamily:T.display,fontWeight:850,fontSize:14,color:T.ink}}}}]}),true);
-  const byS=L.S.map((l,i)=>{const rs=d.filter(r=>r.s===i),mm=cnt(rs,'m',5);return{n:rs.length,mm,p:mm.map(v=>pct(v,rs.length))}});
-  const line=(name,i,color)=>({name,type:'line',data:byS.map(x=>x.n?+x.p[i].toFixed(1):null),connectNulls:true,symbol:'circle',symbolSize:9,
-    lineStyle:{width:2.5,color},itemStyle:{color,borderColor:T.bg,borderWidth:2},
-    endLabel:{show:true,formatter:'{a}',color:T.ink,fontWeight:600,fontSize:12,distance:8},
-    emphasis:{focus:'series'}});
-  ch('crossline').setOption(base({
-    grid:{left:4,right:narrow()?88:100,top:24,bottom:6,containLabel:true},
-    tooltip:tip({trigger:'axis',axisPointer:{type:'line',lineStyle:{color:T.axis}},formatter:ps=>{const x=byS[ps[0].dataIndex];
-      return `<div style="font-weight:600;margin-bottom:6px">Sente-se seguro(a): ${L.S[ps[0].dataIndex]} <span style="color:${T.muted};font-weight:400">· n = ${x.n}</span></div>`+
-      L.Ms.map((l,i)=>rowTip(mColor(i),l,x.n?f0(x.p[i]):'—')).join('')+(x.n&&x.n<20?`<div style="color:${T.S[4]};margin-top:6px;font-size:11px">Grupo pequeno: leia com cautela</div>`:'')}}),
-    xAxis:ax({type:'category',boundaryGap:false,data:L.S.map((l,i)=>l),axisLabel:{color:T.ink2,fontSize:narrow()?10:12,interval:0,formatter:(v,i)=>`${v==='Frequentemente'?'Frequente':v}\n{n|n = ${byS[i].n}}`,rich:{n:{color:T.muted,fontFamily:T.mono,fontSize:10,padding:[3,0,0,0]}}}}),
-    yAxis:ax({type:'value',min:0,max:v=>Math.min(100,Math.ceil((v.max+5)/10)*10),axisLabel:{color:T.muted,formatter:'{value}%'}}),
-    series:[line('Policiamento',0,T.pol),line('Prevenção',1,T.amber)]}),true);
-  table('t4',['Sente-se seguro(a)','n'].concat(L.Ms),byS.map((x,i)=>[L.S[i],x.n].concat(x.p.map(v=>x.n?f0(v):'—'))).concat([['Total',n].concat(m.map(v=>`${v} (${f0(pct(v,n))})`))]));
-}
-
-/* ---------- ESTAÇÃO 5 ---------- */
-function renderS5(d){
-  const grid=L.C.map((_,a)=>L.M.map((_,b)=>d.filter(r=>r.c===a&&r.m===b).length));
-  const tot=grid.map(r=>r.reduce((x,y)=>x+y,0));
-  let best={v:-1};grid.forEach((r,a)=>r.forEach((v,b)=>{if(v>best.v)best={v,a,b}}));
-  $('s5Insight').innerHTML=best.v>0?`Maior torre no recorte atual: <b>${L.Cs[best.a]} → ${L.Ms[best.b]}</b>, com <b>${best.v}</b> pessoas (${f0(pct(best.v,tot[best.a]))} de quem teme ${L.C[best.a].toLowerCase()}).`:'Nenhum respondente neste recorte.';
-  table('t5',['Crime \\ Medida'].concat(L.Ms).concat(['Total']),grid.map((r,a)=>[L.C[a]].concat(r).concat([tot[a]])));
-  if(!glOK)return noGL('bars3d',NOGL_BARS);
-  const data=[];grid.forEach((r,a)=>r.forEach((v,b)=>data.push({value:[a,b,v],itemStyle:{color:T.C[a],opacity:v?1:.25}})));
-  const al={color:T.ink2,fontSize:narrow()?10:12,fontFamily:T.body};
-  ch('bars3d').setOption({
-    animation:!RM,
-    tooltip:tip({formatter:p=>{const [a,b,v]=p.value;return `<b style="font-size:15px">${v} pessoas</b><br><span style="color:${T.ink2}">${key(T.C[a])}Temem ${L.C[a].toLowerCase()}<br>${key(mColor(b))}e pedem: ${L.M[b].toLowerCase()}</span><br><span style="color:${T.muted}">${f0(pct(v,tot[a]))} de quem teme este crime</span>`}}),
-    xAxis3D:{type:'category',data:L.Cs,name:'',axisLabel:{textStyle:al,interval:0},axisLine:{lineStyle:{color:T.axis}},splitLine:{lineStyle:{color:T.line}},axisTick:{show:false},axisPointer:{show:false}},
-    yAxis3D:{type:'category',data:L.Ms,name:'',axisLabel:{textStyle:al,interval:0},axisLine:{lineStyle:{color:T.axis}},splitLine:{lineStyle:{color:T.line}},axisTick:{show:false},axisPointer:{show:false}},
-    zAxis3D:{type:'value',name:'pessoas',nameTextStyle:{color:T.muted,fontSize:11},axisLabel:{textStyle:{color:T.muted,fontSize:10}},axisLine:{lineStyle:{color:T.axis}},splitLine:{lineStyle:{color:T.line}},axisTick:{show:false},axisPointer:{show:false}},
-    grid3D:{boxWidth:120,boxDepth:95,boxHeight:62,environment:'none',
-      splitArea:{show:false},
-      viewControl:{alpha:24,beta:36,distance:narrow()?270:190,minAlpha:5,maxAlpha:85,zoomSensitivity:0,panSensitivity:0,autoRotate:false,animationDurationUpdate:900},
-      light:{main:{intensity:1.3,shadow:true,shadowQuality:'high',alpha:55,beta:-25},ambient:{intensity:.45}},
-      postEffect:{enable:!narrow(),SSAO:{enable:true,radius:3,intensity:1.1,quality:'medium'}},temporalSuperSampling:{enable:true}},
-    series:[{type:'bar3D',data,shading:'lambert',bevelSize:.22,bevelSmoothness:2,barSize:[10,10],
-      label:{show:false,formatter:p=>p.value[2],textStyle:{color:T.ink,fontSize:14,fontWeight:700,backgroundColor:'transparent'}},
-      emphasis:{label:{show:true,formatter:p=>String(p.value[2]),textStyle:{color:T.ink,fontSize:15,fontWeight:700,backgroundColor:T.bg3,padding:4,borderRadius:3}},itemStyle:{color:T.amber2}},
-      animationDurationUpdate:700}]
+    series:[{type:'bar3D',shading:'lambert',barSize:2.9,bevelSize:.18,bevelSmoothness:2,
+      data:order.map((r,k)=>({value:[cityPos[k][0],cityPos[k][1],r.s+1],r,itemStyle:{color:T.S[r.s]}})),
+      emphasis:{itemStyle:{color:'#ffffff'},label:{show:false}}}]
   },true);
 }
 
-/* ---------- ESTAÇÃO 6 ---------- */
-function renderS6(d){
-  const nodes=[].concat(
-    L.S.map((l,i)=>({name:l,depth:0,itemStyle:{color:T.S[i],borderColor:T.S[i]}})),
-    L.Cs.map((l,i)=>({name:l,depth:1,itemStyle:{color:T.C[i],borderColor:T.C[i]}})),
-    L.Ms.map((l,i)=>({name:l,depth:2,itemStyle:{color:mColor(i),borderColor:mColor(i)}})));
-  const links=[];
-  L.S.forEach((sl,s)=>L.Cs.forEach((cl,c)=>{const v=d.filter(r=>r.s===s&&r.c===c).length;if(v)links.push({source:sl,target:cl,value:v})}));
-  L.Cs.forEach((cl,c)=>L.Ms.forEach((ml,m)=>{const v=d.filter(r=>r.c===c&&r.m===m).length;if(v)links.push({source:cl,target:ml,value:v})}));
-  const used=new Set();links.forEach(l=>{used.add(l.source);used.add(l.target)});
-  $('sankey').style.height=(narrow()?520:580)+'px';
-  ch('sankey').setOption(base({
-    tooltip:tip({trigger:'item',formatter:p=>p.dataType==='edge'?`<b style="font-size:15px">${p.value} pessoas</b><br><span style="color:${T.ink2}">${esc(p.data.source)} → ${esc(p.data.target)}</span>`:`<b style="font-size:15px">${p.value} pessoas</b><br><span style="color:${T.ink2}">${esc(p.name)}</span>`}),
-    series:[{type:'sankey',left:4,right:narrow()?88:150,top:24,bottom:10,nodeWidth:narrow()?10:14,nodeGap:narrow()?8:12,layoutIterations:0,draggable:false,nodeAlign:'justify',
-      data:nodes.filter(x=>used.has(x.name)),links,
-      lineStyle:{color:'source',opacity:.34,curveness:.5},
-      emphasis:{focus:'adjacency',lineStyle:{opacity:.6}},
-      label:{color:T.ink,fontFamily:T.body,fontSize:narrow()?10:12,fontWeight:600,formatter:p=>narrow()?(p.name==='Agressão c/ mulheres'?'Agressão':p.name==='Atend. às vítimas'?'Atend.':p.name):`${p.name} {v|${p.value}}`,rich:{v:{color:T.muted,fontFamily:T.mono,fontSize:narrow()?9:11,fontWeight:400}}},
-      levels:[{depth:0,label:{position:'right'}},{depth:1,label:{position:'right'}},{depth:2,label:{position:'right'}}]}],
-    graphic:[
-      {type:'text',left:4,top:0,style:{text:'SENSAÇÃO (P1)',fill:T.muted,font:`500 10px ${T.mono}`}},
-      {type:'text',left:'40%',top:0,style:{text:'CRIME TEMIDO (P3)',fill:T.muted,font:`500 10px ${T.mono}`}},
-      {type:'text',right:narrow()?4:24,top:0,style:{text:'MEDIDA (P2)',fill:T.muted,font:`500 10px ${T.mono}`}}]
-  }),true);
+/* ---------- dica: quem é este ponto ---------- */
+function personHTML(r){
+  const row=(c,k,v)=>`<div style="display:flex;justify-content:space-between;gap:16px;color:${T.ink2}"><span>${dot(c)}${k}</span><b style="color:${T.ink};font-weight:650">${v}</b></div>`;
+  return`<div style="font:900 18px ${T.f};font-stretch:70%;margin-bottom:4px">${L.G[r.g]}, ${r.a} anos</div>`+
+    row(T.S[r.s],'Sente-se seguro(a)',L.S[r.s])+row(T.C[r.c],'Mais teme',L.Cs[r.c])+row(mCol(r.m),'Pede',L.Ms[r.m]);
 }
+const tip=$('tip');
+function showTip(html,x,y){tip.innerHTML=html;tip.classList.add('on');const w=tip.offsetWidth,h=tip.offsetHeight;
+  let lx=x+16,ly=y+16;if(lx+w>innerWidth-8)lx=x-w-16;if(ly+h>innerHeight-8)ly=y-h-16;tip.style.transform=`translate(${Math.max(8,lx)}px,${Math.max(8,ly)}px)`}
+function hideTip(){tip.classList.remove('on');hover=null}
+function pick(e){
+  if(mode!=='dots'||scene===0){hideTip();return}
+  const b=cv.getBoundingClientRect(),mx=e.clientX-b.left,my=e.clientY-b.top;let best=null,bd=1e9;
+  for(const p of parts){if(p.a<.5)continue;const d=(p.x-mx)**2+(p.y-my)**2;if(d<bd){bd=d;best=p}}
+  if(best&&bd<Math.max(100,(best.rad*2.4)**2)){hover=best;showTip(personHTML(best.r),e.clientX,e.clientY)}else hideTip();
+}
+cv.addEventListener('pointermove',pick);cv.addEventListener('pointerdown',pick);cv.addEventListener('pointerleave',hideTip);
 
-/* ---------- ESTAÇÃO 7 ---------- */
-function renderS7(d){
-  const n=d.length,avg=pct(unsafe(d),n);
-  const Z=L.Z.map((l,i)=>{const rs=d.filter(r=>r.z===i);return{l,n:rs.length,v:pct(unsafe(rs),rs.length)}});
-  const P=L.P.map((l,i)=>{const rs=d.filter(r=>r.p===i);return{l,n:rs.length,v:pct(unsafe(rs),rs.length)}}).filter(x=>x.n).sort((a,b)=>b.v-a.v);
-  const avgLine={silent:true,symbol:'none',lineStyle:{color:T.ink2,width:1,type:'solid'},label:{show:true,color:T.ink2,fontSize:11,fontFamily:T.body,formatter:'média '+f0(avg)},data:[]};
-  ch('zel').setOption(base({
-    grid:{left:4,right:12,top:28,bottom:4,containLabel:true},
-    tooltip:tip({trigger:'item',formatter:p=>{const x=Z[p.dataIndex];return `<b style="font-size:15px">${f0(x.v)} inseguros</b><br><span style="color:${T.ink2}">Vê problemas de zeladoria: ${x.l.toLowerCase()} · n = ${x.n}</span>`}}),
-    xAxis:ax({type:'category',data:L.Z,axisLabel:{color:T.ink2,interval:0,fontSize:narrow()?10:12,formatter:(v,i)=>`${narrow()&&v==='Frequentemente'?'Frequente':v}\n{n|n = ${Z[i].n}}`,rich:{n:{color:T.muted,fontFamily:T.mono,fontSize:10,padding:[3,0,0,0]}}}}),
-    yAxis:ax({type:'value',min:0,max:100,interval:25,axisLabel:{color:T.muted,formatter:'{value}%'}}),
-    series:[{type:'bar',barWidth:'56%',data:Z.map(x=>({value:x.n?+x.v.toFixed(1):null,itemStyle:{color:T.S[4],borderRadius:[4,4,0,0]}})),
-      label:{show:true,position:'top',color:T.ink,fontFamily:T.display,fontWeight:850,fontSize:15,formatter:p=>f0(p.value)},
-      markLine:Object.assign({},avgLine,{data:[{yAxis:+avg.toFixed(1)}],label:Object.assign({},avgLine.label,{position:'insideStartTop'})})}]}),true);
-  ch('mob').setOption(base({
-    grid:{left:Math.min(lblW(P.map(x=>x.l),narrow()?10:12),narrow()?122:182),right:44,top:22,bottom:26,containLabel:false},
-    tooltip:tip({trigger:'item',formatter:p=>{const x=P[p.dataIndex];return `<b style="font-size:15px">${f0(x.v)} inseguros</b><br><span style="color:${T.ink2}">${esc(x.l)} · n = ${x.n}</span>`}}),
-    xAxis:ax({type:'value',min:0,max:100,interval:25,axisLabel:{color:T.muted,formatter:'{value}%'}}),
-    yAxis:ax({type:'category',inverse:true,data:P.map(x=>x.l),axisLine:{show:false},axisLabel:{color:T.ink,fontWeight:600,fontSize:narrow()?10:12,width:narrow()?110:170,overflow:'break',lineHeight:15}}),
-    series:[{type:'bar',barWidth:'56%',data:P.map((x,i)=>({value:+x.v.toFixed(1),itemStyle:{color:i===0?T.S[4]:T.axis,borderRadius:[0,4,4,0]}})),
-      label:{show:true,position:'right',color:T.ink,fontFamily:T.display,fontWeight:850,fontSize:14,formatter:p=>f0(p.value)},
-      markLine:Object.assign({},avgLine,{data:[{xAxis:+avg.toFixed(1)}],label:Object.assign({},avgLine.label,{position:'start'})})}]}),true);
-  table('t7',['Grupo','n','Inseguros'],[['Zeladoria · '+'média do recorte',n,f1(avg)]].concat(Z.map(x=>['Zeladoria: '+x.l,x.n,x.n?f1(x.v):'—'])).concat(P.map(x=>['Mobilidade: '+x.l,x.n,f1(x.v)])));
+/* ---------- cenas ---------- */
+const byKey=(key,labels,extra)=>labels.map((label,i)=>Object.assign({key:i,label,items:rows.filter(r=>r[key]===i)},extra?extra(i):{})).filter(g=>g.items.length);
+const safetyCol=r=>SR[r.s],crimeCol=r=>CR[r.c];
+function legend(items,note){return`<div class="legend">${items.map(([c,l])=>`<span><i style="background:${c}"></i>${l}</span>`).join('')}${note?`<span class="note">${note}</span>`:''}</div>`}
+const legSafety=()=>legend(L.S.map((l,i)=>[T.S[i],l]),'cada ponto = 1 pessoa');
+const legCrime=()=>legend(L.Cs.map((l,i)=>[T.C[i],l]),'cada ponto = 1 pessoa');
+function head(title,sub,statB,statS,extra){
+  const lines=title.split('|').map(t=>`<span class="ln"><span>${t}</span></span>`).join('');
+  return`<div class="head"><div class="head-l"><h1 class="title">${lines}</h1>${sub?`<p class="sub">${sub}</p>`:''}${extra||''}</div>${statB?`<div class="stat"><b>${statB}</b><span>${statS||''}</span></div>`:''}</div>`;
 }
+const DIMS=[['g','Gênero',L.Gp],['ag','Idade',L.AG],['r','Raça/cor',L.R],['i','Renda',L.I],['t','Transporte',L.T]];
+let dim='g';
+const dimNow=()=>DIMS.find(x=>x[0]===dim);
+const insecure=g=>pct(unsafe(g.items),g.items.length);
 
-/* ---------- orquestração ---------- */
-function safe(fn,d){try{fn(d)}catch(e){console.error(e)}}
-function renderAll(anim){
-  const d=sel();
-  renderKPIs(d,anim);
-  [renderS1,renderS2,renderS3,renderS4,renderS6,renderS7].forEach(f=>safe(f,d));
-  try{renderCity()}catch(e){console.error(e);noGL('city',NOGL_CITY)}
-  try{renderS5(d)}catch(e){console.error(e);noGL('bars3d',NOGL_BARS)}
+const SCENES=[
+ {name:'Abertura',mode:'dots',layout:introLayout,
+  html:()=>`<div class="intro"><div><div class="n">292</div><p>pessoas responderam: dá para andar seguro em São Paulo?</p><small>Avance com <kbd>→</kbd> ou pelas setas abaixo</small></div></div>`,
+  table:()=>({t:'Pesquisa',h:['',''],b:[['Respostas',292],['Coleta','17 a 22/09/2026'],['Formulário','3MMD071']]})},
+ {name:'Sensação',mode:'dots',
+  html:()=>head('Você se sente|seguro em SP?','Com que frequência você se sente seguro(a) ao circular pela cidade.','47%','raramente ou nunca')+legSafety(),
+  layout:()=>{const gs=byKey('s',L.S,i=>({hot:i>=3?T.S[4]:null}));gs.forEach(g=>g.value=f0(pct(g.items.length,N)));setGroups(gs,safetyCol,()=>0)},
+  table:()=>({t:'Sensação de segurança',h:['Frequência','Pessoas','%'],b:L.S.map((l,i)=>{const n=rows.filter(r=>r.s===i).length;return[l,n,f0(pct(n,N))]})})},
+ {name:'Quem tem medo',mode:'dots',
+  html:()=>{const d=dimNow(),top=byKey(dim,d[2]).filter(g=>g.items.length>=20).sort((a,b)=>insecure(b)-insecure(a))[0];
+    return head('Quem sente|mais medo?','% que raramente ou nunca se sente seguro. O vermelho fica no centro.',f0(insecure(top)),`${top.label}: raramente ou nunca se sentem seguros`,
+      `<div class="toggles" role="group" aria-label="Agrupar por">${DIMS.map(x=>`<button type="button" data-dim="${x[0]}" aria-pressed="${x[0]===dim}">${x[1]}</button>`).join('')}</div>`)+legend(L.S.map((l,i)=>[T.S[i],l]),'cada ponto = 1 pessoa'+(byKey(dim,d[2]).some(g=>g.items.length<20)?' · * grupo com menos de 20 pessoas':''))},
+  layout:()=>{const d=dimNow(),gs=byKey(dim,d[2]),mx=Math.max(...gs.filter(g=>g.items.length>=20).map(insecure));
+    gs.forEach(g=>{const v=insecure(g);g.value=f0(v)+(g.items.length<20?'*':'');g.label=`${g.label} · ${g.items.length}`;if(v===mx&&g.items.length>=20)g.hot=T.S[4]});setGroups(gs,safetyCol,r=>-r.s)},
+  table:()=>{const d=dimNow();return{t:'Insegurança por '+d[1].toLowerCase(),h:[d[1],'n'].concat(L.S).concat(['Raramente+nunca']),
+    b:byKey(dim,d[2]).map(g=>[g.label,g.items.length].concat(cnt(g.items,'s',5).map(v=>f0(pct(v,g.items.length)))).concat([f0(insecure(g))]))}}},
+ {name:'Crime',mode:'dots',
+  html:()=>head('Qual crime|mais preocupa?','Cada cor é um crime.','38%','temem mais a agressão contra mulheres')+legCrime(),
+  layout:()=>{const gs=byKey('c',L.Cs,i=>({hot:i===0?T.C[0]:null}));gs.forEach(g=>g.value=f0(pct(g.items.length,N)));setGroups(gs,crimeCol,()=>0)},
+  table:()=>({t:'Crime que mais preocupa',h:['Crime','Pessoas','%'],b:L.C.map((l,i)=>{const n=rows.filter(r=>r.c===i).length;return[l,n,f0(pct(n,N))]})})},
+ {name:'Gênero',mode:'dots',
+  html:()=>head('Um medo|com gênero','% que mais teme a agressão contra mulheres. O rosa fica no centro.','2,2×','mulheres temem mais que o dobro dos homens')+legCrime(),
+  layout:()=>{const gs=byKey('g',L.Gp);gs.forEach(g=>{g.value=f0(pct(g.items.filter(r=>r.c===0).length,g.items.length));g.label=`${g.label} · ${g.items.length}`});gs[0].hot=T.C[0];setGroups(gs,crimeCol,r=>r.c)},
+  table:()=>({t:'Crime temido por gênero',h:['Gênero','n'].concat(L.Cs),b:byKey('g',L.Gp).map(g=>[g.label,g.items.length].concat(cnt(g.items,'c',5).map(v=>f0(pct(v,g.items.length)))))})},
+ {name:'Solução',mode:'dots',
+  html:()=>head('O que deixaria|SP mais segura?','As mesmas pessoas, agora pela medida que escolheram. A cor ainda é o crime que temem.','101×98','polícia × prevenção: empate')+legCrime(),
+  layout:()=>{const gs=byKey('m',L.Ms,i=>({hot:i===0?T.pol:i===1?T.prev:null}));gs.forEach(g=>g.value=String(g.items.length));setGroups(gs,crimeCol,r=>r.c)},
+  table:()=>({t:'Medida mais votada',h:['Medida','Pessoas','%'],b:L.M.map((l,i)=>{const n=rows.filter(r=>r.m===i).length;return[l,n,f0(pct(n,N))]})})},
+ {name:'Torres 3D',mode:'chart',chart:'bars3d',draw:drawBars3d,
+  html:()=>head('Cada medo,|uma solução','Altura = pessoas. Arraste para girar.','46','temem agressão contra mulheres e pedem prevenção')+legend(L.Cs.map((l,i)=>[T.C[i],l])),
+  table:()=>({t:'Crime × medida (pessoas)',h:['Crime'].concat(L.Ms),b:L.C.map((l,a)=>[l].concat(L.M.map((_,b)=>rows.filter(r=>r.c===a&&r.m===b).length)))})},
+ {name:'Fluxo',mode:'chart',chart:'sankey',draw:drawSankey,
+  html:()=>head('Do medo|à solução','Sensação → crime temido → medida. Passe o mouse para seguir um caminho.')+legend([],'largura da faixa = número de pessoas'),
+  table:()=>({t:'Sensação × crime (pessoas)',h:['Sensação'].concat(L.Cs),b:L.S.map((l,s)=>[l].concat(L.C.map((_,c)=>rows.filter(r=>r.s===s&&r.c===c).length)))})},
+ {name:'A rua',mode:'dots',
+  html:()=>head('Rua largada,|cidade com medo','% que raramente ou nunca se sente seguro, pela frequência com que vê falta de zeladoria no bairro.','4×','mais insegurança onde a zeladoria sempre falha')+legSafety(),
+  layout:()=>{const gs=byKey('z',L.Z);gs.forEach(g=>{g.value=f0(insecure(g));g.label=`${g.label} · ${g.items.length}`});gs[gs.length-1].hot=T.S[4];setGroups(gs,safetyCol,r=>-r.s)},
+  table:()=>({t:'Zeladoria × insegurança',h:['Vê falta de zeladoria','n','Raramente+nunca'],b:byKey('z',L.Z).map(g=>[g.label,g.items.length,f0(insecure(g))])})},
+ {name:'A cidade',mode:'chart',chart:'city',draw:drawCity,
+  html:()=>head('292 pessoas,|uma cidade','Cada prédio é uma pessoa. Quanto mais alto, mais medo.')+
+   `<p class="foot">Formulário 3MMD071 · 292 respostas · 17 a 22/09/2026. Amostra por conveniência: 53% têm de 15 a 17 anos.</p>`+
+   `<div class="finale"><div><b>47%</b><span>raramente ou nunca se sentem seguros</span></div><div><b>58%</b><span>das mulheres se sentem inseguras</span></div><div><b>38%</b><span>temem mais a agressão contra mulheres</span></div><div><b>101×98</b><span>polícia × prevenção</span></div></div>`,
+  table:()=>({t:'Resumo',h:['',''],b:[['Raramente ou nunca seguros','47%'],['Mulheres inseguras','58%'],['Homens inseguros','33%'],['Temem agressão contra mulheres','38%'],['Policiamento','101'],['Prevenção','98'],['Amostra','292 (53% de 15 a 17 anos)']]})}
+];
+
+const track=$('track');
+SCENES.forEach((s,i)=>{const b=document.createElement('button');b.type='button';b.setAttribute('aria-label',`Cena ${i+1}: ${s.name}`);const sp=document.createElement('span');sp.textContent=s.name;b.appendChild(sp);b.addEventListener('click',()=>go(i));track.appendChild(b)});
+
+function renderTable(){
+  const bx=$('data');if(bx.hidden)return;const t=SCENES[scene].table();
+  const esc=v=>String(v).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+  bx.innerHTML=`<button class="x" type="button" aria-label="Fechar">×</button><h3>${esc(t.t)}</h3><table><thead><tr>${t.h.map(x=>`<th scope="col">${esc(x)}</th>`).join('')}</tr></thead><tbody>${t.b.map(r=>`<tr>${r.map(v=>`<td>${esc(v)}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
+  bx.querySelector('.x').onclick=()=>toggleData(false);
 }
-function boot(){
-  if(!window.echarts){document.querySelectorAll('.chart,#city').forEach(el=>{el.innerHTML='<div class="fallback">Não foi possível carregar a biblioteca de gráficos. Verifique a conexão com a internet e recarregue a página.</div>'});renderKPIs(sel(),false);return}
-  readTokens();buildChips($('fG'),L.Gp,'g');buildChips($('fA'),L.AG,'ag');syncChips();buildTabs();renderAll(false);
-  let w=window.innerWidth;window.addEventListener('resize',()=>{const nw=window.innerWidth;if((nw<700)!==(w<700)){w=nw;renderAll(false)}});
-  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>{readTokens();renderAll(false)});
+function toggleData(on){const bx=$('data');bx.hidden=!on;$('dataBtn').setAttribute('aria-expanded',String(on));if(on)renderTable()}
+$('dataBtn').addEventListener('click',()=>toggleData($('data').hidden));
+
+function go(i,instant){
+  i=Math.max(0,Math.min(SCENES.length-1,i));scene=i;const S=SCENES[i];
+  hideTip();
+  $('overlay').innerHTML=S.html();
+  $('count').innerHTML=`<b>${String(i+1).padStart(2,'0')}</b>/${SCENES.length}`;
+  [...track.children].forEach((b,k)=>{b.classList.toggle('done',k<i);if(k===i)b.setAttribute('aria-current','step');else b.removeAttribute('aria-current')});
+  $('prev').disabled=i===0;$('next').disabled=i===SCENES.length-1;
+  mode=S.mode;
+  ['bars3d','sankey','city'].forEach(id=>$(id).classList.toggle('on',S.chart===id));
+  if(S.mode==='dots'){S.layout();retarget(instant)}
+  else{hideDots();retarget(instant);
+    if(window.echarts){placeBox(S.chart);try{S.draw()}catch(e){console.error(e);noGL(S.chart)}}
+    else $(S.chart).innerHTML='<div class="fallback">Não foi possível carregar os gráficos. Verifique a internet e recarregue.</div>'}
+  const tg=document.querySelector('.toggles');
+  if(tg)tg.addEventListener('click',e=>{const b=e.target.closest('button');if(!b||b.dataset.dim===dim)return;dim=b.dataset.dim;go(2)});
+  renderTable();
+  try{history.replaceState(null,'','#cena'+(i+1))}catch(e){}
 }
-boot();
+$('prev').addEventListener('click',()=>go(scene-1));
+$('next').addEventListener('click',()=>go(scene+1));
+addEventListener('keydown',e=>{
+  if(['ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();go(scene+1)}
+  else if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();go(scene-1)}
+  else if(e.key==='Home')go(0);else if(e.key==='End')go(SCENES.length-1);
+  else if(e.key==='Escape')toggleData(false);
+});
+let wheelLock=0,wacc=0;
+addEventListener('wheel',e=>{if(e.target.closest&&e.target.closest('.data'))return;const now=Date.now();if(now<wheelLock)return;wacc+=e.deltaY+e.deltaX;
+  if(Math.abs(wacc)>60){go(scene+(wacc>0?1:-1));wacc=0;wheelLock=now+1100}},{passive:true});
+let tx0=null,ty0=null;
+$('stage').addEventListener('touchstart',e=>{if(e.target.closest('.chartbox,.data,.nav,.toggles')){tx0=null;return}tx0=e.touches[0].clientX;ty0=e.touches[0].clientY},{passive:true});
+$('stage').addEventListener('touchend',e=>{if(tx0===null)return;const dx=e.changedTouches[0].clientX-tx0,dy=e.changedTouches[0].clientY-ty0;
+  if(Math.max(Math.abs(dx),Math.abs(dy))>55)go(scene+((Math.abs(dx)>Math.abs(dy)?-dx:-dy)>0?1:-1));tx0=null},{passive:true});
+let rz;addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(()=>{resizeCanvas();go(scene,true)},120)});
+
+resizeCanvas();
+parts.forEach(p=>{p.x=p.sx=W/2+(p.ix-.5)*W*.9;p.y=p.sy=H/2+(p.iy-.5)*H*.8});
+const m=/^#cena(\d+)$/.exec(location.hash);
+go(m?(+m[1]-1):0);
+requestAnimationFrame(frame);
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>{if(SCENES[scene].mode==='dots')go(scene,true);else placeBox(SCENES[scene].chart)});
 })();
 </script>
 
