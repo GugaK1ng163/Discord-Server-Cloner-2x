@@ -10,6 +10,6 @@
 
 ## Uso
 
-Setas do teclado, scroll ou deslizar o dedo trocam de cena. O botão "Números" mostra a tabela de cada cena.
+Botão "Apresentar" (ou tecla P): mostra um gráfico por vez em tela cheia. Setas avançam e voltam; Esc sai.
 
 A fonte (Archivo) vem do Google Fonts; sem internet, o painel usa uma fonte condensada do sistema e continua funcionando.

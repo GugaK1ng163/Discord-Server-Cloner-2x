@@ -83,6 +83,39 @@ h1 em{font-style:normal;color:var(--or)}
 .src{margin-top:16px;font-size:.76rem;color:var(--muted);text-align:center}
 .fallback{display:grid;place-items:center;height:100%;color:var(--muted);text-align:center;padding:16px}
 
+.pbtn{margin-top:12px;display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border:0;border-radius:99px;background:var(--ink);color:#fff;font:700 .86rem var(--f);cursor:pointer;transition:background .2s}
+.pbtn:hover{background:var(--or)}
+.pbtn svg{width:14px;height:14px}
+kbd{font:700 .7rem var(--f);padding:2px 6px;border-radius:5px;border:1px solid rgba(255,255,255,.35)}
+.pbtn:focus-visible,.pbar button:focus-visible{outline:2px solid var(--or);outline-offset:2px}
+/* modo apresentação: um bloco por vez, centralizado e ampliado */
+body.present{overflow:hidden}
+body.present .wrap{min-height:100vh;display:flex;flex-direction:column;justify-content:center;gap:26px;padding-block:28px 96px;max-width:1240px}
+body.present .wrap>:not(.has-current){display:none}
+body.present .row.has-current{display:block;margin:0}
+body.present .row>.card:not(.is-current){display:none}
+body.present .is-current{animation:slidein .5s cubic-bezier(.2,.8,.2,1) both}
+@keyframes slidein{from{opacity:0;transform:translateY(16px)}}
+body.present .card.is-current{padding:34px 38px 22px}
+body.present .card.is-current h2{font-size:clamp(1.6rem,2.8vw,2.4rem);letter-spacing:-.02em}
+body.present .card.is-current p{font-size:1rem}
+body.present .card.is-current .n{font-size:.9rem}
+body.present .card.is-current .chart{height:min(60vh,600px)!important}
+body.present .card.is-current .picto{max-width:900px;margin-inline:auto;gap:14px 8px}
+body.present .card.is-current .pleg{justify-content:center;font-size:1rem}
+body.present .card.is-current .score b{font-size:clamp(5rem,12vw,9rem)}
+body.present .card.is-current .note{font-size:1.15rem}
+body.present header.has-current h1{font-size:clamp(3rem,7vw,5.4rem)}
+body.present .kpis.has-current .kpi b{font-size:clamp(3rem,6.5vw,5rem)}
+body.present .pbtn{display:none}
+.pbar{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:50;display:flex;align-items:center;gap:6px;padding:6px;border-radius:99px;background:var(--ink);color:#fff;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+.pbar[hidden]{display:none}
+.pbar button{display:grid;place-items:center;height:40px;min-width:40px;padding:0 12px;border:0;border-radius:99px;background:transparent;color:#fff;font:700 .85rem var(--f);cursor:pointer;gap:6px}
+.pbar button:hover{background:rgba(255,255,255,.12)}
+.pbar svg{width:18px;height:18px}
+.pbar span{min-width:64px;text-align:center;font-weight:800;font-variant-numeric:tabular-nums}
+.pbar .pexit{display:inline-flex;align-items:center;background:var(--or)}
+.pbar .pexit:hover{background:#ff8a1f}
 @media (max-width:860px){
   .row,.row.wide{grid-template-columns:minmax(0,1fr)}
   .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -101,7 +134,7 @@ h1 em{font-style:normal;color:var(--or)}
 <div class="wrap">
   <header>
     <div><span class="eyebrow"><i></i>Pesquisa 3MMD07</span><h1>Segurança em <em>São Paulo</em></h1></div>
-    <div class="meta"><b>292 respostas</b>17 a 22 de setembro de 2026</div>
+    <div class="meta"><b>292 respostas</b>17 a 22 de setembro de 2026<br><button class="pbtn" id="pbtn" type="button"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>Apresentar <kbd>P</kbd></button></div>
   </header>
 
   <section class="kpis">
@@ -152,6 +185,12 @@ h1 em{font-style:normal;color:var(--or)}
   <p class="src">Fonte: Formulário 3MMD07, 292 respostas (17 a 22/09/2026). Amostra por conveniência: 53% têm de 15 a 17 anos. “Inseguro” = respondeu “raramente” ou “nunca”.</p>
 </div>
 
+<div class="pbar" id="pbar" hidden>
+  <button type="button" id="pprev" aria-label="Anterior"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+  <span id="pcount">1 / 11</span>
+  <button type="button" id="pnext" aria-label="Próximo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
+  <button type="button" id="pexit" class="pexit">Sair <kbd>Esc</kbd></button>
+</div>
 <script>
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
@@ -310,6 +349,42 @@ S.forEach((n,i)=>{const b=document.createElement('button');b.type='button';b.tex
 /* contagem dos números */
 if(!matchMedia('(prefers-reduced-motion: reduce)').matches)document.querySelectorAll('[data-to]').forEach(el=>{const to=+el.dataset.to,t0=performance.now();
   const step=t=>{const q=Math.min(1,(t-t0)/1200),e=1-Math.pow(1-q,3);el.textContent=Math.round(to*e)+'%';if(q<1)requestAnimationFrame(step)};requestAnimationFrame(step)});
+
+/* modo apresentação */
+const slides=[[document.querySelector('header'),document.querySelector('.kpis')]]
+  .concat([...document.querySelectorAll('.row>.card')].map(c=>[c]),[[document.querySelector('.you')],[document.querySelector('.end')]]);
+let cur=-1;
+const countUp=()=>{if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;document.querySelectorAll('[data-to]').forEach(el=>{const to=+el.dataset.to,t0=performance.now();
+  const st=t=>{const q=Math.min(1,(t-t0)/1100),e=1-Math.pow(1-q,3);el.textContent=Math.round(to*e)+'%';if(q<1)requestAnimationFrame(st)};requestAnimationFrame(st)})};
+function showSlide(i){
+  cur=(i+slides.length)%slides.length;
+  document.querySelectorAll('.has-current,.is-current').forEach(e=>e.classList.remove('has-current','is-current'));
+  slides[cur].forEach(e=>{e.classList.add('has-current','is-current');if(e.parentElement.classList.contains('row'))e.parentElement.classList.add('has-current')});
+  $('pcount').textContent=(cur+1)+' / '+slides.length;
+  slides[cur].forEach(e=>e.querySelectorAll('.picto svg').forEach(x=>{x.style.animation='none';void x.offsetWidth;x.style.animation=''}));
+  if(cur===0)countUp();
+  requestAnimationFrame(()=>charts.forEach(c=>c.resize()));
+  scrollTo(0,0);
+}
+function present(on){
+  document.body.classList.toggle('present',on);$('pbar').hidden=!on;
+  if(on){showSlide(cur<0?0:cur);try{document.documentElement.requestFullscreen&&!document.fullscreenElement&&document.documentElement.requestFullscreen().catch(()=>{})}catch(e){}}
+  else{document.querySelectorAll('.has-current,.is-current').forEach(e=>e.classList.remove('has-current','is-current'));cur=-1;
+    try{document.fullscreenElement&&document.exitFullscreen()}catch(e){}requestAnimationFrame(()=>charts.forEach(c=>c.resize()))}
+}
+$('pbtn').addEventListener('click',()=>present(true));
+$('pprev').addEventListener('click',()=>showSlide(cur-1));
+$('pnext').addEventListener('click',()=>showSlide(cur+1));
+$('pexit').addEventListener('click',()=>present(false));
+addEventListener('keydown',e=>{
+  const on=document.body.classList.contains('present');
+  if((e.key==='p'||e.key==='P')&&!e.ctrlKey&&!e.metaKey){present(!on);return}
+  if(!on)return;
+  if(['ArrowRight','ArrowDown','PageDown',' '].includes(e.key)){e.preventDefault();showSlide(cur+1)}
+  else if(['ArrowLeft','ArrowUp','PageUp'].includes(e.key)){e.preventDefault();showSlide(cur-1)}
+  else if(e.key==='Escape')present(false);
+});
+document.addEventListener('fullscreenchange',()=>{if(!document.fullscreenElement&&document.body.classList.contains('present'))present(false)});
 })();
 </script>
 
