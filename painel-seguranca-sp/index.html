@@ -136,6 +136,15 @@ body.present .you.is-current .res{font-size:1.3rem}
 .pbar span{min-width:64px;text-align:center;font-weight:800;font-variant-numeric:tabular-nums}
 .pbar .pexit{display:inline-flex;align-items:center;background:var(--or)}
 .pbar .pexit:hover{background:#ff8a1f}
+/* foco no hover: o item sob o mouse se destaca, o resto fica apagado */
+.card,.kpi,.you{transition:opacity .35s ease,filter .35s ease,transform .35s ease,box-shadow .35s ease,border-color .35s ease}
+@media (hover:hover){
+  body:not(.present) .wrap:has(.row>.card:hover,.you:hover) :is(.row>.card,.you,.kpi):not(:hover){opacity:.32;filter:blur(1.5px) grayscale(.5)}
+  body:not(.present) .kpis:has(.kpi:hover) .kpi:not(:hover){opacity:.32;filter:blur(1.5px) grayscale(.5)}
+  body:not(.present) .wrap:has(.kpi:hover) .row>.card{opacity:.32;filter:blur(1.5px) grayscale(.5)}
+  body:not(.present) .row>.card:hover,body:not(.present) .you:hover{transform:translateY(-4px);border-color:var(--ink);box-shadow:0 22px 50px rgba(18,18,18,.12)}
+  body:not(.present) .kpi:hover{transform:translateY(-3px)}
+}
 @media (max-width:860px){
   .row,.row.wide{grid-template-columns:minmax(0,1fr)}
   .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -278,7 +287,7 @@ const ax=o=>Object.assign({axisLine:{lineStyle:{color:C.line}},axisTick:{show:fa
 const lab=o=>Object.assign({valueAnimation:true,show:true,color:C.ink,fontFamily:C.f,fontWeight:800,fontSize:13},o||{});
 let cv;const lw=(arr,sz)=>{cv=cv||document.createElement('canvas').getContext('2d');cv.font=`700 ${sz||12}px ${C.f}`;return Math.ceil(Math.max(...arr.map(t=>cv.measureText(t).width)))+14};
 const charts=[];
-const mk=(id,opt)=>{const c=echarts.init($(id));c.__opt=opt;c.setOption(opt);charts.push(c);return c};
+const mk=(id,opt)=>{(opt.series||[]).forEach(se=>{se.emphasis=Object.assign({},se.emphasis,{focus:'self',blurScope:'coordinateSystem'});se.blur={itemStyle:{opacity:.18},label:{opacity:.25}}});const c=echarts.init($(id));c.__opt=opt;c.setOption(opt);charts.push(c);return c};
 addEventListener('resize',()=>charts.forEach(c=>c.resize()));
 
 /* 01 rosca */
