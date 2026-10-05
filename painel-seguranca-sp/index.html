@@ -117,6 +117,16 @@ body.present .card.is-current .note{font-size:1.15rem}
 body.present header.has-current h1{font-size:clamp(3rem,7vw,5.4rem)}
 body.present .kpis.has-current .kpi b{font-size:clamp(3rem,6.5vw,5rem)}
 body.present .pbtn{display:none}
+/* apresentação sem bordas: o conteúdo flutua sobre o fundo pontilhado, que ocupa a tela toda */
+body.present::before{-webkit-mask-image:none;mask-image:none}
+body.present .card.is-current,body.present .you.is-current{background:transparent;border-color:transparent;box-shadow:none;border-radius:0}
+body.present .end.is-current{position:fixed;inset:0;z-index:40;border-radius:0;display:flex;flex-direction:column;justify-content:center;padding:6vh max(6vw,24px) 14vh}
+body.present .end.is-current h2{font-size:clamp(1.6rem,3vw,2.4rem);margin-bottom:5vh}
+body.present .end.is-current li b{font-size:clamp(2.6rem,5.5vw,4.6rem)}
+body.present .end.is-current li span{font-size:clamp(1rem,1.4vw,1.25rem)}
+body.present .you.is-current h2{font-size:clamp(2rem,3.6vw,3rem)}
+body.present .you.is-current .opts button{font-size:1.05rem;padding:14px 20px}
+body.present .you.is-current .res{font-size:1.3rem}
 .pbar{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:50;display:flex;align-items:center;gap:6px;padding:6px;border-radius:99px;background:var(--ink);color:#fff;box-shadow:0 10px 30px rgba(0,0,0,.25)}
 .pbar[hidden]{display:none}
 .pbar button{display:grid;place-items:center;height:40px;min-width:40px;padding:0 12px;border:0;border-radius:99px;background:transparent;color:#fff;font:700 .85rem var(--f);cursor:pointer;gap:6px}
