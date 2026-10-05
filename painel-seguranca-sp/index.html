@@ -3,143 +3,277 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2307080b'/%3E%3Ccircle cx='11' cy='12' r='3.2' fill='%23ff6b5e'/%3E%3Ccircle cx='21' cy='12' r='3.2' fill='%23e45aa6'/%3E%3Ccircle cx='16' cy='21' r='3.2' fill='%236aa8f0'/%3E%3C/svg%3E">
 <title>Sensação de Segurança em SP</title>
-<meta name="description" content="292 respostas sobre segurança e violência em São Paulo, em cenas visuais.">
+<meta name="description" content="Painel com 292 respostas sobre segurança e violência em São Paulo.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%237c5cff'/%3E%3Cstop offset='1' stop-color='%2322d3ee'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='8' fill='url(%23g)'/%3E%3Cpath d='M9 22V14M16 22V9M23 22V17' stroke='white' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700&display=swap">
 <style>
-/* Layout: palco de tela cheia. 292 pontos (um por pessoa) se reorganizam a cada cena;
-   títulos em tipo condensado de cartaz, números gigantes, quase nenhum texto corrido. Tema único escuro. */
+/* Layout: painel com abas. Cabeçalho fixo com as 5 abas (a ordem conta a história);
+   cada aba é uma grade de cartões de vidro sobre fundo azul-marinho com brilho. Tema único escuro por escolha do usuário. */
 :root{
   color-scheme:dark;
-  --bg:#07080b; --bg-2:#0f1217; --bg-3:#171b22; --line:#232830; --line-2:#343a44;
-  --ink:#f4f2ec; --ink-2:#a8aeb7; --muted:#6b727c;
-  --s0:#6aa8f0; --s1:#3a70bd; --s2:#6a7079; --s3:#c24f47; --s4:#ff6b5e;
-  --c0:#e45aa6; --c1:#d9722b; --c2:#8f78ea; --c3:#139c7e; --c4:#b48800;
-  --pol:#9fb3c8; --prev:#f5a524;
-  --f:"Archivo","Arial Narrow","Helvetica Neue",Arial,sans-serif;
-  --pad:clamp(16px,3.6vw,56px);
+  --bg0:#050919; --bg1:#0b1236; --card:#10173d;
+  --glass:rgba(255,255,255,.05); --glass-2:rgba(255,255,255,.085);
+  --stroke:rgba(255,255,255,.09); --stroke-2:rgba(255,255,255,.18);
+  --ink:#eef1ff; --ink-2:#aab3d6; --muted:#7884b3; --grid:rgba(255,255,255,.07);
+  --s0:#38bdf8; --s1:#2563eb; --s2:#8b93b8; --s3:#fb923c; --s4:#f43f5e;
+  --c0:#f472b6; --c1:#f59e0b; --c2:#a855f7; --c3:#22d3ee; --c4:#a3e635;
+  --m0:#60a5fa; --m1:#34d399; --m2:#facc15; --m3:#a78bfa; --m4:#fb7185;
+  --fem:#f472b6; --mas:#60a5fa; --nb:#c084fc;
+  --a1:#7c5cff; --a2:#22d3ee;
+  --f-num:"Outfit","Segoe UI",system-ui,sans-serif;
+  --f-txt:"Manrope","Segoe UI",system-ui,-apple-system,sans-serif;
 }
 *{box-sizing:border-box}
-html,body{height:100%}
-body{margin:0;background:var(--bg);color:var(--ink);font:500 15px/1.4 var(--f);overflow:hidden;-webkit-font-smoothing:antialiased;-webkit-user-select:none;user-select:none}
-button{font:inherit;color:inherit}
+html{scroll-behavior:smooth}
+html{background:var(--bg0)}
+body{margin:0;min-height:100%;color:var(--ink);font:500 15px/1.5 var(--f-txt);-webkit-font-smoothing:antialiased;background:var(--bg0)}
+.bg{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(1200px 800px at 50% 35%,#0f1a52 0%,#091139 45%,var(--bg0) 100%)}
+.orb{position:fixed;border-radius:50%;filter:blur(90px);pointer-events:none;z-index:0;opacity:.55}
+.orb.o1{width:560px;height:560px;right:-140px;top:-180px;background:#6d3cff;animation:drift 22s ease-in-out infinite alternate}
+.orb.o2{width:520px;height:520px;left:-200px;bottom:-200px;background:#0891b2;opacity:.4;animation:drift 26s ease-in-out infinite alternate-reverse}
+.orb.o3{width:380px;height:380px;left:42%;top:38%;background:#db2777;opacity:.16;animation:drift 30s ease-in-out infinite alternate}
+@keyframes drift{to{transform:translate(60px,40px) scale(1.12)}}
+.gridbg{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5;
+  background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+  background-size:44px 44px;-webkit-mask-image:radial-gradient(ellipse at 50% 0%,#000 30%,transparent 75%);mask-image:radial-gradient(ellipse at 50% 0%,#000 30%,transparent 75%)}
+.app{position:relative;z-index:1;max-width:1360px;margin:0 auto;padding-inline:clamp(16px,3vw,32px);padding-block:18px 40px}
 
-.stage{position:relative;width:100%;height:100%;overflow:hidden;background:radial-gradient(110% 85% at 50% 48%,#0e1117 0%,#0a0c10 45%,var(--bg) 80%)}
-.stage::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:6;opacity:.07;mix-blend-mode:overlay;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
-#dots{position:absolute;inset:0;width:100%;height:100%;z-index:1;touch-action:none}
+/* topo */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;display:flex;align-items:center;justify-content:space-between;gap:14px 24px;flex-wrap:wrap;
+  padding:12px 14px;margin-bottom:22px;border:1px solid var(--stroke);border-radius:20px;background:rgba(10,16,48,.72);
+  -webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);box-shadow:0 12px 40px rgba(0,0,0,.35)}
+.brand{display:flex;align-items:center;gap:12px;min-width:0}
+.logo{width:42px;height:42px;border-radius:12px;flex:none;display:grid;place-items:center;background:linear-gradient(135deg,var(--a1),var(--a2));box-shadow:0 6px 24px rgba(124,92,255,.45)}
+.logo svg{width:22px;height:22px}
+.brand b{display:block;font:700 1.08rem/1.15 var(--f-num);letter-spacing:-.01em}
+.brand span{display:block;font-size:.78rem;color:var(--ink-2)}
+.tabs{display:flex;gap:4px;padding:4px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid var(--stroke);overflow-x:auto;scrollbar-width:none;max-width:100%}
+.tabs::-webkit-scrollbar{display:none}
+.tab{display:flex;align-items:center;gap:8px;padding:9px 14px;border:0;border-radius:10px;background:transparent;color:var(--ink-2);font:600 .88rem/1 var(--f-txt);cursor:pointer;white-space:nowrap;transition:background .25s,color .25s}
+.tab svg{width:17px;height:17px;flex:none;opacity:.85}
+.tab:hover{color:var(--ink);background:rgba(255,255,255,.05)}
+.tab[aria-selected="true"]{color:#fff;background:linear-gradient(135deg,rgba(124,92,255,.9),rgba(34,211,238,.75));box-shadow:0 6px 20px rgba(124,92,255,.35)}
+.tab:focus-visible,.next:focus-visible{outline:2px solid var(--a2);outline-offset:2px}
 
-.head{position:absolute;left:0;right:0;top:0;z-index:4;padding:var(--pad) var(--pad) 0;display:flex;justify-content:space-between;align-items:flex-start;gap:12px 28px;pointer-events:none}
-.head-l{min-width:0}
-.title{margin:0;font-family:var(--f);font-weight:900;font-stretch:62%;text-transform:uppercase;line-height:.84;letter-spacing:-.005em;font-size:clamp(2.3rem,6.4vw,6.4rem)}
-.title .ln{display:block;overflow:hidden;padding:.13em 0 .05em;margin:-.13em 0 -.05em}
-.title .ln>span{display:block;animation:rise .75s cubic-bezier(.2,.85,.2,1) both}
-.title .ln:nth-child(2)>span{animation-delay:.07s}
-@keyframes rise{from{transform:translateY(108%)}to{transform:none}}
-.sub{margin:12px 0 0;color:var(--ink-2);font-size:clamp(.85rem,1.1vw,1rem);font-weight:450;max-width:46ch;animation:fade .8s .2s both}
-@keyframes fade{from{opacity:0}to{opacity:1}}
-.stat{text-align:right;flex:none;animation:fade .9s .25s both}
-.stat b{display:block;font-weight:900;font-stretch:62%;line-height:.78;font-size:clamp(3.4rem,10vw,9.5rem);letter-spacing:-.01em}
-.stat span{display:block;margin:10px 0 0 auto;color:var(--ink-2);font-size:clamp(.82rem,1.05vw,.98rem);max-width:17ch;text-wrap:balance}
-.toggles{pointer-events:auto;display:flex;flex-wrap:wrap;gap:6px;margin-top:16px;animation:fade .8s .3s both}
-.toggles button{padding:8px 13px;border-radius:999px;border:1px solid var(--line-2);background:rgba(15,18,23,.8);color:var(--ink-2);cursor:pointer;font-weight:550;font-size:.84rem}
-.toggles button:hover{color:var(--ink);border-color:var(--ink-2)}
-.toggles button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+/* cabeçalho da aba */
+.phead{display:flex;align-items:flex-end;justify-content:space-between;gap:12px 24px;flex-wrap:wrap;margin:6px 4px 18px}
+.phead h1{margin:0;font:700 clamp(1.7rem,3.2vw,2.5rem)/1.05 var(--f-num);letter-spacing:-.02em}
+.phead h1 small{display:block;font:600 .8rem/1 var(--f-txt);letter-spacing:.02em;color:var(--a2);margin-bottom:8px}
+.say{margin:0;display:flex;align-items:center;gap:10px;padding:10px 16px;border-radius:14px;background:rgba(124,92,255,.14);border:1px solid rgba(124,92,255,.35);font-weight:600;max-width:60ch}
+.say i{width:8px;height:8px;border-radius:50%;flex:none;background:var(--a2);box-shadow:0 0 12px var(--a2)}
 
-.intro{position:absolute;inset:0;z-index:4;display:grid;place-items:center;text-align:center;pointer-events:none;padding:var(--pad) var(--pad) 90px}
-.intro .n{font-weight:900;font-stretch:62%;line-height:.76;font-size:clamp(9rem,36vh,26rem);letter-spacing:-.02em;animation:fade 1.2s both;text-shadow:0 0 70px rgba(7,8,11,.95)}
-.intro p{margin:16px auto 0;font-weight:850;font-stretch:62%;text-transform:uppercase;font-size:clamp(1.4rem,3.4vw,2.8rem);line-height:.95;max-width:17ch;animation:fade 1.2s .2s both;text-shadow:0 0 30px rgba(7,8,11,.95)}
-.intro small{display:block;margin-top:22px;color:var(--ink-2);font-size:.9rem;font-weight:450;animation:fade 1.2s .6s both}
-.intro kbd{font:inherit;border:1px solid var(--line-2);border-radius:4px;padding:1px 6px;margin:0 2px}
+/* grade */
+.panel[hidden]{display:none}
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:16px}
+.c3{grid-column:span 3}.c4{grid-column:span 4}.c5{grid-column:span 5}.c6{grid-column:span 6}.c7{grid-column:span 7}.c8{grid-column:span 8}.c12{grid-column:span 12}
+.stack{display:grid;gap:16px;min-width:0}
+.card{position:relative;min-width:0;border-radius:20px;padding:18px 18px 14px;border:1px solid var(--stroke);
+  background:linear-gradient(180deg,rgba(255,255,255,.075),rgba(255,255,255,.025));-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
+  box-shadow:0 12px 40px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.07);animation:up .6s cubic-bezier(.2,.8,.2,1) both}
+.panel .card:nth-child(2){animation-delay:.05s}.panel .card:nth-child(3){animation-delay:.1s}.panel .card:nth-child(4){animation-delay:.15s}.panel .card:nth-child(5){animation-delay:.2s}.panel .card:nth-child(6){animation-delay:.25s}
+@keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.card h2{margin:0;font:600 1.02rem/1.25 var(--f-num);letter-spacing:-.005em}
+.card .q{margin:3px 0 0;font-size:.8rem;color:var(--muted)}
+.chart{width:100%;height:300px}
+.tall{height:440px}
 
-.glabels{position:absolute;inset:0;z-index:3;pointer-events:none}
-.gl{position:absolute;transform:translateX(-50%);text-align:center;white-space:nowrap;animation:fade .8s .35s both}
-.gl b{display:block;font-weight:900;font-stretch:62%;line-height:.86;font-size:var(--fs,40px);letter-spacing:-.01em}
-.gl span{display:block;margin-top:5px;color:var(--ink-2);font-size:clamp(.72rem,.95vw,.86rem);font-weight:550}
-.gl.hot b{color:var(--hot)}
+/* KPIs */
+.kpi{display:flex;flex-direction:column;gap:10px}
+.kpi .ic{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:var(--g);box-shadow:0 6px 18px var(--sh)}
+.kpi .ic svg{width:20px;height:20px}
+.kpi b{font:700 clamp(2.2rem,3.6vw,3rem)/1 var(--f-num);letter-spacing:-.03em}
+.kpi span{font-size:.86rem;color:var(--ink-2)}
+.bar{height:8px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden}
+.bar i{display:block;height:100%;border-radius:99px;background:var(--g);transform-origin:left;animation:grow 1.2s .2s cubic-bezier(.2,.8,.2,1) both}
+@keyframes grow{from{transform:scaleX(0)}}
 
-.chartbox{position:absolute;left:0;right:0;z-index:2;opacity:0;visibility:hidden;transition:opacity .7s,visibility 0s .7s}
-.chartbox.on{opacity:1;visibility:visible;transition:opacity .7s}
+/* pictograma */
+.picto{display:grid;grid-template-columns:repeat(20,1fr);gap:7px 3px;margin-top:18px}
+.picto svg{width:100%;height:auto;aspect-ratio:3/5;display:block;animation:pop .45s cubic-bezier(.2,.9,.3,1.3) both}
+@keyframes pop{from{opacity:0;transform:scale(.3)}}
+.leg{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:12px;font-size:.8rem;color:var(--ink-2)}
+.leg i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.leg b{color:var(--ink);font-weight:700;margin-left:4px}
 
-.legend{position:absolute;left:var(--pad);bottom:78px;z-index:4;display:flex;flex-wrap:wrap;gap:6px 16px;font-size:.8rem;color:var(--ink-2);max-width:calc(100% - 2*var(--pad));pointer-events:none;animation:fade .8s both}
-.legend i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px}
-.legend .note{color:var(--muted)}
+/* cabo de guerra */
+.tug{display:grid;gap:18px;margin-top:10px}
+.tug-nums{display:grid;grid-template-columns:1fr auto 1fr;align-items:end;gap:12px}
+.tug-nums div:last-child{text-align:right}
+.tug-nums b{display:block;font:800 clamp(3rem,7vw,5.4rem)/.9 var(--f-num);letter-spacing:-.04em}
+.tug-nums span{font-size:.95rem;color:var(--ink-2);font-weight:600}
+.tug-nums .vs{font:700 1.1rem var(--f-num);color:var(--muted);padding-bottom:12px}
+.tug-bar{position:relative;display:flex;height:22px;border-radius:99px;overflow:hidden;gap:3px}
+.tug-bar span{display:block;animation:grow 1.2s .2s cubic-bezier(.2,.8,.2,1) both}
+.tug-bar span:first-child{background:linear-gradient(90deg,#3b82f6,var(--m0));border-radius:99px 0 0 99px;transform-origin:right}
+.tug-bar span:last-child{background:linear-gradient(90deg,var(--m1),#10b981);border-radius:0 99px 99px 0}
+.tug-bar::after{content:"";position:absolute;left:50%;top:-4px;bottom:-4px;width:3px;margin-left:-1.5px;background:#fff;border-radius:2px;box-shadow:0 0 10px #fff}
+.tug-note{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.tug-note div{padding:12px 14px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid var(--stroke)}
+.tug-note b{display:block;font:700 1.6rem/1 var(--f-num)}
+.tug-note span{font-size:.8rem;color:var(--ink-2)}
 
-.finale{position:absolute;left:var(--pad);right:var(--pad);bottom:84px;z-index:4;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;pointer-events:none}
-.finale div{animation:fade .8s both}
-.finale div:nth-child(2){animation-delay:.12s}.finale div:nth-child(3){animation-delay:.24s}.finale div:nth-child(4){animation-delay:.36s}
-.finale b{text-shadow:0 0 28px rgba(7,8,11,.9);display:block;font-weight:900;font-stretch:62%;line-height:.82;font-size:clamp(2.4rem,5.4vw,5rem)}
-.finale span{display:block;margin-top:6px;color:var(--ink-2);font-size:.85rem;max-width:20ch}
-.foot{position:absolute;right:var(--pad);top:calc(var(--pad) + 4px);z-index:4;margin:0;color:var(--muted);font-size:.74rem;max-width:30ch;text-align:right;animation:fade 1s .5s both}
+/* destaque grande */
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
+.duo div{padding:16px;border-radius:16px;background:rgba(255,255,255,.04);border:1px solid var(--stroke)}
+.duo b{display:block;font:800 clamp(2.6rem,5vw,3.6rem)/1 var(--f-num);letter-spacing:-.03em;background:var(--g);-webkit-background-clip:text;background-clip:text;color:transparent}
+.duo span{font-size:.86rem;color:var(--ink-2)}
+.rings-leg{display:grid;gap:10px;margin-top:4px}
+.rings-leg div{display:flex;align-items:center;gap:10px;font-size:.9rem;color:var(--ink-2)}
+.rings-leg i{width:12px;height:12px;border-radius:50%;flex:none}
+.rings-leg b{margin-left:auto;font:700 1.2rem var(--f-num);color:var(--ink)}
+.ringwrap{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:12px;align-items:center}
 
-.nav{position:absolute;left:0;right:0;bottom:0;z-index:5;display:flex;align-items:center;gap:14px;padding:14px var(--pad) calc(16px + env(safe-area-inset-bottom,0px))}
-.count{font-weight:850;font-stretch:62%;font-size:1.25rem;line-height:1;color:var(--muted);min-width:4.2ch;font-variant-numeric:tabular-nums}
-.count b{color:var(--ink)}
-.track{flex:1;display:flex;gap:5px;min-width:0}
-.track button{flex:1;min-width:0;height:26px;border:0;background:none;padding:0;cursor:pointer;position:relative}
-.track button::before{content:"";position:absolute;left:0;right:0;top:11px;height:4px;border-radius:2px;background:var(--line);transition:background .4s}
-.track button.done::before{background:var(--line-2)}
-.track button[aria-current="step"]::before{background:var(--ink)}
-.track button:hover::before{background:var(--ink-2)}
-.track button span{position:absolute;left:0;bottom:24px;font-size:.72rem;color:var(--ink-2);white-space:nowrap;opacity:0;transition:opacity .2s;pointer-events:none}
-.track button:hover span,.track button:focus-visible span{opacity:1}
-.arrow,.pill{height:42px;border-radius:999px;border:1px solid var(--line-2);background:rgba(15,18,23,.85);cursor:pointer;display:grid;place-items:center;flex:none}
-.arrow{width:42px}
-.arrow:hover,.pill:hover{border-color:var(--ink-2)}
-.arrow:disabled{opacity:.3;cursor:default}
-.arrow svg{width:18px;height:18px}
-.pill{padding:0 14px;font-size:.8rem;font-weight:600;color:var(--ink-2)}
-button:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+/* resumo */
+.sum{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:12px}
+.sum div{padding:16px;border-radius:16px;background:rgba(255,255,255,.04);border:1px solid var(--stroke)}
+.sum b{display:block;font:800 2.4rem/1 var(--f-num);letter-spacing:-.03em}
+.sum span{font-size:.84rem;color:var(--ink-2)}
 
-.tip{position:fixed;left:0;top:0;z-index:20;pointer-events:none;background:rgba(18,21,27,.96);border:1px solid var(--line-2);border-radius:8px;padding:10px 12px;font-size:.8rem;line-height:1.5;min-width:200px;box-shadow:0 16px 40px rgba(0,0,0,.5);opacity:0;transition:opacity .12s}
-.tip.on{opacity:1}
+/* próxima aba */
+.next{display:flex;align-items:center;justify-content:space-between;gap:16px;width:100%;margin-top:18px;padding:16px 20px;border-radius:18px;border:1px solid var(--stroke-2);cursor:pointer;color:var(--ink);text-align:left;
+  background:linear-gradient(135deg,rgba(124,92,255,.22),rgba(34,211,238,.12));font:inherit;transition:transform .2s,box-shadow .2s}
+.next:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(124,92,255,.25)}
+.next small{display:block;font-size:.75rem;color:var(--a2);font-weight:700;letter-spacing:.04em}
+.next b{font:600 1.1rem var(--f-num)}
+.next svg{width:26px;height:26px;flex:none}
+.foot{margin-top:22px;text-align:center;font-size:.76rem;color:var(--muted)}
+.fallback{display:grid;place-items:center;height:100%;padding:20px;text-align:center;color:var(--muted)}
 
-.data{position:absolute;right:var(--pad);bottom:76px;z-index:7;width:min(560px,calc(100% - 2*var(--pad)));max-height:min(60vh,520px);overflow:auto;background:rgba(14,17,22,.97);border:1px solid var(--line-2);border-radius:10px;padding:14px 16px 16px;box-shadow:0 20px 50px rgba(0,0,0,.55);-webkit-user-select:text;user-select:text}
-.data h3{margin:0 0 8px;font-weight:850;font-stretch:70%;font-size:1.05rem;text-transform:uppercase}
-.data table{border-collapse:collapse;width:100%;font-size:.82rem;font-variant-numeric:tabular-nums}
-.data th,.data td{padding:6px 8px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
-.data th{color:var(--muted);font-weight:600}
-.data th:first-child,.data td:first-child{text-align:left}
-.data td:first-child{color:var(--ink)}
-.data .x{float:right;background:none;border:0;color:var(--ink-2);cursor:pointer;font-size:1.3rem;line-height:1;padding:0 2px}
-.fallback{display:grid;place-items:center;height:100%;padding:24px;text-align:center;color:var(--muted)}
-
-@media (max-width:760px){
-  .head{flex-direction:column}
-  .stat{text-align:left}
-  .stat span{margin-left:0;max-width:26ch}
-  .stat b{font-size:clamp(2.8rem,14vw,4.6rem)}
-  .finale{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
-  .foot,.pill{display:none}
-  .legend{bottom:72px;font-size:.74rem;gap:4px 12px}
-  .toggles{margin-top:12px}
-  .toggles button{padding:7px 10px;font-size:.78rem}
+@media (max-width:1100px){.c3,.c4{grid-column:span 6}.c5,.c7,.c8{grid-column:span 12}.sum{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:700px){
+  .c3,.c4,.c6{grid-column:span 12}
+  .top{border-radius:16px}
+  .brand span{display:none}
+  .chart{height:280px}.tall{height:360px}
+  .ringwrap{grid-template-columns:1fr}
+  .tug-note{grid-template-columns:1fr}
 }
-@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-delay:0s!important;transition-duration:.01ms!important}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
 </style>
 </head>
 <body>
 
 
-<div class="stage" id="stage">
-  <canvas id="dots" aria-hidden="true"></canvas>
-  <div class="chartbox" id="bars3d" role="img" aria-label="Barras 3D: crime que mais preocupa por medida defendida"></div>
-  <div class="chartbox" id="sankey" role="img" aria-label="Fluxo: sensação de segurança, crime temido e medida defendida"></div>
-  <div class="chartbox" id="city" role="img" aria-label="Cidade 3D com 292 prédios, um por respondente; a altura indica o medo"></div>
-  <div class="glabels" id="glabels"></div>
-  <div id="overlay"></div>
-  <nav class="nav" aria-label="Cenas">
-    <span class="count" id="count"><b>01</b>/10</span>
-    <button class="arrow" id="prev" type="button" aria-label="Cena anterior"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
-    <div class="track" id="track"></div>
-    <button class="arrow" id="next" type="button" aria-label="Próxima cena"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
-    <button class="pill" id="dataBtn" type="button" aria-expanded="false">Números</button>
-  </nav>
-  <div class="data" id="data" hidden></div>
-  <div class="tip" id="tip" role="status"></div>
+<div class="bg"></div><div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div><div class="gridbg"></div>
+<div class="app">
+  <header class="top">
+    <div class="brand">
+      <div class="logo"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><path d="M6 19v-6M12 19V6M18 19v-9"/></svg></div>
+      <div><b>Segurança em São Paulo</b><span>Pesquisa 3MMD071 · 292 respostas · 17 a 22 set. 2026</span></div>
+    </div>
+    <div class="tabs" role="tablist" aria-label="Seções do painel" id="tabs">
+      <button class="tab" role="tab" id="t-geral" aria-controls="geral" data-p="geral"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg>Visão geral</button>
+      <button class="tab" role="tab" id="t-quem" aria-controls="quem" data-p="quem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.6 3.4-5.5 6.5-5.5s5.7 1.9 6.5 5.5"/><circle cx="17.5" cy="9" r="2.5"/><path d="M16.5 14.6c2.4.2 4.2 1.9 5 5.4"/></svg>Quem tem medo</button>
+      <button class="tab" role="tab" id="t-crimes" aria-controls="crimes" data-p="crimes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9 16H3z"/><path d="M12 10v4M12 17h.01"/></svg>Crimes</button>
+      <button class="tab" role="tab" id="t-solucoes" aria-controls="solucoes" data-p="solucoes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg>Soluções</button>
+      <button class="tab" role="tab" id="t-cidade" aria-controls="cidade" data-p="cidade"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V9l5-3v15M10 21V4l9 4v13"/><path d="M13 10h3M13 14h3"/></svg>A cidade</button>
+    </div>
+  </header>
+
+  <!-- 1. VISÃO GERAL -->
+  <section class="panel" id="geral" role="tabpanel" aria-labelledby="t-geral">
+    <div class="phead"><h1><small>1 de 5</small>Visão geral</h1><p class="say"><i></i>Quase metade raramente ou nunca se sente segura em SP.</p></div>
+    <div class="grid">
+      <div class="card kpi c3" style="--g:linear-gradient(135deg,#7c5cff,#22d3ee);--sh:rgba(124,92,255,.4)">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.6 3.4-5.5 6.5-5.5s5.7 1.9 6.5 5.5M17 11a3 3 0 1 0 0-6M21.5 20c-.5-2.6-2-4.2-4-4.9"/></svg></div>
+        <b data-count="292">292</b><span>pessoas responderam</span>
+        <div class="bar"><i style="width:100%"></i></div>
+      </div>
+      <div class="card kpi c3" style="--g:linear-gradient(135deg,#f43f5e,#fb923c);--sh:rgba(244,63,94,.4)">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9 16H3z"/><path d="M12 10v4M12 17h.01"/></svg></div>
+        <b data-count="47" data-suf="%">47%</b><span>raramente ou nunca se sentem seguras</span>
+        <div class="bar"><i style="width:47%"></i></div>
+      </div>
+      <div class="card kpi c3" style="--g:linear-gradient(135deg,#2563eb,#38bdf8);--sh:rgba(56,189,248,.4)">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg></div>
+        <b data-count="18" data-suf="%">18%</b><span>se sentem seguras sempre ou com frequência</span>
+        <div class="bar"><i style="width:18%"></i></div>
+      </div>
+      <div class="card kpi c3" style="--g:linear-gradient(135deg,#ec4899,#a855f7);--sh:rgba(236,72,153,.4)">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="5"/><path d="M12 14v7M9 18h6"/></svg></div>
+        <b data-count="38" data-suf="%">38%</b><span>temem mais a agressão contra mulheres</span>
+        <div class="bar"><i style="width:38%"></i></div>
+      </div>
+      <div class="card c4"><h2>Com que frequência se sente seguro?</h2><p class="q">Pergunta 1 · % das respostas</p><div class="chart" id="donut"></div></div>
+      <div class="card c4"><h2>Índice de segurança</h2><p class="q">Média de 0 (nunca) a 4 (sempre)</p><div class="chart" id="gauge"></div></div>
+      <div class="card c4"><h2>De cada 100 pessoas…</h2><p class="q">Cada boneco = 1% dos respondentes</p><div class="picto" id="picto" role="img" aria-label="Pictograma de 100 pessoas: 5 sempre seguras, 13 frequentemente, 35 às vezes, 30 raramente e 17 nunca"></div><div class="leg" id="pictoLeg"></div></div>
+      <div class="card c12"><h2>Respostas por frequência</h2><p class="q">Número de pessoas em cada resposta da pergunta 1</p><div class="chart" id="bars1" style="height:260px"></div></div>
+    </div>
+    <button class="next" type="button" data-go="quem"><span><small>PRÓXIMA ABA</small><b>Quem sente mais medo?</b></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+  </section>
+
+  <!-- 2. QUEM TEM MEDO -->
+  <section class="panel" id="quem" role="tabpanel" aria-labelledby="t-quem" hidden>
+    <div class="phead"><h1><small>2 de 5</small>Quem tem medo</h1><p class="say"><i></i>Mulheres se sentem bem menos seguras que homens: 58% contra 33%.</p></div>
+    <div class="grid">
+      <div class="card c5"><h2>Inseguros por gênero</h2><p class="q">% que raramente ou nunca se sente seguro</p>
+        <div class="ringwrap"><div class="chart" id="rings" style="height:270px"></div>
+          <div class="rings-leg" id="ringsLeg"></div></div></div>
+      <div class="card c7"><h2>Como cada gênero se sente</h2><p class="q">Distribuição das respostas da pergunta 1, em %</p><div class="chart" id="stackG" style="height:290px"></div></div>
+      <div class="card c4"><h2>Por idade</h2><p class="q">% inseguros em cada faixa etária</p><div class="chart" id="age"></div></div>
+      <div class="card c4"><h2>Por renda da família</h2><p class="q">% inseguros por faixa de renda (salários mínimos)</p><div class="chart" id="income"></div></div>
+      <div class="card c4"><h2>Por meio de transporte</h2><p class="q">% inseguros por transporte usado no dia a dia</p><div class="chart" id="transport"></div></div>
+    </div>
+    <button class="next" type="button" data-go="crimes"><span><small>PRÓXIMA ABA</small><b>Que crime causa esse medo?</b></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+  </section>
+
+  <!-- 3. CRIMES -->
+  <section class="panel" id="crimes" role="tabpanel" aria-labelledby="t-crimes" hidden>
+    <div class="phead"><h1><small>3 de 5</small>Crimes que preocupam</h1><p class="say"><i></i>Agressão contra mulheres é o medo nº 1, à frente de roubo e homicídio.</p></div>
+    <div class="grid">
+      <div class="card c4"><h2>Crime que mais preocupa</h2><p class="q">Pergunta 3 · % das respostas</p><div class="chart" id="rose" style="height:330px"></div></div>
+      <div class="card c4"><h2>Ranking</h2><p class="q">Número de pessoas</p><div class="chart" id="rank" style="height:330px"></div></div>
+      <div class="card c4"><h2>Mulheres × homens</h2><p class="q">% de cada gênero que escolheu cada crime</p><div class="chart" id="radar" style="height:330px"></div></div>
+      <div class="card c8"><h2>O medo muda com a idade</h2><p class="q">Crime que mais preocupa, em % de cada faixa etária</p><div class="chart" id="crimeAge" style="height:300px"></div></div>
+      <div class="card c4" style="--g:linear-gradient(135deg,#f472b6,#a855f7)"><h2>Agressão contra mulheres</h2><p class="q">% que escolheu este crime</p>
+        <div class="duo"><div><b>52%</b><span>das mulheres</span></div><div style="--g:linear-gradient(135deg,#60a5fa,#38bdf8)"><b>23%</b><span>dos homens</span></div></div>
+        <p class="q" style="margin-top:14px">Entre as mulheres, mais que o dobro. Entre os homens, é o 3º crime mais citado.</p></div>
+    </div>
+    <button class="next" type="button" data-go="solucoes"><span><small>PRÓXIMA ABA</small><b>O que deixaria SP mais segura?</b></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+  </section>
+
+  <!-- 4. SOLUÇÕES -->
+  <section class="panel" id="solucoes" role="tabpanel" aria-labelledby="t-solucoes" hidden>
+    <div class="phead"><h1><small>4 de 5</small>Soluções</h1><p class="say"><i></i>Policiamento e prevenção empatam: 101 × 98 votos.</p></div>
+    <div class="grid">
+      <div class="card c8"><h2>Mais polícia ou mais prevenção?</h2><p class="q">Pergunta 2 · as duas medidas mais votadas</p>
+        <div class="tug">
+          <div class="tug-nums"><div><b style="color:var(--m0)">101</b><span>Aumentar o policiamento</span></div><div class="vs">×</div><div><b style="color:var(--m1)">98</b><span>Investir em prevenção</span></div></div>
+          <div class="tug-bar" aria-hidden="true"><span style="flex:101"></span><span style="flex:98"></span></div>
+          <div class="tug-note"><div><b>49%</b><span>de quem nunca se sente seguro pede polícia</span></div><div><b>41%</b><span>de quem teme agressão contra mulheres pede prevenção</span></div><div><b>59%</b><span>das pessoas de 25 a 44 anos pedem prevenção</span></div></div>
+        </div></div>
+      <div class="card c4"><h2>Todas as medidas</h2><p class="q">% das respostas</p><div class="chart" id="half" style="height:300px"></div></div>
+      <div class="card c5"><h2>Quanto menos seguro, mais polícia</h2><p class="q">% que pede cada medida, por frequência com que se sente seguro</p><div class="chart" id="line" style="height:400px"></div></div>
+      <div class="card c7"><h2>Cada medo pede uma solução <span style="color:var(--muted);font-weight:500">· 3D</span></h2><p class="q">Pessoas por crime temido e medida escolhida · arraste para girar</p><div class="chart" id="bars3d" style="height:400px"></div></div>
+    </div>
+    <button class="next" type="button" data-go="cidade"><span><small>PRÓXIMA ABA</small><b>E a cidade ao redor?</b></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+  </section>
+
+  <!-- 5. CIDADE -->
+  <section class="panel" id="cidade" role="tabpanel" aria-labelledby="t-cidade" hidden>
+    <div class="phead"><h1><small>5 de 5</small>A cidade ao redor</h1><p class="say"><i></i>Onde a rua é malcuidada, o medo é 4 vezes maior.</p></div>
+    <div class="grid">
+      <div class="card c7"><h2>Uma cidade de 292 prédios <span style="color:var(--muted);font-weight:500">· 3D</span></h2><p class="q">Cada prédio é uma pessoa. Altura e cor = quanto medo sente · arraste para girar</p>
+        <div class="chart" id="city" style="height:470px"></div><div class="leg" id="cityLeg"></div></div>
+      <div class="stack c5">
+        <div class="card"><h2>Falta de zeladoria × medo</h2><p class="q">% inseguros, por frequência com que vê problemas de zeladoria no bairro</p><div class="chart" id="zel" style="height:230px"></div></div>
+        <div class="card"><h2>Mobilidade × medo</h2><p class="q">% inseguros, pelo maior problema de mobilidade apontado</p><div class="chart" id="mob" style="height:230px"></div></div>
+      </div>
+      <div class="card c12"><h2>Resumo</h2><p class="q">O que as 292 respostas mostram</p>
+        <div class="sum">
+          <div><b style="color:var(--s4)">47%</b><span>raramente ou nunca se sentem seguros</span></div>
+          <div><b style="color:var(--fem)">58%</b><span>das mulheres se sentem inseguras (homens: 33%)</span></div>
+          <div><b style="color:var(--c0)">38%</b><span>temem mais a agressão contra mulheres</span></div>
+          <div><b style="color:var(--m1)">101×98</b><span>policiamento × prevenção</span></div>
+        </div></div>
+    </div>
+    <button class="next" type="button" data-go="geral"><span><small>VOLTAR AO INÍCIO</small><b>Visão geral</b></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 1 0 2.3-5.6M4 4v4h4"/></svg></button>
+  </section>
+
+  <p class="foot">Fonte: Formulário 3MMD071, 292 respostas (17 a 22/09/2026). Amostra por conveniência: 53% dos respondentes têm de 15 a 17 anos. “Inseguro” = respondeu “raramente” ou “nunca” na pergunta 1.</p>
 </div>
 
 <script>
@@ -193,330 +327,267 @@ var Fr={},Gr={};var Wr,Hr=function(){function t(t,e,n){var i=this;this._sleepAft
 (function(){
 const RAW=[[1,17,1,0,2,0,2,3,1,1,0],[0,17,0,0,2,3,4,1,0,1,1],[1,17,0,2,0,2,2,0,1,4,2],[0,15,1,1,1,2,2,2,0,2,1],[0,17,0,0,2,2,3,0,2,2,2],[0,17,0,0,1,0,3,0,0,2,1],[0,17,0,1,1,0,1,0,0,4,2],[1,17,2,0,2,0,2,3,1,4,2],[1,17,2,0,0,2,1,2,4,0,1],[0,17,0,0,1,0,4,0,1,1,3],[1,17,1,1,4,0,3,4,2,1,3],[2,17,3,1,2,0,3,1,4,3,3],[0,17,1,0,1,3,1,2,0,1,2],[0,17,1,0,1,0,2,2,0,1,2],[1,17,1,0,0,0,1,4,2,2,2],[0,46,0,1,2,0,2,1,0,2,2],[1,16,1,2,1,1,2,0,3,2,1],[0,16,1,2,0,2,4,1,0,1,3],[0,16,2,3,0,2,0,0,3,1,4],[0,16,0,0,2,3,3,3,2,2,2],[0,17,1,2,2,0,4,2,0,3,2],[1,17,1,0,1,0,2,0,3,1,3],[0,15,0,0,0,2,3,1,0,2,1],[0,17,0,1,1,1,3,1,0,1,2],[0,18,3,0,1,1,1,1,0,0,2],[0,17,0,0,1,0,4,0,2,2,1],[1,15,2,0,0,0,3,1,3,0,0],[1,17,0,1,1,3,3,0,3,2,1],[0,17,3,0,1,0,1,1,4,1,1],[1,26,0,2,2,1,2,3,2,1,2],[1,17,0,2,0,1,2,0,2,0,1],[0,17,0,1,0,0,2,4,0,2,2],[1,18,0,0,0,2,3,2,0,2,2],[1,16,1,2,2,1,4,0,0,1,4],[1,51,2,0,3,0,4,1,1,1,3],[2,15,2,0,3,0,4,4,2,0,1],[1,18,0,2,2,0,3,2,1,1,1],[1,16,1,0,1,0,3,0,1,3,1],[0,18,0,1,1,3,4,1,0,0,1],[0,15,2,3,0,2,4,0,1,2,3],[1,18,0,0,2,0,2,4,0,0,2],[2,18,0,1,1,0,2,1,1,0,1],[1,18,2,2,0,0,2,0,2,1,3],[0,17,0,0,1,0,2,1,3,0,2],[1,18,1,0,0,0,3,2,0,1,2],[0,18,0,0,0,0,3,2,2,0,1],[0,57,2,0,0,3,2,0,0,2,3],[0,166,0,4,0,1,3,0,0,0,2],[1,51,2,0,3,0,4,1,0,1,4],[1,17,0,2,1,1,1,3,1,1,2],[0,17,1,2,1,1,4,0,2,1,2],[0,32,2,0,1,0,2,1,0,1,2],[1,16,2,1,2,1,2,0,2,2,2],[1,33,1,1,2,1,3,0,0,0,2],[1,18,2,1,2,0,2,3,2,1,4],[1,17,0,2,0,4,3,1,1,4,2],[1,23,1,4,1,3,2,2,4,1,2],[1,20,0,1,1,1,3,1,2,2,1],[0,17,0,0,1,0,3,4,0,2,1],[1,16,0,2,0,4,0,3,0,4,1],[0,16,1,0,0,0,3,0,2,0,1],[0,16,0,2,1,1,2,1,0,1,2],[1,17,1,2,1,1,2,0,1,1,2],[2,11,3,0,4,4,4,4,2,4,4],[1,17,0,2,0,1,3,0,2,4,4],[0,16,0,0,1,1,2,1,0,1,2],[1,17,0,1,1,1,4,3,1,1,1],[1,15,1,2,1,0,3,0,0,2,2],[0,17,0,0,3,1,2,2,0,3,1],[1,17,3,0,3,0,1,0,3,1,1],[0,17,0,1,3,0,3,1,0,1,1],[1,36,1,4,0,2,2,0,1,2,2],[1,17,1,2,2,3,3,0,2,0,2],[0,16,0,2,0,1,3,0,0,3,0],[0,17,1,0,1,0,1,3,4,1,1],[0,17,2,0,1,0,4,0,0,0,1],[2,20,0,1,1,0,2,4,0,2,4],[0,17,2,0,1,1,2,0,2,0,0],[1,44,1,1,3,1,1,2,1,2,1],[0,15,1,0,3,0,4,4,0,2,2],[1,15,0,0,2,0,2,1,0,1,1],[0,18,2,0,3,2,0,3,3,1,0],[1,19,0,4,4,1,3,1,0,3,3],[0,15,2,0,2,1,3,1,0,1,3],[0,17,0,1,3,3,1,3,4,2,3],[1,19,2,1,0,0,1,1,4,0,0],[1,17,0,1,0,1,2,3,1,1,3],[0,16,1,0,1,0,1,1,0,1,2],[1,17,0,1,1,2,2,0,2,3,1],[0,17,3,4,0,2,3,0,1,2,3],[0,18,1,1,1,2,3,2,2,0,2],[0,49,1,2,1,3,2,0,3,2,3],[1,29,0,0,1,0,2,1,1,1,2],[1,17,1,3,1,0,0,0,0,0,1],[0,17,0,1,1,2,3,1,0,2,2],[0,41,0,1,2,1,4,4,0,2,2],[0,18,1,1,3,0,3,0,0,2,2],[1,19,1,0,2,1,1,0,4,1,2],[1,18,2,1,2,0,2,3,1,1,3],[0,16,0,2,0,2,3,0,1,1,2],[2,19,2,3,3,0,4,0,3,0,4],[1,17,3,1,0,0,2,3,2,2,1],[2,25,0,1,1,1,2,1,2,0,2],[0,16,0,2,0,1,2,2,2,3,2],[1,18,0,0,2,0,2,0,1,2,2],[0,20,0,0,1,2,3,0,0,2,2],[0,53,0,1,1,0,3,0,0,1,2],[1,57,1,2,2,1,4,0,2,2,3],[0,16,2,0,1,1,4,3,0,3,3],[1,30,1,2,1,2,3,1,0,2,2],[0,15,0,0,2,0,3,0,1,1,2],[1,45,3,2,1,1,2,3,4,2,1],[0,18,1,1,1,3,3,1,1,3,1],[0,18,2,2,1,1,2,1,0,3,1],[0,15,0,0,3,0,2,1,2,2,2],[0,17,2,2,3,3,3,1,4,0,1],[1,18,1,0,2,0,3,0,3,2,4],[1,18,0,0,1,1,2,1,1,2,1],[0,15,0,0,1,0,3,3,1,0,1],[0,18,1,1,1,2,2,3,2,0,2],[2,17,0,0,2,0,3,2,3,2,1],[1,21,2,0,1,1,2,0,1,1,2],[0,15,0,2,1,1,3,0,0,0,3],[1,27,1,3,0,0,2,1,2,3,0],[1,62,2,2,2,1,1,0,0,2,2],[0,53,1,0,0,0,4,1,2,0,4],[1,17,0,2,0,1,1,1,4,1,3],[0,27,3,4,0,2,3,1,4,3,1],[0,32,0,2,1,3,3,1,0,4,2],[1,15,2,1,3,2,3,0,0,1,3],[1,18,0,2,4,4,2,4,2,4,2],[1,17,0,2,0,2,2,1,2,3,1],[0,17,0,1,3,0,4,0,3,2,2],[1,27,0,3,1,0,2,1,1,2,3],[0,17,2,0,1,0,3,2,1,1,1],[1,47,0,2,0,1,0,0,1,2,2],[2,16,1,3,1,3,3,3,0,1,2],[0,15,1,2,1,0,4,1,0,0,3],[0,33,1,1,0,1,3,1,1,1,3],[1,18,1,0,0,0,3,3,0,1,2],[1,26,2,0,1,0,2,1,2,1,2],[1,16,0,3,0,0,2,2,0,1,2],[1,34,2,2,1,1,2,0,4,3,3],[1,15,0,1,4,2,0,0,1,4,0],[0,15,0,0,1,1,2,1,0,1,1],[1,17,0,3,1,2,1,2,4,2,0],[1,17,0,2,1,2,0,0,3,2,4],[1,15,1,1,0,1,2,2,3,1,2],[0,15,0,2,1,1,2,0,0,1,1],[0,15,0,2,1,4,2,0,1,2,2],[0,15,0,0,1,0,4,0,0,0,2],[0,19,3,0,2,2,2,0,3,2,2],[1,15,1,0,3,0,3,1,0,0,3],[0,15,0,0,1,0,4,1,0,4,2],[1,18,1,0,0,0,3,3,0,1,2],[1,17,1,0,2,0,1,0,2,2,0],[2,67,1,1,4,3,3,4,0,1,3],[1,45,1,4,4,0,2,4,2,0,2],[0,17,0,1,1,1,2,1,0,1,2],[0,15,0,2,3,2,2,1,0,0,1],[1,15,0,0,1,0,1,1,1,2,1],[0,18,0,0,1,0,2,0,2,1,1],[1,15,0,1,1,0,2,0,1,2,1],[0,45,2,2,1,1,4,1,1,4,2],[1,15,0,2,1,1,2,1,1,1,2],[0,52,0,0,1,0,4,0,0,0,0],[1,26,2,0,1,0,2,1,3,1,2],[1,15,0,2,1,1,1,0,1,4,0],[0,30,3,3,3,2,2,2,0,1,4],[1,10,0,4,0,1,0,0,0,3,1],[1,16,0,2,0,2,2,1,0,0,0],[0,15,2,0,0,0,2,2,1,2,2],[0,17,1,0,2,1,1,4,0,1,3],[2,16,1,1,2,3,4,0,0,1,1],[2,46,0,4,1,0,1,2,1,1,1],[1,17,2,1,2,3,4,2,3,1,1],[0,20,1,3,3,0,4,0,4,2,1],[1,15,0,3,1,2,3,3,3,2,2],[1,18,1,0,1,0,2,1,2,0,1],[1,16,1,2,2,0,2,0,1,2,1],[1,26,2,0,1,0,2,1,2,1,2],[1,40,0,4,1,1,3,1,0,2,3],[1,18,3,3,2,3,0,1,3,3,4],[0,17,0,1,1,2,2,4,0,2,3],[1,16,1,3,1,4,1,1,1,1,3],[0,16,2,0,0,1,1,4,1,2,0],[0,38,2,1,3,0,3,1,2,2,4],[0,15,2,1,0,3,3,2,1,0,1],[0,17,3,2,4,1,0,4,0,3,4],[1,18,2,1,1,3,3,0,1,2,3],[1,62,0,2,2,1,2,1,0,4,3],[0,19,1,3,1,2,2,2,2,1,1],[0,16,3,1,0,2,0,0,3,0,0],[2,15,2,1,4,0,2,2,1,0,1],[1,16,0,1,2,0,1,3,1,3,2],[0,56,2,2,1,1,2,0,0,3,2],[0,17,0,1,2,3,4,1,2,2,3],[0,16,0,2,0,1,3,4,0,2,1],[1,18,2,3,1,0,4,1,3,3,4],[0,29,0,2,0,3,3,4,4,0,4],[0,65,0,1,1,1,3,1,1,2,3],[0,15,0,2,1,0,2,3,3,2,1],[1,18,2,0,1,2,2,2,3,3,0],[1,17,0,0,2,0,2,0,2,2,1],[0,17,3,1,1,3,3,0,0,1,1],[2,16,3,0,2,3,4,0,2,2,2],[1,17,2,0,2,0,1,0,1,0,1],[1,18,2,0,3,0,1,0,2,2,0],[1,19,0,3,0,2,1,3,1,1,0],[1,18,3,4,0,2,1,2,0,1,0],[1,56,1,4,1,2,2,3,0,3,2],[1,17,1,4,1,1,3,4,1,0,1],[0,46,0,1,1,1,2,1,1,2,3],[1,17,0,0,3,1,2,1,2,1,2],[0,20,1,4,1,3,2,4,2,1,1],[1,20,1,0,3,1,4,3,2,3,1],[1,15,1,1,1,3,0,0,3,0,0],[1,33,0,1,1,0,2,1,2,1,3],[0,18,1,1,3,1,4,1,0,1,2],[1,16,0,1,2,1,3,2,1,2,0],[0,15,0,2,0,1,2,1,0,4,1],[1,32,0,2,0,0,2,1,2,3,0],[1,18,1,1,3,2,1,2,3,0,3],[0,17,0,1,2,1,2,1,0,2,2],[0,18,1,0,1,0,1,0,0,3,2],[1,18,1,0,0,0,3,3,2,2,3],[0,17,1,2,0,1,3,0,0,4,1],[0,49,0,3,0,2,3,0,1,4,2],[0,16,0,0,2,0,2,4,2,0,2],[1,18,0,0,2,0,3,4,2,2,1],[0,15,0,1,1,0,4,0,1,2,4],[0,32,2,0,0,2,0,0,3,0,0],[1,17,0,2,0,2,1,2,1,4,1],[2,18,1,2,1,1,4,0,4,2,2],[0,21,1,1,2,0,0,1,0,2,0],[1,18,1,1,1,1,3,0,1,2,4],[0,15,1,1,1,2,3,4,2,2,2],[0,15,1,0,2,1,3,2,1,1,2],[1,17,1,0,0,0,2,1,2,2,2],[1,28,0,0,3,1,2,1,0,2,2],[1,17,1,0,2,1,2,0,2,2,0],[1,31,2,4,2,2,4,1,1,3,2],[0,17,0,0,0,1,4,0,0,3,3],[1,17,2,0,2,1,1,2,0,3,2],[1,37,3,2,0,2,1,4,0,4,2],[1,17,0,0,0,2,3,2,1,2,2],[0,42,1,1,2,3,4,0,0,2,2],[0,17,1,0,2,1,2,1,0,1,2],[0,41,0,1,1,0,3,0,1,2,2],[0,40,1,1,1,1,4,0,1,3,3],[0,49,0,2,2,1,3,1,0,4,3],[1,36,0,4,1,1,2,0,1,1,3],[1,17,0,0,2,0,3,1,1,2,2],[0,71,0,2,2,1,4,0,2,3,3],[1,18,0,0,3,0,3,1,1,0,2],[1,65,0,2,1,1,2,1,1,3,3],[0,16,0,2,1,1,4,0,0,1,3],[0,16,0,1,1,0,3,3,0,1,2],[1,17,0,1,1,1,2,0,1,1,1],[0,73,3,1,2,1,4,0,1,2,1],[0,37,0,2,1,0,3,1,1,2,3],[0,30,0,1,3,1,0,1,0,3,3],[0,54,1,0,2,2,4,0,0,0,4],[1,15,1,0,1,0,1,0,4,1,1],[0,71,1,0,3,2,3,0,0,0,1],[0,27,1,0,1,2,2,4,1,1,3],[1,34,0,2,2,1,2,1,0,3,1],[1,17,0,2,0,1,4,0,1,2,3],[0,67,0,3,0,2,3,1,0,0,2],[0,61,3,0,1,3,4,1,3,0,4],[0,65,0,1,1,3,3,1,2,2,2],[0,67,0,3,1,2,3,1,0,0,3],[0,17,1,0,2,1,2,1,0,1,1],[0,37,0,2,1,0,3,1,0,4,3],[1,15,1,1,2,3,3,4,0,0,2],[0,17,3,1,2,1,1,1,0,1,2],[0,18,1,0,1,0,2,2,0,2,2],[0,41,0,1,3,1,2,0,2,3,2],[0,65,3,1,1,3,1,1,1,4,1],[1,16,1,0,3,1,2,1,0,1,1],[0,17,3,4,3,0,0,0,0,3,2],[0,17,0,0,2,3,4,0,0,1,1],[0,74,3,1,1,0,3,3,1,2,2],[0,19,1,0,2,0,2,1,1,0,2],[1,43,0,0,1,2,2,0,1,2,1],[0,14,0,0,2,0,3,0,2,0,3],[0,20,1,4,1,1,4,1,4,1,2],[0,60,3,1,1,2,4,1,1,2,3],[1,68,3,2,0,3,3,3,0,3,2],[0,29,0,1,2,2,2,1,0,3,3],[1,17,2,0,2,0,2,1,2,3,2],[0,28,1,1,3,0,4,1,0,1,3]];
 const L={
-  G:['Mulher','Homem','Não binário'],Gp:['Mulheres','Homens','Não binários'],
+  G:['Mulheres','Homens','Não binários'],
   AG:['15 a 17','18 a 24','25 a 44','45 ou mais'],
-  R:['Branca','Parda','Preta','Amarela'],
   T:['Ônibus','Metrô/trem','Carro','A pé/bike','Moto'],
   S:['Sempre','Frequentemente','Às vezes','Raramente','Nunca'],
-  M:['Aumentar o policiamento','Investir em prevenção da violência','Melhorar a iluminação pública','Instalar mais câmeras','Melhorar o atendimento às vítimas'],
   Ms:['Policiamento','Prevenção','Iluminação','Câmeras','Atend. às vítimas'],
-  C:['Agressão contra mulheres','Roubo','Homicídio','Furto','Furto ou roubo de veículos'],
-  Cs:['Agressão contra mulheres','Roubo','Homicídio','Furto','Veículos'],
-  I:['Até 1 SM','2 a 3 SM','3 a 5 SM','5 a 10 SM','+10 SM'],
-  Z:['Nunca','Raramente','Às vezes','Frequente','Sempre']
+  M:['Aumentar o policiamento','Investir em prevenção','Melhorar a iluminação','Mais câmeras','Atendimento às vítimas'],
+  C:['Agressão contra mulheres','Roubo','Homicídio','Furto','Furto/roubo de veículos'],
+  Cs:['Agressão c/ mulheres','Roubo','Homicídio','Furto','Veículos'],
+  I:['Até 1','2 a 3','3 a 5','5 a 10','+10'],
+  Z:['Nunca','Raramente','Às vezes','Frequente','Sempre'],
+  P:['Ônibus lotados','Trânsito','Calçadas inseguras','Acessibilidade','Faixas de ônibus']
 };
 const rows=RAW.map((r,k)=>({id:k+1,g:r[0],a:r[1],ag:r[1]<=17?0:r[1]<=24?1:r[1]<=44?2:3,r:r[2],t:r[3],d:r[4],p:r[5],s:r[6],m:r[7],c:r[8],i:r[9],z:r[10]}));
-const N=rows.length;
-const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const N=rows.length,RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const $=id=>document.getElementById(id);
-const pct=(a,b)=>b?a/b*100:0;
-const f0=v=>Math.round(v)+'%';
+const pct=(a,b)=>b?a/b*100:0,r1=v=>Math.round(v*10)/10,f0=v=>Math.round(v)+'%';
 const cnt=(arr,key,k)=>{const c=Array(k).fill(0);arr.forEach(r=>c[r[key]]++);return c};
-const unsafe=a=>a.filter(r=>r.s>=3).length;
+const by=(key,i)=>rows.filter(r=>r[key]===i);
+const ins=a=>pct(a.filter(r=>r.s>=3).length,a.length);
 const cs=getComputedStyle(document.documentElement),tk=n=>cs.getPropertyValue('--'+n).trim();
-const T={ink:tk('ink'),ink2:tk('ink-2'),muted:tk('muted'),line:tk('line'),line2:tk('line-2'),bg:tk('bg'),bg3:tk('bg-3'),
-  S:[0,1,2,3,4].map(i=>tk('s'+i)),C:[0,1,2,3,4].map(i=>tk('c'+i)),pol:tk('pol'),prev:tk('prev'),f:tk('f')};
-const rgb=h=>{h=h.replace('#','');return[parseInt(h.slice(0,2),16),parseInt(h.slice(2,4),16),parseInt(h.slice(4,6),16)]};
-const SR=T.S.map(rgb),CR=T.C.map(rgb),LIGHT=[255,224,168];
-const mCol=i=>i===0?T.pol:i===1?T.prev:T.line2;
-const narrow=()=>innerWidth<760;
-function rng(seed){return()=>{seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+const T={ink:tk('ink'),ink2:tk('ink-2'),muted:tk('muted'),grid:'rgba(255,255,255,.07)',card:tk('card'),
+  S:[0,1,2,3,4].map(i=>tk('s'+i)),C:[0,1,2,3,4].map(i=>tk('c'+i)),M:[0,1,2,3,4].map(i=>tk('m'+i)),
+  fem:tk('fem'),mas:tk('mas'),nb:tk('nb'),num:tk('f-num'),txt:tk('f-txt')};
+const narrow=()=>innerWidth<700;
+const hexA=(h,a)=>{h=h.replace('#','');return`rgba(${parseInt(h.slice(0,2),16)},${parseInt(h.slice(2,4),16)},${parseInt(h.slice(4,6),16)},${a})`};
+const lin=(c,a2,dir)=>new echarts.graphic.LinearGradient(...(dir==='h'?[0,0,1,0]:[0,0,0,1]),[{offset:0,color:dir==='h'?hexA(c,a2):c},{offset:1,color:dir==='h'?c:hexA(c,a2)}]);
+const tip=o=>Object.assign({backgroundColor:'rgba(14,20,56,.95)',borderColor:'rgba(255,255,255,.14)',borderWidth:1,padding:[10,12],
+  textStyle:{color:T.ink,fontFamily:T.txt,fontSize:12},extraCssText:'border-radius:12px;box-shadow:0 16px 40px rgba(0,0,0,.45);backdrop-filter:blur(8px);'},o||{});
+const base=o=>Object.assign({animationDuration:RM?0:1100,animationEasing:'cubicOut',textStyle:{fontFamily:T.txt,color:T.ink2},tooltip:tip()},o);
+const ax=o=>Object.assign({axisLine:{lineStyle:{color:'rgba(255,255,255,.14)'}},axisTick:{show:false},axisLabel:{color:T.ink2,fontFamily:T.txt,fontSize:12},splitLine:{lineStyle:{color:T.grid}}},o||{});
+const dot=c=>`<span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${c};margin-right:7px"></span>`;
+const big=t=>`<div style="font:700 20px ${T.num};line-height:1.1;margin-bottom:3px">${t}</div>`;
+const numLabel=(o)=>Object.assign({show:true,color:T.ink,fontFamily:T.num,fontWeight:700,fontSize:13},o||{});
 
-/* ---------- partículas: 1 ponto = 1 pessoa ---------- */
-const cv=$('dots'),ctx=cv.getContext('2d');let W=0,H=0,DPR=1;
-const R0=rng(7);
-const parts=rows.map(r=>({r,x:0,y:0,sx:0,sy:0,tx:0,ty:0,c:LIGHT.slice(),sc:LIGHT.slice(),tc:LIGHT.slice(),a:0,sa:0,ta:1,rad:2,srad:2,trad:2,d:0,ph:R0()*6.283,sp:.4+R0()*1.2,ix:R0(),iy:R0()}));
-let t0=0,hover=null,mode='dots',scene=0;
-const DUR=RM?1:1300;
-function resizeCanvas(){const b=$('stage').getBoundingClientRect();W=b.width;H=b.height;DPR=Math.min(2,devicePixelRatio||1);cv.width=Math.round(W*DPR);cv.height=Math.round(H*DPR);ctx.setTransform(DPR,0,0,DPR,0,0)}
-const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
-function retarget(instant){
-  t0=performance.now();
-  parts.forEach((p,k)=>{p.sx=p.x;p.sy=p.y;p.sc=p.c.slice();p.sa=p.a;p.srad=p.rad;p.d=instant||RM?0:(p.ix*420+(k%7)*12);
-    if(instant){p.x=p.sx=p.tx;p.y=p.sy=p.ty;p.c=p.tc.slice();p.sc=p.tc.slice();p.a=p.sa=p.ta;p.rad=p.srad=p.trad}});
-}
-function frame(now){
-  ctx.clearRect(0,0,W,H);
-  const intro=scene===0;
-  for(const p of parts){
-    const e=ease(Math.min(1,Math.max(0,(now-t0-p.d)/DUR)));
-    p.x=p.sx+(p.tx-p.sx)*e;p.y=p.sy+(p.ty-p.sy)*e;p.rad=p.srad+(p.trad-p.srad)*e;p.a=p.sa+(p.ta-p.sa)*e;
-    for(let j=0;j<3;j++)p.c[j]=p.sc[j]+(p.tc[j]-p.sc[j])*e;
-    if(p.a<.01)continue;
-    let x=p.x,y=p.y,a=p.a;
-    if(intro&&!RM){x+=Math.sin(now*.00025*p.sp+p.ph)*6;y+=Math.cos(now*.0002*p.sp+p.ph)*4;a*=.4+.6*Math.abs(Math.sin(now*.0008*p.sp+p.ph))}
-    ctx.globalAlpha=a;ctx.fillStyle=`rgb(${p.c[0]|0},${p.c[1]|0},${p.c[2]|0})`;
-    if(intro){ctx.shadowColor=ctx.fillStyle;ctx.shadowBlur=10}
-    ctx.beginPath();ctx.arc(x,y,p.rad,0,6.2832);ctx.fill();
-  }
-  ctx.shadowBlur=0;ctx.globalAlpha=1;
-  if(hover&&hover.a>.5){ctx.strokeStyle=T.ink;ctx.lineWidth=2;ctx.beginPath();ctx.arc(hover.x,hover.y,hover.rad+3.5,0,6.2832);ctx.stroke()}
-  requestAnimationFrame(frame);
-}
-
-/* grupos em girassol (filotaxia): cada ponto ocupa a mesma área, então o tamanho do grupo = número de pessoas */
-const GA=Math.PI*(3-Math.sqrt(5));
-function box(){
-  const sb=$('stage').getBoundingClientRect();
-  const head=document.querySelector('.head');const top=(head?head.getBoundingClientRect().bottom-sb.top:H*.25)+(narrow()?16:26);
-  const leg=document.querySelector('.legend');const bot=(leg?leg.getBoundingClientRect().top-sb.top:H-90)-12;
-  const px=narrow()?16:Math.max(24,W*.045);
-  return{x:px,y:top,w:W-2*px,h:Math.max(120,bot-top)};
-}
-function pack(groups,B,labelH){
-  const G=groups.length,K=1.03;let best=null;
-  for(let rn=1;rn<=Math.min(3,G);rn++){
-    const per=Math.ceil(G/rn),rws=[];for(let k=0;k<G;k+=per)rws.push(groups.slice(k,k+per));
-    const gap=Math.max(20,B.w*.035),rowGap=narrow()?10:18;
-    let sW=Infinity;rws.forEach(rw=>{const sum=rw.reduce((a,g)=>a+Math.sqrt(Math.max(1,g.items.length)),0);sW=Math.min(sW,(B.w-gap*(rw.length-1))/(2*sum*K))});
-    const sumMax=rws.reduce((a,rw)=>a+2*K*Math.sqrt(Math.max(...rw.map(g=>Math.max(1,g.items.length)))),0);
-    const sH=(B.h-rws.length*labelH-(rws.length-1)*rowGap)/sumMax;
-    const s=Math.min(sW,sH,30);
-    if(!best||s>best.s)best={s,rws,gap,rowGap};
-  }
-  const{s,rws,gap,rowGap}=best;
-  const hts=rws.map(rw=>2*s*K*Math.sqrt(Math.max(...rw.map(g=>Math.max(1,g.items.length))))+labelH);
-  const tot=hts.reduce((a,b)=>a+b,0)+rowGap*(rws.length-1);
-  let y=B.y+Math.max(0,(B.h-tot)/2);
-  rws.forEach((rw,ri)=>{
-    const Rs=rw.map(g=>s*K*Math.sqrt(Math.max(1,g.items.length))),Rm=Math.max(...Rs);
-    const w0=Rs.reduce((a,b)=>a+2*b,0)+gap*(rw.length-1);
-    const g2=rw.length>1?gap+Math.max(0,Math.min((B.w-w0)/(rw.length-1),B.w*.07)):0;
-    const w1=Rs.reduce((a,b)=>a+2*b,0)+g2*(rw.length-1);
-    let x=B.x+(B.w-w1)/2;
-    rw.forEach((g,k)=>{g.R=Rs[k];g.cx=x+Rs[k];g.cy=y+Rm;g.ly=y+2*Rm+10;x+=2*Rs[k]+g2});
-    y+=hts[ri]+rowGap;
-  });
-  return s;
-}
-function setGroups(groups,colorOf,orderOf){
-  const B=box(),labelH=narrow()?52:76;
-  const s=pack(groups,B,labelH),rad=Math.max(1.6,s*.4);
-  const seen=new Set();
-  groups.forEach(g=>{
-    g.items.slice().sort((a,b)=>orderOf(a)-orderOf(b)||a.id-b.id).forEach((r,k)=>{
-      const p=parts[r.id-1],d=s*Math.sqrt(k+.5),th=k*GA;
-      p.tx=g.cx+d*Math.cos(th);p.ty=g.cy+d*Math.sin(th);p.tc=colorOf(r).slice();p.ta=1;p.trad=rad;seen.add(r.id);
-    });
-  });
-  parts.forEach(p=>{if(!seen.has(p.r.id))p.ta=0});
-  const fs=Math.round(Math.max(narrow()?20:26,Math.min(narrow()?30:58,labelH-24)));
-  const host=$('glabels');host.textContent='';
-  groups.forEach(g=>{
-    const el=document.createElement('div');el.className='gl'+(g.hot?' hot':'');el.style.left=g.cx+'px';el.style.top=g.ly+'px';el.style.setProperty('--fs',fs+'px');
-    if(g.hot)el.style.setProperty('--hot',g.hot);
-    const b=document.createElement('b');b.textContent=g.value;const sp=document.createElement('span');sp.textContent=g.label;
-    el.append(b,sp);host.appendChild(el);
-  });
-}
-function introLayout(){
-  const rnd=rng(11);
-  parts.forEach(p=>{const ang=rnd()*6.283,rr=Math.pow(rnd(),.7);
-    p.tx=W/2+Math.cos(ang)*rr*W*.47;p.ty=H*.47+Math.sin(ang)*rr*H*.4;p.tc=LIGHT.slice();p.ta=.9;p.trad=narrow()?1.8:2.5});
-  $('glabels').textContent='';
-}
-function hideDots(){parts.forEach(p=>{p.ta=0;p.tx=p.x;p.ty=p.y});$('glabels').textContent=''}
-
-/* ---------- ECharts ---------- */
+let _cv;const lblW=(arr,size)=>{_cv=_cv||document.createElement('canvas').getContext('2d');_cv.font=`700 ${size||12}px ${T.txt}`;return Math.ceil(Math.max(...arr.map(t=>_cv.measureText(t).width)))+14};
 const charts={};
-function chart(id){if(!charts[id]){charts[id]=echarts.init($(id));if(window.ResizeObserver)new ResizeObserver(()=>charts[id]&&charts[id].resize()).observe($(id))}return charts[id]}
+function ch(id){if(!charts[id]){charts[id]=echarts.init($(id));if(window.ResizeObserver)new ResizeObserver(()=>charts[id]&&charts[id].resize()).observe($(id))}return charts[id]}
+function put(id,opt){const c=ch(id);c.clear();c.setOption(opt)}
 const glOK=(()=>{try{const c=document.createElement('canvas');return!!(window.WebGLRenderingContext&&(c.getContext('webgl')||c.getContext('experimental-webgl')))}catch(e){return false}})();
-const tipCss={backgroundColor:'rgba(18,21,27,.96)',borderColor:T.line2,borderWidth:1,padding:[10,12],textStyle:{color:T.ink,fontFamily:T.f,fontSize:12},extraCssText:'border-radius:8px;box-shadow:0 16px 40px rgba(0,0,0,.5);'};
-const dot=c=>`<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${c};margin-right:6px"></span>`;
-const bigNum=t=>`<div style="font:900 24px ${T.f};font-stretch:62%;line-height:1;margin-bottom:4px">${t}</div>`;
-function placeBox(id){
-  const sb=$('stage').getBoundingClientRect(),head=document.querySelector('.head'),low=id==='city'?document.querySelector('.nav'):(document.querySelector('.finale')||document.querySelector('.legend'));
-  const top=head?head.getBoundingClientRect().bottom-sb.top+6:80,bot=low?low.getBoundingClientRect().top-sb.top-6:H-80;
-  const el=$(id);el.style.top=top+'px';el.style.height=Math.max(220,bot-top)+'px';
-  if(charts[id])charts[id].resize();
-}
-function noGL(id){if(charts[id]){charts[id].dispose();delete charts[id]}$(id).innerHTML='<div class="fallback">Este navegador não liberou gráficos 3D (WebGL). Use o botão “Números” para ver os dados.</div>'}
+function noGL(id){if(charts[id]){charts[id].dispose();delete charts[id]}$(id).innerHTML='<div class="fallback">Este navegador não liberou gráficos 3D (WebGL).</div>'}
 
-function drawBars3d(){
+const sCnt=cnt(rows,'s',5),cCnt=cnt(rows,'c',5),mCnt=cnt(rows,'m',5);
+
+/* ===== 1. Visão geral ===== */
+function geral(){
+  put('donut',base({
+    tooltip:tip({trigger:'item',formatter:p=>big(f0(p.percent))+`${dot(p.color)}${p.name} · ${p.value} pessoas`}),
+    legend:{bottom:0,left:'center',icon:'circle',itemWidth:9,itemHeight:9,itemGap:12,textStyle:{color:T.ink2,fontSize:11}},
+    graphic:[{type:'text',left:'center',top:'36%',style:{text:'292',fill:T.ink,font:`700 34px ${T.num}`,textAlign:'center'}},
+             {type:'text',left:'center',top:'50%',style:{text:'respostas',fill:T.muted,font:`500 12px ${T.txt}`,textAlign:'center'}}],
+    series:[{type:'pie',radius:['52%','76%'],center:['50%','44%'],padAngle:2,itemStyle:{borderRadius:8},
+      label:{show:true,position:'outside',formatter:p=>f0(p.percent),color:T.ink,fontFamily:T.num,fontWeight:600,fontSize:12},labelLine:{length:6,length2:6,lineStyle:{color:'rgba(255,255,255,.25)'}},
+      emphasis:{scale:true,scaleSize:6},
+      data:L.S.map((n,i)=>({name:n,value:sCnt[i],itemStyle:{color:lin(T.S[i],.65)}}))}]}));
+  const idx=(sCnt[0]*4+sCnt[1]*3+sCnt[2]*2+sCnt[3])/N;
+  put('gauge',base({tooltip:{show:false},series:[
+    {type:'gauge',min:0,max:4,startAngle:210,endAngle:-30,radius:'92%',center:['50%','56%'],splitNumber:4,
+     axisLine:{lineStyle:{width:20,color:[[.125,T.S[4]],[.375,T.S[3]],[.625,T.S[2]],[.875,T.S[1]],[1,T.S[0]]]}},
+     pointer:{icon:'path://M2,0 L4,0 L3.6,100 L2.4,100 Z',length:'68%',width:7,itemStyle:{color:'#fff',shadowColor:'rgba(255,255,255,.6)',shadowBlur:10}},
+     anchor:{show:true,size:18,showAbove:true,itemStyle:{color:'#fff',borderColor:'#7c5cff',borderWidth:5}},
+     axisTick:{distance:-28,length:6,lineStyle:{color:'rgba(255,255,255,.4)',width:1}},splitLine:{distance:-30,length:14,lineStyle:{color:'#fff',width:2}},
+     axisLabel:{distance:30,color:T.ink2,fontSize:11,fontWeight:600,fontFamily:T.txt,formatter:()=>''},
+     title:{offsetCenter:[0,'78%'],color:T.muted,fontSize:12,fontFamily:T.txt},
+     detail:{valueAnimation:!RM,offsetCenter:[0,'44%'],fontFamily:T.num,fontWeight:700,fontSize:44,color:T.ink,formatter:v=>v.toFixed(2).replace('.',',')},
+     data:[{value:+idx.toFixed(2),name:'entre “raramente” e “às vezes”'}]}]}));
+  // pictograma
+  const units=[5,13,35,30,17],host=$('picto');host.innerHTML='';let k=0;
+  const person='<path d="M15 9.5a5 5 0 1 0 0-10 5 5 0 0 0 0 10zM6 50V27c0-6 3.5-11 9-11s9 5 9 11v23h-5.5V31h-1v19h-5V31h-1v19z"/>';
+  units.forEach((u,i)=>{for(let j=0;j<u;j++){const s=document.createElementNS('http://www.w3.org/2000/svg','svg');s.setAttribute('viewBox','0 -1 30 51');s.setAttribute('fill',T.S[i]);
+    s.innerHTML=person;s.style.animationDelay=(RM?0:k*12)+'ms';s.style.filter=`drop-shadow(0 0 4px ${hexA(T.S[i],.45)})`;host.appendChild(s);k++}});
+  $('pictoLeg').innerHTML=L.S.map((n,i)=>`<span><i style="background:${T.S[i]}"></i>${n}<b>${units[i]}</b></span>`).join('');
+  put('bars1',base({
+    grid:{left:6,right:10,top:28,bottom:4,containLabel:true},
+    tooltip:tip({trigger:'item',formatter:p=>big(p.value+' pessoas')+`${dot(T.S[p.dataIndex])}${p.name} · ${f0(pct(p.value,N))}`}),
+    xAxis:ax({type:'category',data:L.S,axisLabel:{color:T.ink2,fontSize:12,fontWeight:600}}),
+    yAxis:ax({type:'value',axisLabel:{color:T.muted}}),
+    series:[{type:'bar',barWidth:'46%',data:sCnt.map((v,i)=>({value:v,itemStyle:{color:lin(T.S[i],.15),borderRadius:[10,10,4,4],shadowColor:hexA(T.S[i],.5),shadowBlur:16}})),
+      label:numLabel({position:'top',fontSize:15,formatter:p=>`${p.value}  {p|${f0(pct(p.value,N))}}`,rich:{p:{color:T.muted,fontSize:12,fontFamily:T.txt}}}),
+      showBackground:true,backgroundStyle:{color:'rgba(255,255,255,.03)',borderRadius:[10,10,4,4]}}]}));
+}
+
+/* ===== 2. Quem tem medo ===== */
+function quem(){
+  const gv=[0,1,2].map(g=>ins(by('g',g))),gn=[0,1,2].map(g=>by('g',g).length),gc=[T.fem,T.mas,T.nb];
+  const radii=[['70%','84%'],['52%','66%'],['34%','48%']];
+  put('rings',base({tooltip:tip({trigger:'item',formatter:p=>big(f0(p.value))+`${dot(gc[p.seriesIndex])}${L.G[p.seriesIndex]} inseguros (n = ${gn[p.seriesIndex]})`}),
+    series:[0,1,2].map(g=>({type:'gauge',startAngle:90,endAngle:-270,min:0,max:100,radius:radii[g][1],center:['50%','50%'],
+      progress:{show:true,roundCap:true,width:14,itemStyle:{color:lin(gc[g],.55,'h'),shadowColor:hexA(gc[g],.6),shadowBlur:12}},
+      axisLine:{roundCap:true,lineStyle:{width:14,color:[[1,'rgba(255,255,255,.07)']]}},pointer:{show:false},axisTick:{show:false},splitLine:{show:false},axisLabel:{show:false},
+      title:{show:false},detail:{show:false},data:[{value:r1(gv[g]),name:L.G[g]}]}))}));
+  $('ringsLeg').innerHTML=[0,1,2].map(g=>`<div><i style="background:${gc[g]};box-shadow:0 0 10px ${gc[g]}"></i>${L.G[g]}${g===2?' <small style="color:var(--muted)">(15)</small>':''}<b>${f0(gv[g])}</b></div>`).join('');
+  const P=[0,1,2].map(g=>{const a=by('g',g),s=cnt(a,'s',5);return s.map(v=>r1(pct(v,a.length)))});
+  put('stackG',base({
+    legend:{top:0,left:0,icon:'roundRect',itemWidth:12,itemHeight:10,textStyle:{color:T.ink2,fontSize:11}},
+    grid:{left:lblW(L.G,13),right:16,top:40,bottom:26,containLabel:false},
+    tooltip:tip({trigger:'axis',axisPointer:{type:'shadow',shadowStyle:{color:'rgba(255,255,255,.04)'}},formatter:ps=>`<b>${ps[0].name}</b><br>`+ps.map(p=>`${dot(T.S[p.seriesIndex])}${p.seriesName}: <b>${f0(p.value)}</b>`).join('<br>')}),
+    xAxis:ax({type:'value',max:100,axisLabel:{color:T.muted,formatter:'{value}%'}}),
+    yAxis:ax({type:'category',inverse:true,data:L.G,axisLine:{show:false},axisLabel:{color:T.ink,fontWeight:700,fontSize:13}}),
+    series:L.S.map((n,i)=>({name:n,type:'bar',stack:'t',barWidth:'52%',data:P.map(x=>x[i]),itemStyle:{color:T.S[i],borderColor:'rgba(11,18,54,1)',borderWidth:2,borderRadius:i===0?[6,0,0,6]:i===4?[0,6,6,0]:0},
+      label:{show:true,color:'#fff',fontFamily:T.num,fontWeight:700,fontSize:11,formatter:p=>p.value>=8?f0(p.value):''}}))}));
+  const av=[0,1,2,3].map(i=>r1(ins(by('ag',i)))),an=[0,1,2,3].map(i=>by('ag',i).length);
+  put('age',base({
+    grid:{left:4,right:16,top:30,bottom:4,containLabel:true},
+    tooltip:tip({trigger:'axis',formatter:ps=>big(f0(ps[0].value))+`${ps[0].name} anos · n = ${an[ps[0].dataIndex]}`}),
+    xAxis:ax({type:'category',boundaryGap:true,data:L.AG,axisLabel:{color:T.ink2,fontWeight:600}}),
+    yAxis:ax({type:'value',min:0,max:80,axisLabel:{color:T.muted,formatter:'{value}%'}}),
+    series:[{type:'line',smooth:.35,data:av,symbol:'circle',symbolSize:11,lineStyle:{width:3.5,color:lin(T.S[4],1,'h'),shadowColor:hexA(T.S[4],.6),shadowBlur:14},
+      itemStyle:{color:T.S[4],borderColor:'#fff',borderWidth:2},
+      areaStyle:{color:new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:hexA(T.S[4],.45)},{offset:1,color:hexA(T.S[4],0)}])},
+      label:numLabel({position:'top',fontSize:14,formatter:p=>f0(p.value)})}]}));
+  const iv=[0,1,2,3,4].map(i=>r1(ins(by('i',i)))),iN=[0,1,2,3,4].map(i=>by('i',i).length);
+  put('income',base({
+    grid:{left:4,right:8,top:30,bottom:4,containLabel:true},
+    tooltip:tip({trigger:'item',formatter:p=>big(f0(p.value))+`Renda ${p.name} SM · n = ${iN[p.dataIndex]}`}),
+    xAxis:ax({type:'category',data:L.I,name:'',axisLabel:{color:T.ink2,fontWeight:600}}),
+    yAxis:ax({type:'value',min:0,max:80,axisLabel:{color:T.muted,formatter:'{value}%'}}),
+    series:[{type:'bar',barWidth:'50%',data:iv.map(v=>({value:v,itemStyle:{color:lin('#a855f7',.2),borderRadius:[10,10,4,4],shadowColor:'rgba(168,85,247,.45)',shadowBlur:14}})),
+      label:numLabel({position:'top',fontSize:14,formatter:p=>f0(p.value)}),showBackground:true,backgroundStyle:{color:'rgba(255,255,255,.03)',borderRadius:[10,10,4,4]}}]}));
+  const tv=[0,1,2,3,4].map(i=>({n:L.T[i],v:r1(ins(by('t',i))),c:by('t',i).length})).sort((a,b)=>b.v-a.v);
+  put('transport',base({
+    polar:{radius:['18%','80%'],center:['50%','52%']},
+    angleAxis:{max:100,startAngle:90,axisLine:{show:false},axisTick:{show:false},axisLabel:{show:false},splitLine:{show:false}},
+    radiusAxis:{type:'category',data:tv.map(x=>x.n),axisLine:{show:false},axisTick:{show:false},axisLabel:{show:false}},
+    tooltip:tip({trigger:'item',formatter:p=>big(f0(p.value))+`${tv[p.dataIndex].n} · n = ${tv[p.dataIndex].c}`}),
+    series:[{type:'bar',coordinateSystem:'polar',barWidth:'62%',roundCap:true,showBackground:true,backgroundStyle:{color:'rgba(255,255,255,.05)'},
+      data:tv.map((x,i)=>({value:x.v,itemStyle:{color:lin(['#22d3ee','#38bdf8','#60a5fa','#818cf8','#a78bfa'][i],.5,'h')}})),
+      label:{show:true,position:'start',color:T.ink,fontFamily:T.txt,fontWeight:700,fontSize:11,formatter:p=>`${tv[p.dataIndex].n}  ${f0(p.value)}`}}]}));
+}
+
+/* ===== 3. Crimes ===== */
+function crimes(){
+  put('rose',base({
+    tooltip:tip({trigger:'item',formatter:p=>big(f0(p.percent))+`${dot(T.C[p.dataIndex])}${L.C[p.dataIndex]} · ${p.value} pessoas`}),
+    series:[{type:'pie',roseType:'radius',radius:['12%','64%'],center:['50%','52%'],labelLayout:{hideOverlap:false},itemStyle:{borderRadius:8,borderColor:'rgba(11,18,54,1)',borderWidth:2},
+      label:{color:T.ink2,fontSize:11,fontFamily:T.txt,overflow:'none',formatter:p=>`${['Agressão\nc/ mulheres','Roubo','Homicídio','Furto','Veículos'][p.dataIndex]}\n{v|${f0(p.percent)}}`,rich:{v:{color:T.ink,fontFamily:T.num,fontWeight:700,fontSize:16,lineHeight:20}}},
+      labelLine:{length:6,length2:8,lineStyle:{color:'rgba(255,255,255,.25)'}},
+      data:cCnt.map((v,i)=>({value:v,name:L.C[i],itemStyle:{color:lin(T.C[i],.55)}}))}]}));
+  put('rank',base({
+    grid:{left:lblW(L.Cs,12),right:44,top:6,bottom:4,containLabel:false},
+    tooltip:tip({trigger:'item',formatter:p=>big(p.value+' pessoas')+`${dot(T.C[p.dataIndex])}${L.C[p.dataIndex]} · ${f0(pct(p.value,N))}`}),
+    xAxis:ax({type:'value',show:false}),
+    yAxis:ax({type:'category',inverse:true,data:L.Cs,axisLine:{show:false},axisLabel:{color:T.ink,fontWeight:700,fontSize:12}}),
+    series:[{type:'bar',barWidth:'54%',data:cCnt.map((v,i)=>({value:v,itemStyle:{color:lin(T.C[i],.25,'h'),borderRadius:[4,10,10,4],shadowColor:hexA(T.C[i],.45),shadowBlur:12}})),
+      showBackground:true,backgroundStyle:{color:'rgba(255,255,255,.04)',borderRadius:10},label:numLabel({position:'right',fontSize:15})}]}));
+  const pw=cnt(by('g',0),'c',5).map(v=>r1(pct(v,by('g',0).length))),ph=cnt(by('g',1),'c',5).map(v=>r1(pct(v,by('g',1).length)));
+  put('radar',base({
+    legend:{bottom:0,icon:'circle',itemWidth:9,itemHeight:9,textStyle:{color:T.ink2,fontSize:12}},
+    tooltip:tip({trigger:'item',formatter:p=>`<b>${p.name}</b><br>`+L.Cs.map((c,i)=>`${c}: <b>${f0(p.value[i])}</b>`).join('<br>')}),
+    radar:{center:['50%','48%'],radius:'62%',indicator:L.Cs.map(c=>({name:c==='Agressão c/ mulheres'?'Agressão\nc/ mulheres':c,max:60})),splitNumber:3,
+      axisName:{color:T.ink2,fontSize:11,fontWeight:600},splitLine:{lineStyle:{color:'rgba(255,255,255,.1)'}},splitArea:{areaStyle:{color:['rgba(255,255,255,.02)','rgba(255,255,255,.04)']}},axisLine:{lineStyle:{color:'rgba(255,255,255,.1)'}}},
+    series:[{type:'radar',symbolSize:6,data:[
+      {name:'Mulheres',value:pw,lineStyle:{color:T.fem,width:2.5},itemStyle:{color:T.fem},areaStyle:{color:hexA(T.fem,.3)}},
+      {name:'Homens',value:ph,lineStyle:{color:T.mas,width:2.5},itemStyle:{color:T.mas},areaStyle:{color:hexA(T.mas,.25)}}]}]}));
+  const A=[0,1,2,3].map(a=>{const rs=by('ag',a),c=cnt(rs,'c',5);return c.map(v=>r1(pct(v,rs.length)))});
+  put('crimeAge',base({
+    legend:{top:0,left:0,icon:'roundRect',itemWidth:12,itemHeight:10,textStyle:{color:T.ink2,fontSize:11}},
+    grid:{left:4,right:8,top:40,bottom:4,containLabel:true},
+    tooltip:tip({trigger:'axis',axisPointer:{type:'shadow',shadowStyle:{color:'rgba(255,255,255,.04)'}},formatter:ps=>`<b>${ps[0].name} anos</b><br>`+ps.map(p=>`${dot(T.C[p.seriesIndex])}${p.seriesName}: <b>${f0(p.value)}</b>`).join('<br>')}),
+    xAxis:ax({type:'category',data:L.AG,axisLabel:{color:T.ink,fontWeight:700,formatter:v=>v+' anos'}}),
+    yAxis:ax({type:'value',max:100,axisLabel:{color:T.muted,formatter:'{value}%'}}),
+    series:L.Cs.map((n,i)=>({name:n,type:'bar',stack:'a',barWidth:'46%',data:A.map(x=>x[i]),itemStyle:{color:T.C[i],borderColor:'rgba(11,18,54,1)',borderWidth:2,borderRadius:i===4?[8,8,0,0]:0},
+      label:{show:true,color:'#0b1236',fontFamily:T.num,fontWeight:700,fontSize:11,formatter:p=>p.value>=9?f0(p.value):''}}))}));
+}
+
+/* ===== 4. Soluções ===== */
+function solucoes(){
+  put('half',base({
+    tooltip:tip({trigger:'item',formatter:p=>p.name?big(p.value+' pessoas')+`${dot(T.M[p.dataIndex])}${L.M[p.dataIndex]} · ${f0(pct(p.value,N))}`:''}),
+    legend:{bottom:0,icon:'circle',itemWidth:9,itemHeight:9,itemGap:10,textStyle:{color:T.ink2,fontSize:11},data:L.Ms},
+    series:[{type:'pie',radius:['50%','88%'],center:['50%','64%'],startAngle:180,endAngle:360,padAngle:2,itemStyle:{borderRadius:8},
+      label:{show:true,position:'inside',color:'#0b1236',fontFamily:T.num,fontWeight:800,fontSize:12,formatter:p=>p.percent>=9?f0(p.percent):''},
+      data:mCnt.map((v,i)=>({value:v,name:L.Ms[i],itemStyle:{color:lin(T.M[i],.7)}}))}]}));
+  const byS=L.S.map((l,i)=>{const rs=by('s',i),mm=cnt(rs,'m',5);return{n:rs.length,p:mm.map(v=>r1(pct(v,rs.length)))}});
+  const ln=(name,i)=>({name,type:'line',smooth:.3,data:byS.map(x=>x.p[i]),symbol:'circle',symbolSize:10,
+    lineStyle:{width:3.5,color:T.M[i],shadowColor:hexA(T.M[i],.6),shadowBlur:12},itemStyle:{color:T.M[i],borderColor:'#fff',borderWidth:2},
+    areaStyle:{color:new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:hexA(T.M[i],.22)},{offset:1,color:hexA(T.M[i],0)}])},
+    endLabel:{show:true,formatter:p=>f0(p.value),color:T.M[i],fontFamily:T.num,fontWeight:700,fontSize:14}});
+  put('line',base({
+    legend:{top:0,left:0,icon:'circle',itemWidth:10,itemHeight:10,textStyle:{color:T.ink2,fontSize:12}},
+    grid:{left:4,right:40,top:40,bottom:4,containLabel:true},
+    tooltip:tip({trigger:'axis',formatter:ps=>`<b>Sente-se seguro: ${ps[0].name}</b> <span style="color:${T.muted}">(n = ${byS[ps[0].dataIndex].n})</span><br>`+ps.map(p=>`${dot(T.M[p.seriesIndex])}${p.seriesName}: <b>${f0(p.value)}</b>`).join('<br>')}),
+    xAxis:ax({type:'category',boundaryGap:false,data:['Sempre','Freq.','Às vezes','Raram.','Nunca'],axisLabel:{color:T.ink2,fontWeight:600}}),
+    yAxis:ax({type:'value',min:0,max:70,axisLabel:{color:T.muted,formatter:'{value}%'}}),
+    series:[ln('Policiamento',0),ln('Prevenção',1)]}));
   if(!glOK)return noGL('bars3d');
-  const grid=L.C.map((_,a)=>L.M.map((_,b)=>rows.filter(r=>r.c===a&&r.m===b).length)),tot=grid.map(r=>r.reduce((x,y)=>x+y,0));
+  const grid=L.C.map((_,a)=>L.Ms.map((_,b)=>rows.filter(r=>r.c===a&&r.m===b).length)),tot=grid.map(r=>r.reduce((x,y)=>x+y,0));
   const data=[];grid.forEach((r,a)=>r.forEach((v,b)=>data.push({value:[a,b,v],itemStyle:{color:T.C[a]}})));
-  const al={color:T.ink2,fontSize:narrow()?10:13,fontFamily:T.f,fontWeight:600};
-  const axis3=o=>Object.assign({axisLine:{lineStyle:{color:T.line2}},splitLine:{lineStyle:{color:T.line}},axisTick:{show:false},axisPointer:{show:false}},o);
-  chart('bars3d').setOption({
-    tooltip:Object.assign({},tipCss,{formatter:p=>{const[a,b,v]=p.value;return bigNum(v+' pessoas')+`${dot(T.C[a])}temem ${L.C[a].toLowerCase()}<br>${dot(mCol(b))}pedem ${L.Ms[b].toLowerCase()}<br><span style="color:${T.muted}">${f0(pct(v,tot[a]))} de quem teme este crime</span>`}}),
-    xAxis3D:axis3({type:'category',data:L.Cs.map(x=>x==='Agressão contra mulheres'?'Agressão c/ mulheres':x),name:'',axisLabel:{textStyle:al,interval:0}}),
-    yAxis3D:axis3({type:'category',data:L.Ms,name:'',axisLabel:{textStyle:al,interval:0}}),
-    zAxis3D:axis3({type:'value',name:'',axisLabel:{textStyle:{color:T.muted,fontSize:10}}}),
-    grid3D:{boxWidth:125,boxDepth:100,boxHeight:72,top:-24,environment:'none',splitArea:{show:false},
-      viewControl:{alpha:22,beta:40,distance:narrow()?300:205,minAlpha:5,maxAlpha:85,zoomSensitivity:0,panSensitivity:0,autoRotate:!RM,autoRotateSpeed:3,autoRotateAfterStill:5,animationDurationUpdate:900},
-      light:{main:{intensity:1.35,shadow:true,shadowQuality:'high',alpha:55,beta:-25},ambient:{intensity:.42}},
-      postEffect:{enable:!narrow(),SSAO:{enable:true,radius:3,intensity:1.15,quality:'medium'}},temporalSuperSampling:{enable:true}},
-    series:[{type:'bar3D',data,shading:'lambert',bevelSize:.25,bevelSmoothness:2,barSize:[11,11],label:{show:false},
-      emphasis:{label:{show:true,formatter:p=>String(p.value[2]),textStyle:{color:T.ink,fontSize:16,fontWeight:800,backgroundColor:T.bg3,padding:5,borderRadius:4}},itemStyle:{color:'#ffffff'}}}]
-  },true);
+  const al={color:T.ink2,fontSize:narrow()?9:11,fontFamily:T.txt,fontWeight:600};
+  const a3=o=>Object.assign({axisLine:{lineStyle:{color:'rgba(255,255,255,.25)'}},splitLine:{lineStyle:{color:'rgba(255,255,255,.08)'}},axisTick:{show:false},axisPointer:{show:false}},o);
+  put('bars3d',{
+    tooltip:tip({formatter:p=>{const[a,b,v]=p.value;return big(v+' pessoas')+`${dot(T.C[a])}temem ${L.C[a].toLowerCase()}<br>${dot(T.M[b])}pedem ${L.Ms[b].toLowerCase()}<br><span style="color:${T.muted}">${f0(pct(v,tot[a]))} de quem teme este crime</span>`}}),
+    xAxis3D:a3({type:'category',data:L.Cs,name:'',axisLabel:{textStyle:al,interval:0}}),
+    yAxis3D:a3({type:'category',data:L.Ms,name:'',axisLabel:{textStyle:al,interval:0}}),
+    zAxis3D:a3({type:'value',name:'',axisLabel:{textStyle:{color:T.muted,fontSize:10}}}),
+    grid3D:{boxWidth:118,boxDepth:100,boxHeight:70,top:-24,environment:'none',splitArea:{show:false},
+      viewControl:{alpha:24,beta:32,distance:narrow()?250:168,minAlpha:5,maxAlpha:85,zoomSensitivity:0,panSensitivity:0,autoRotate:!RM,autoRotateSpeed:3,autoRotateAfterStill:4},
+      light:{main:{intensity:1.3,shadow:true,shadowQuality:'high',alpha:55,beta:-25},ambient:{intensity:.5}},
+      postEffect:{enable:!narrow(),SSAO:{enable:true,radius:3,intensity:1.1,quality:'medium'}},temporalSuperSampling:{enable:true}},
+    series:[{type:'bar3D',data,shading:'lambert',bevelSize:.3,bevelSmoothness:3,barSize:[11,11],label:{show:false},
+      emphasis:{label:{show:true,formatter:p=>String(p.value[2]),textStyle:{color:'#fff',fontSize:15,fontWeight:800,backgroundColor:'rgba(14,20,56,.9)',padding:5,borderRadius:6}},itemStyle:{color:'#ffffff'}}}]});
 }
-function drawSankey(){
-  const nodes=[].concat(L.S.map((l,i)=>({name:l,depth:0,itemStyle:{color:T.S[i],borderColor:T.S[i]}})),
-    L.Cs.map((l,i)=>({name:l,depth:1,itemStyle:{color:T.C[i],borderColor:T.C[i]}})),
-    L.Ms.map((l,i)=>({name:l,depth:2,itemStyle:{color:mCol(i),borderColor:mCol(i)}})));
-  const links=[];
-  L.S.forEach((sl,s)=>L.Cs.forEach((cl,c)=>{const v=rows.filter(r=>r.s===s&&r.c===c).length;if(v)links.push({source:sl,target:cl,value:v})}));
-  L.Cs.forEach((cl,c)=>L.Ms.forEach((ml,m)=>{const v=rows.filter(r=>r.c===c&&r.m===m).length;if(v)links.push({source:cl,target:ml,value:v})}));
-  const nw=narrow(),short=n=>n==='Agressão contra mulheres'?'Agressão':n==='Atend. às vítimas'?'Atend.':n==='Frequentemente'?'Frequente':n;
-  chart('sankey').setOption({
-    tooltip:Object.assign({},tipCss,{trigger:'item',formatter:p=>p.dataType==='edge'?bigNum(p.value+' pessoas')+`${p.data.source} → ${p.data.target}`:bigNum(p.value+' pessoas')+p.name}),
-    series:[{type:'sankey',left:nw?16:'5%',right:nw?86:'14%',top:8,bottom:8,nodeWidth:nw?10:18,nodeGap:nw?8:12,layoutIterations:0,draggable:false,
-      data:nodes,links,lineStyle:{color:'source',opacity:.38,curveness:.5},emphasis:{focus:'adjacency',lineStyle:{opacity:.75}},
-      label:{color:T.ink,fontFamily:T.f,fontSize:nw?10:15,fontWeight:750,formatter:p=>nw?short(p.name):`${p.name}  {v|${p.value}}`,rich:{v:{color:T.muted,fontSize:13,fontWeight:500}}}}]
-  },true);
-}
+
+/* ===== 5. Cidade ===== */
 const cityPos=(()=>{const pts=[],st=v=>((v%4)+4)%4===0,nz=(x,y)=>(((x*73856093)^(y*19349663))>>>0)%1000/1000*1.4;
   for(let x=-13;x<=13;x++)for(let y=-13;y<=13;y++)if(!st(x)&&!st(y))pts.push([x,y,Math.hypot(x,y)+nz(x,y)]);
   return pts.sort((a,b)=>a[2]-b[2]).slice(0,N)})();
-function drawCity(){
+function cidade(){
+  $('cityLeg').innerHTML=L.S.map((n,i)=>`<span><i style="background:${T.S[i]}"></i>${n}</span>`).join('');
+  const zv=[0,1,2,3,4].map(i=>({v:r1(ins(by('z',i))),n:by('z',i).length}));
+  put('zel',base({
+    grid:{left:4,right:8,top:26,bottom:4,containLabel:true},
+    tooltip:tip({trigger:'item',formatter:p=>big(f0(p.value)+' inseguros')+`Vê problemas de zeladoria: ${p.name.toLowerCase()} · n = ${zv[p.dataIndex].n}`}),
+    xAxis:ax({type:'category',data:L.Z,axisLabel:{color:T.ink2,fontWeight:600,fontSize:11}}),
+    yAxis:ax({type:'value',min:0,max:80,interval:20,axisLabel:{color:T.muted,formatter:'{value}%'}}),
+    series:[{type:'bar',barWidth:'50%',data:zv.map((x,i)=>({value:x.v,itemStyle:{color:lin(['#fbbf24','#fb923c','#f97316','#f43f5e','#e11d48'][i],.2),borderRadius:[8,8,3,3],shadowColor:'rgba(244,63,94,.4)',shadowBlur:12}})),
+      label:numLabel({position:'top',fontSize:14,formatter:p=>f0(p.value)})}]}));
+  const pv=[0,1,2,3,4].map(i=>({n:L.P[i],v:r1(ins(by('p',i))),c:by('p',i).length})).sort((a,b)=>b.v-a.v);
+  put('mob',base({
+    grid:{left:lblW(L.P,11),right:44,top:4,bottom:4,containLabel:false},
+    tooltip:tip({trigger:'item',formatter:p=>big(f0(p.value)+' inseguros')+`${pv[p.dataIndex].n} · n = ${pv[p.dataIndex].c}`}),
+    xAxis:ax({type:'value',show:false,max:100}),
+    yAxis:ax({type:'category',inverse:true,data:pv.map(x=>x.n),axisLine:{show:false},axisLabel:{color:T.ink,fontWeight:600,fontSize:11}}),
+    series:[{type:'bar',barWidth:'56%',data:pv.map((x,i)=>({value:x.v,itemStyle:{color:lin(i===0?'#f43f5e':'#818cf8',.25,'h'),borderRadius:[3,8,8,3]}})),
+      showBackground:true,backgroundStyle:{color:'rgba(255,255,255,.04)',borderRadius:8},label:numLabel({position:'right',fontSize:13,formatter:p=>f0(p.value)})}]}));
   if(!glOK)return noGL('city');
   const order=rows.slice().sort((a,b)=>b.s-a.s||a.c-b.c||a.id-b.id);
   const hid={axisLine:{show:false},axisLabel:{show:false},axisTick:{show:false},splitLine:{show:false},splitArea:{show:false},axisPointer:{show:false}};
-  chart('city').setOption({
-    tooltip:Object.assign({},tipCss,{formatter:p=>{const r=p.data&&p.data.r;return r?personHTML(r):''}}),
+  put('city',{
+    tooltip:tip({formatter:p=>{const r=p.data&&p.data.r;if(!r)return'';return big(`${['Mulher','Homem','Não binário'][r.g]}, ${r.a} anos`)+
+      `${dot(T.S[r.s])}Sente-se seguro(a): <b>${L.S[r.s]}</b><br>${dot(T.C[r.c])}Mais teme: <b>${L.Cs[r.c]}</b><br>${dot(T.M[r.m])}Pede: <b>${L.Ms[r.m]}</b>`}}),
     xAxis3D:Object.assign({type:'value',min:-13.5,max:13.5},hid),yAxis3D:Object.assign({type:'value',min:-13.5,max:13.5},hid),zAxis3D:Object.assign({type:'value',min:0,max:5.2},hid),
-    grid3D:{show:false,boxWidth:100,boxDepth:100,boxHeight:36,top:narrow()?-40:-60,environment:'none',
-      viewControl:{autoRotate:!RM,autoRotateSpeed:4,autoRotateAfterStill:3,distance:narrow()?160:112,alpha:30,beta:30,minAlpha:8,maxAlpha:85,zoomSensitivity:0,panSensitivity:0},
-      light:{main:{intensity:1.35,shadow:true,shadowQuality:'high',alpha:50,beta:20},ambient:{intensity:.42}},
-      postEffect:{enable:!narrow(),SSAO:{enable:true,radius:2.2,intensity:1.2,quality:'medium'}},temporalSuperSampling:{enable:true}},
-    series:[{type:'bar3D',shading:'lambert',barSize:2.9,bevelSize:.18,bevelSmoothness:2,
+    grid3D:{show:false,boxWidth:100,boxDepth:100,boxHeight:36,top:-20,environment:'none',
+      viewControl:{autoRotate:!RM,autoRotateSpeed:5,autoRotateAfterStill:3,distance:narrow()?150:118,alpha:30,beta:30,minAlpha:8,maxAlpha:85,zoomSensitivity:0,panSensitivity:0},
+      light:{main:{intensity:1.3,shadow:true,shadowQuality:'high',alpha:50,beta:20},ambient:{intensity:.5}},
+      postEffect:{enable:!narrow(),SSAO:{enable:true,radius:2.2,intensity:1.1,quality:'medium'}},temporalSuperSampling:{enable:true}},
+    series:[{type:'bar3D',shading:'lambert',barSize:2.9,bevelSize:.2,bevelSmoothness:2,
       data:order.map((r,k)=>({value:[cityPos[k][0],cityPos[k][1],r.s+1],r,itemStyle:{color:T.S[r.s]}})),
-      emphasis:{itemStyle:{color:'#ffffff'},label:{show:false}}}]
-  },true);
+      emphasis:{itemStyle:{color:'#ffffff'},label:{show:false}}}]});
 }
 
-/* ---------- dica: quem é este ponto ---------- */
-function personHTML(r){
-  const row=(c,k,v)=>`<div style="display:flex;justify-content:space-between;gap:16px;color:${T.ink2}"><span>${dot(c)}${k}</span><b style="color:${T.ink};font-weight:650">${v}</b></div>`;
-  return`<div style="font:900 18px ${T.f};font-stretch:70%;margin-bottom:4px">${L.G[r.g]}, ${r.a} anos</div>`+
-    row(T.S[r.s],'Sente-se seguro(a)',L.S[r.s])+row(T.C[r.c],'Mais teme',L.Cs[r.c])+row(mCol(r.m),'Pede',L.Ms[r.m]);
+/* ===== abas ===== */
+const PANELS={geral,quem,crimes,solucoes,cidade},order=Object.keys(PANELS);
+function countUp(root){if(RM)return;root.querySelectorAll('[data-count]').forEach(el=>{const to=+el.dataset.count,suf=el.dataset.suf||'',t0=performance.now();
+  const step=now=>{const k=Math.min(1,(now-t0)/1100),e=1-Math.pow(1-k,3);el.textContent=Math.round(to*e)+suf;if(k<1)requestAnimationFrame(step)};requestAnimationFrame(step)})}
+function show(id,focus){
+  if(!PANELS[id])id='geral';
+  order.forEach(p=>{const on=p===id;$(p).hidden=!on;const t=$('t-'+p);t.setAttribute('aria-selected',String(on));t.tabIndex=on?0:-1});
+  const panel=$(id);panel.querySelectorAll('.card,.picto svg,.bar i,.tug-bar span').forEach(el=>{el.style.animation='none';void el.offsetWidth;el.style.animation=''});
+  if(window.echarts){try{PANELS[id]()}catch(e){console.error(e)}}
+  else panel.querySelectorAll('.chart').forEach(el=>el.innerHTML='<div class="fallback">Não foi possível carregar os gráficos. Verifique a internet.</div>');
+  countUp(panel);
+  if(focus)$('t-'+id).focus();
+  try{history.replaceState(null,'','#'+id)}catch(e){}
 }
-const tip=$('tip');
-function showTip(html,x,y){tip.innerHTML=html;tip.classList.add('on');const w=tip.offsetWidth,h=tip.offsetHeight;
-  let lx=x+16,ly=y+16;if(lx+w>innerWidth-8)lx=x-w-16;if(ly+h>innerHeight-8)ly=y-h-16;tip.style.transform=`translate(${Math.max(8,lx)}px,${Math.max(8,ly)}px)`}
-function hideTip(){tip.classList.remove('on');hover=null}
-function pick(e){
-  if(mode!=='dots'||scene===0){hideTip();return}
-  const b=cv.getBoundingClientRect(),mx=e.clientX-b.left,my=e.clientY-b.top;let best=null,bd=1e9;
-  for(const p of parts){if(p.a<.5)continue;const d=(p.x-mx)**2+(p.y-my)**2;if(d<bd){bd=d;best=p}}
-  if(best&&bd<Math.max(100,(best.rad*2.4)**2)){hover=best;showTip(personHTML(best.r),e.clientX,e.clientY)}else hideTip();
-}
-cv.addEventListener('pointermove',pick);cv.addEventListener('pointerdown',pick);cv.addEventListener('pointerleave',hideTip);
-
-/* ---------- cenas ---------- */
-const byKey=(key,labels,extra)=>labels.map((label,i)=>Object.assign({key:i,label,items:rows.filter(r=>r[key]===i)},extra?extra(i):{})).filter(g=>g.items.length);
-const safetyCol=r=>SR[r.s],crimeCol=r=>CR[r.c];
-function legend(items,note){return`<div class="legend">${items.map(([c,l])=>`<span><i style="background:${c}"></i>${l}</span>`).join('')}${note?`<span class="note">${note}</span>`:''}</div>`}
-const legSafety=()=>legend(L.S.map((l,i)=>[T.S[i],l]),'cada ponto = 1 pessoa');
-const legCrime=()=>legend(L.Cs.map((l,i)=>[T.C[i],l]),'cada ponto = 1 pessoa');
-function head(title,sub,statB,statS,extra){
-  const lines=title.split('|').map(t=>`<span class="ln"><span>${t}</span></span>`).join('');
-  return`<div class="head"><div class="head-l"><h1 class="title">${lines}</h1>${sub?`<p class="sub">${sub}</p>`:''}${extra||''}</div>${statB?`<div class="stat"><b>${statB}</b><span>${statS||''}</span></div>`:''}</div>`;
-}
-const DIMS=[['g','Gênero',L.Gp],['ag','Idade',L.AG],['r','Raça/cor',L.R],['i','Renda',L.I],['t','Transporte',L.T]];
-let dim='g';
-const dimNow=()=>DIMS.find(x=>x[0]===dim);
-const insecure=g=>pct(unsafe(g.items),g.items.length);
-
-const SCENES=[
- {name:'Abertura',mode:'dots',layout:introLayout,
-  html:()=>`<div class="intro"><div><div class="n">292</div><p>pessoas responderam: dá para andar seguro em São Paulo?</p><small>Avance com <kbd>→</kbd> ou pelas setas abaixo</small></div></div>`,
-  table:()=>({t:'Pesquisa',h:['',''],b:[['Respostas',292],['Coleta','17 a 22/09/2026'],['Formulário','3MMD071']]})},
- {name:'Sensação',mode:'dots',
-  html:()=>head('Você se sente|seguro em SP?','Com que frequência você se sente seguro(a) ao circular pela cidade.','47%','raramente ou nunca')+legSafety(),
-  layout:()=>{const gs=byKey('s',L.S,i=>({hot:i>=3?T.S[4]:null}));gs.forEach(g=>g.value=f0(pct(g.items.length,N)));setGroups(gs,safetyCol,()=>0)},
-  table:()=>({t:'Sensação de segurança',h:['Frequência','Pessoas','%'],b:L.S.map((l,i)=>{const n=rows.filter(r=>r.s===i).length;return[l,n,f0(pct(n,N))]})})},
- {name:'Quem tem medo',mode:'dots',
-  html:()=>{const d=dimNow(),top=byKey(dim,d[2]).filter(g=>g.items.length>=20).sort((a,b)=>insecure(b)-insecure(a))[0];
-    return head('Quem sente|mais medo?','% que raramente ou nunca se sente seguro. O vermelho fica no centro.',f0(insecure(top)),`${top.label}: raramente ou nunca se sentem seguros`,
-      `<div class="toggles" role="group" aria-label="Agrupar por">${DIMS.map(x=>`<button type="button" data-dim="${x[0]}" aria-pressed="${x[0]===dim}">${x[1]}</button>`).join('')}</div>`)+legend(L.S.map((l,i)=>[T.S[i],l]),'cada ponto = 1 pessoa'+(byKey(dim,d[2]).some(g=>g.items.length<20)?' · * grupo com menos de 20 pessoas':''))},
-  layout:()=>{const d=dimNow(),gs=byKey(dim,d[2]),mx=Math.max(...gs.filter(g=>g.items.length>=20).map(insecure));
-    gs.forEach(g=>{const v=insecure(g);g.value=f0(v)+(g.items.length<20?'*':'');g.label=`${g.label} · ${g.items.length}`;if(v===mx&&g.items.length>=20)g.hot=T.S[4]});setGroups(gs,safetyCol,r=>-r.s)},
-  table:()=>{const d=dimNow();return{t:'Insegurança por '+d[1].toLowerCase(),h:[d[1],'n'].concat(L.S).concat(['Raramente+nunca']),
-    b:byKey(dim,d[2]).map(g=>[g.label,g.items.length].concat(cnt(g.items,'s',5).map(v=>f0(pct(v,g.items.length)))).concat([f0(insecure(g))]))}}},
- {name:'Crime',mode:'dots',
-  html:()=>head('Qual crime|mais preocupa?','Cada cor é um crime.','38%','temem mais a agressão contra mulheres')+legCrime(),
-  layout:()=>{const gs=byKey('c',L.Cs,i=>({hot:i===0?T.C[0]:null}));gs.forEach(g=>g.value=f0(pct(g.items.length,N)));setGroups(gs,crimeCol,()=>0)},
-  table:()=>({t:'Crime que mais preocupa',h:['Crime','Pessoas','%'],b:L.C.map((l,i)=>{const n=rows.filter(r=>r.c===i).length;return[l,n,f0(pct(n,N))]})})},
- {name:'Gênero',mode:'dots',
-  html:()=>head('Um medo|com gênero','% que mais teme a agressão contra mulheres. O rosa fica no centro.','2,2×','mulheres temem mais que o dobro dos homens')+legCrime(),
-  layout:()=>{const gs=byKey('g',L.Gp);gs.forEach(g=>{g.value=f0(pct(g.items.filter(r=>r.c===0).length,g.items.length));g.label=`${g.label} · ${g.items.length}`});gs[0].hot=T.C[0];setGroups(gs,crimeCol,r=>r.c)},
-  table:()=>({t:'Crime temido por gênero',h:['Gênero','n'].concat(L.Cs),b:byKey('g',L.Gp).map(g=>[g.label,g.items.length].concat(cnt(g.items,'c',5).map(v=>f0(pct(v,g.items.length)))))})},
- {name:'Solução',mode:'dots',
-  html:()=>head('O que deixaria|SP mais segura?','As mesmas pessoas, agora pela medida que escolheram. A cor ainda é o crime que temem.','101×98','polícia × prevenção: empate')+legCrime(),
-  layout:()=>{const gs=byKey('m',L.Ms,i=>({hot:i===0?T.pol:i===1?T.prev:null}));gs.forEach(g=>g.value=String(g.items.length));setGroups(gs,crimeCol,r=>r.c)},
-  table:()=>({t:'Medida mais votada',h:['Medida','Pessoas','%'],b:L.M.map((l,i)=>{const n=rows.filter(r=>r.m===i).length;return[l,n,f0(pct(n,N))]})})},
- {name:'Torres 3D',mode:'chart',chart:'bars3d',draw:drawBars3d,
-  html:()=>head('Cada medo,|uma solução','Altura = pessoas. Arraste para girar.','46','temem agressão contra mulheres e pedem prevenção')+legend(L.Cs.map((l,i)=>[T.C[i],l])),
-  table:()=>({t:'Crime × medida (pessoas)',h:['Crime'].concat(L.Ms),b:L.C.map((l,a)=>[l].concat(L.M.map((_,b)=>rows.filter(r=>r.c===a&&r.m===b).length)))})},
- {name:'Fluxo',mode:'chart',chart:'sankey',draw:drawSankey,
-  html:()=>head('Do medo|à solução','Sensação → crime temido → medida. Passe o mouse para seguir um caminho.')+legend([],'largura da faixa = número de pessoas'),
-  table:()=>({t:'Sensação × crime (pessoas)',h:['Sensação'].concat(L.Cs),b:L.S.map((l,s)=>[l].concat(L.C.map((_,c)=>rows.filter(r=>r.s===s&&r.c===c).length)))})},
- {name:'A rua',mode:'dots',
-  html:()=>head('Rua largada,|cidade com medo','% que raramente ou nunca se sente seguro, pela frequência com que vê falta de zeladoria no bairro.','4×','mais insegurança onde a zeladoria sempre falha')+legSafety(),
-  layout:()=>{const gs=byKey('z',L.Z);gs.forEach(g=>{g.value=f0(insecure(g));g.label=`${g.label} · ${g.items.length}`});gs[gs.length-1].hot=T.S[4];setGroups(gs,safetyCol,r=>-r.s)},
-  table:()=>({t:'Zeladoria × insegurança',h:['Vê falta de zeladoria','n','Raramente+nunca'],b:byKey('z',L.Z).map(g=>[g.label,g.items.length,f0(insecure(g))])})},
- {name:'A cidade',mode:'chart',chart:'city',draw:drawCity,
-  html:()=>head('292 pessoas,|uma cidade','Cada prédio é uma pessoa. Quanto mais alto, mais medo.')+
-   `<p class="foot">Formulário 3MMD071 · 292 respostas · 17 a 22/09/2026. Amostra por conveniência: 53% têm de 15 a 17 anos.</p>`+
-   `<div class="finale"><div><b>47%</b><span>raramente ou nunca se sentem seguros</span></div><div><b>58%</b><span>das mulheres se sentem inseguras</span></div><div><b>38%</b><span>temem mais a agressão contra mulheres</span></div><div><b>101×98</b><span>polícia × prevenção</span></div></div>`,
-  table:()=>({t:'Resumo',h:['',''],b:[['Raramente ou nunca seguros','47%'],['Mulheres inseguras','58%'],['Homens inseguros','33%'],['Temem agressão contra mulheres','38%'],['Policiamento','101'],['Prevenção','98'],['Amostra','292 (53% de 15 a 17 anos)']]})}
-];
-
-const track=$('track');
-SCENES.forEach((s,i)=>{const b=document.createElement('button');b.type='button';b.setAttribute('aria-label',`Cena ${i+1}: ${s.name}`);const sp=document.createElement('span');sp.textContent=s.name;b.appendChild(sp);b.addEventListener('click',()=>go(i));track.appendChild(b)});
-
-function renderTable(){
-  const bx=$('data');if(bx.hidden)return;const t=SCENES[scene].table();
-  const esc=v=>String(v).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
-  bx.innerHTML=`<button class="x" type="button" aria-label="Fechar">×</button><h3>${esc(t.t)}</h3><table><thead><tr>${t.h.map(x=>`<th scope="col">${esc(x)}</th>`).join('')}</tr></thead><tbody>${t.b.map(r=>`<tr>${r.map(v=>`<td>${esc(v)}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
-  bx.querySelector('.x').onclick=()=>toggleData(false);
-}
-function toggleData(on){const bx=$('data');bx.hidden=!on;$('dataBtn').setAttribute('aria-expanded',String(on));if(on)renderTable()}
-$('dataBtn').addEventListener('click',()=>toggleData($('data').hidden));
-
-function go(i,instant){
-  i=Math.max(0,Math.min(SCENES.length-1,i));scene=i;const S=SCENES[i];
-  hideTip();
-  $('overlay').innerHTML=S.html();
-  $('count').innerHTML=`<b>${String(i+1).padStart(2,'0')}</b>/${SCENES.length}`;
-  [...track.children].forEach((b,k)=>{b.classList.toggle('done',k<i);if(k===i)b.setAttribute('aria-current','step');else b.removeAttribute('aria-current')});
-  $('prev').disabled=i===0;$('next').disabled=i===SCENES.length-1;
-  mode=S.mode;
-  ['bars3d','sankey','city'].forEach(id=>$(id).classList.toggle('on',S.chart===id));
-  if(S.mode==='dots'){S.layout();retarget(instant)}
-  else{hideDots();retarget(instant);
-    if(window.echarts){placeBox(S.chart);try{S.draw()}catch(e){console.error(e);noGL(S.chart)}}
-    else $(S.chart).innerHTML='<div class="fallback">Não foi possível carregar os gráficos. Verifique a internet e recarregue.</div>'}
-  const tg=document.querySelector('.toggles');
-  if(tg)tg.addEventListener('click',e=>{const b=e.target.closest('button');if(!b||b.dataset.dim===dim)return;dim=b.dataset.dim;go(2)});
-  renderTable();
-  try{history.replaceState(null,'','#cena'+(i+1))}catch(e){}
-}
-$('prev').addEventListener('click',()=>go(scene-1));
-$('next').addEventListener('click',()=>go(scene+1));
-addEventListener('keydown',e=>{
-  if(['ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();go(scene+1)}
-  else if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();go(scene-1)}
-  else if(e.key==='Home')go(0);else if(e.key==='End')go(SCENES.length-1);
-  else if(e.key==='Escape')toggleData(false);
-});
-let wheelLock=0,wacc=0;
-addEventListener('wheel',e=>{if(e.target.closest&&e.target.closest('.data'))return;const now=Date.now();if(now<wheelLock)return;wacc+=e.deltaY+e.deltaX;
-  if(Math.abs(wacc)>60){go(scene+(wacc>0?1:-1));wacc=0;wheelLock=now+1100}},{passive:true});
-let tx0=null,ty0=null;
-$('stage').addEventListener('touchstart',e=>{if(e.target.closest('.chartbox,.data,.nav,.toggles')){tx0=null;return}tx0=e.touches[0].clientX;ty0=e.touches[0].clientY},{passive:true});
-$('stage').addEventListener('touchend',e=>{if(tx0===null)return;const dx=e.changedTouches[0].clientX-tx0,dy=e.changedTouches[0].clientY-ty0;
-  if(Math.max(Math.abs(dx),Math.abs(dy))>55)go(scene+((Math.abs(dx)>Math.abs(dy)?-dx:-dy)>0?1:-1));tx0=null},{passive:true});
-let rz;addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(()=>{resizeCanvas();go(scene,true)},120)});
-
-resizeCanvas();
-parts.forEach(p=>{p.x=p.sx=W/2+(p.ix-.5)*W*.9;p.y=p.sy=H/2+(p.iy-.5)*H*.8});
-const m=/^#cena(\d+)$/.exec(location.hash);
-go(m?(+m[1]-1):0);
-requestAnimationFrame(frame);
-if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>{if(SCENES[scene].mode==='dots')go(scene,true);else placeBox(SCENES[scene].chart)});
+$('tabs').addEventListener('click',e=>{const b=e.target.closest('.tab');if(b){show(b.dataset.p);scrollTo({top:0,behavior:RM?'auto':'smooth'})}});
+$('tabs').addEventListener('keydown',e=>{const i=order.indexOf(document.activeElement.dataset.p);if(i<0)return;
+  if(e.key==='ArrowRight'){e.preventDefault();show(order[(i+1)%order.length],true)}else if(e.key==='ArrowLeft'){e.preventDefault();show(order[(i+order.length-1)%order.length],true)}});
+document.querySelectorAll('.next').forEach(b=>b.addEventListener('click',()=>{show(b.dataset.go);scrollTo({top:0,behavior:RM?'auto':'smooth'})}));
+let w=innerWidth;addEventListener('resize',()=>{if((innerWidth<700)!==(w<700)){w=innerWidth;const cur=order.find(p=>!$(p).hidden);show(cur)}});
+show((location.hash||'#geral').slice(1));
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>{const cur=order.find(p=>!$(p).hidden);if(window.echarts)try{PANELS[cur]()}catch(e){}});
 })();
 </script>
 
