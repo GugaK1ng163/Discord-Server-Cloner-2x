@@ -67,7 +67,8 @@ h1 em{font-style:normal;color:var(--or)}
 .note b{color:var(--or)}
 
 .picto{display:grid;grid-template-columns:repeat(20,minmax(0,1fr));gap:9px 4px;margin-top:22px}
-.picto svg{width:100%;height:auto;display:block;animation:pop .4s cubic-bezier(.2,.9,.3,1.3) both}
+.picto i{display:block;aspect-ratio:1;border-radius:4px;animation:pop .4s cubic-bezier(.2,.9,.3,1.3) both}
+.pleg em{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:6px;vertical-align:-1px}
 @keyframes pop{from{opacity:0;transform:translateY(6px) scale(.6)}}
 .pleg{display:flex;flex-wrap:wrap;gap:6px 16px;margin:18px 0 8px;font-size:.82rem;font-weight:600;color:var(--ink-2)}
 .pleg i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:-1px}
@@ -184,7 +185,7 @@ body.present .you.is-current .res{font-size:1.3rem}
 
   <div class="row">
     <div class="card"><span class="n">07</span><h2>Rua malcuidada, mais medo</h2><p>% inseguros, pela frequência com que vê falta de zeladoria no bairro</p><div class="chart" id="zel"></div></div>
-    <div class="card"><span class="n">08</span><h2>100 cadeados, 100 respostas</h2><p>Cada cadeado = 1% · fechado = se sente seguro, aberto = raramente ou nunca</p><div class="picto" id="picto" role="img" aria-label="100 cadeados, um por 1% das respostas: 5 sempre seguras, 13 frequentemente, 35 às vezes, 30 raramente e 17 nunca"></div><div class="pleg" id="pleg"></div></div>
+    <div class="card"><span class="n">08</span><h2>De cada 100 respostas…</h2><p>Cada quadrado = 1% · com que frequência se sente seguro</p><div class="picto" id="picto" role="img" aria-label="Grade de 100 quadrados, cada um 1% das respostas: 5 sempre seguras, 13 frequentemente, 35 às vezes, 30 raramente e 17 nunca"></div><div class="pleg" id="pleg"></div></div>
   </div>
 
   <section class="you">
@@ -274,10 +275,10 @@ if(!window.echarts){document.querySelectorAll('.chart').forEach(e=>e.innerHTML='
 const tip=o=>Object.assign({backgroundColor:'#121212',borderWidth:0,padding:[9,12],textStyle:{color:'#fff',fontFamily:C.f,fontSize:12},extraCssText:'border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.18);'},o||{});
 const base=o=>Object.assign({animationDuration:1000,animationEasing:'cubicOut',textStyle:{fontFamily:C.f,color:C.ink2},tooltip:tip()},o);
 const ax=o=>Object.assign({axisLine:{lineStyle:{color:C.line}},axisTick:{show:false},axisLabel:{color:C.ink2,fontFamily:C.f,fontSize:12,fontWeight:600},splitLine:{lineStyle:{color:C.line}}},o||{});
-const lab=o=>Object.assign({show:true,color:C.ink,fontFamily:C.f,fontWeight:800,fontSize:13},o||{});
+const lab=o=>Object.assign({valueAnimation:true,show:true,color:C.ink,fontFamily:C.f,fontWeight:800,fontSize:13},o||{});
 let cv;const lw=(arr,sz)=>{cv=cv||document.createElement('canvas').getContext('2d');cv.font=`700 ${sz||12}px ${C.f}`;return Math.ceil(Math.max(...arr.map(t=>cv.measureText(t).width)))+14};
 const charts=[];
-const mk=(id,opt)=>{const c=echarts.init($(id));c.setOption(opt);charts.push(c);return c};
+const mk=(id,opt)=>{const c=echarts.init($(id));c.__opt=opt;c.setOption(opt);charts.push(c);return c};
 addEventListener('resize',()=>charts.forEach(c=>c.resize()));
 
 /* 01 rosca */
@@ -348,9 +349,9 @@ mk('zel',base({
 
 /* 08 pictograma */
 const units=[5,13,35,30,17],phost=$('picto');let k=0;
-const lock=open=>`<path d="${open?'M7.5 12.5V6.8a4.5 4.5 0 0 1 9 0V8.5':'M7.5 13V9.2a4.5 4.5 0 0 1 9 0V13'}" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/><rect x="4" y="12.5" width="16" height="14.5" rx="3.2" fill="currentColor"/><circle cx="12" cy="18.6" r="1.9" fill="#fff"/><rect x="11.2" y="19.2" width="1.6" height="3.6" rx=".8" fill="#fff"/>`;
-units.forEach((u,i)=>{for(let j=0;j<u;j++){const e=document.createElementNS('http://www.w3.org/2000/svg','svg');e.setAttribute('viewBox','0 0 24 30');e.style.color=SC[i];e.innerHTML=lock(i>=3);e.style.animationDelay=(k*10)+'ms';phost.appendChild(e);k++}});
-$('pleg').innerHTML=S.map((n,i)=>`<span><svg viewBox="0 0 24 30" style="width:12px;height:15px;vertical-align:-3px;margin-right:6px;color:${SC[i]}">${lock(i>=3)}</svg>${n}<b>${units[i]}</b></span>`).join('');
+
+units.forEach((u,i)=>{for(let j=0;j<u;j++){const e=document.createElement('i');e.style.background=SC[i];e.style.animationDelay=(k*10)+'ms';phost.appendChild(e);k++}});
+$('pleg').innerHTML=S.map((n,i)=>`<span><em style="background:${SC[i]}"></em>${n}<b>${units[i]}</b></span>`).join('');
 
 /* E você? */
 const donut=charts[0],MSG=[
@@ -373,6 +374,9 @@ if(!matchMedia('(prefers-reduced-motion: reduce)').matches)document.querySelecto
 const slides=[[document.querySelector('header'),document.querySelector('.kpis')]]
   .concat([...document.querySelectorAll('.row>.card')].map(c=>[c]),[[document.querySelector('.you')],[document.querySelector('.end')]]);
 let cur=-1;
+function countEl(el){if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;const tpl=el.dataset.tpl||(el.dataset.tpl=el.textContent);
+  if(!/\d/.test(tpl))return;const t0=performance.now();
+  const st=t=>{const q=Math.min(1,(t-t0)/1100),e=1-Math.pow(1-q,3);el.textContent=tpl.replace(/\d+/g,m=>Math.round(+m*e));if(q<1)requestAnimationFrame(st);else el.textContent=tpl};requestAnimationFrame(st)}
 const countUp=()=>{if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;document.querySelectorAll('[data-to]').forEach(el=>{const to=+el.dataset.to,t0=performance.now();
   const st=t=>{const q=Math.min(1,(t-t0)/1100),e=1-Math.pow(1-q,3);el.textContent=Math.round(to*e)+'%';if(q<1)requestAnimationFrame(st)};requestAnimationFrame(st)})};
 function showSlide(i){
@@ -380,8 +384,11 @@ function showSlide(i){
   document.querySelectorAll('.has-current,.is-current').forEach(e=>e.classList.remove('has-current','is-current'));
   slides[cur].forEach(e=>{e.classList.add('has-current','is-current');if(e.parentElement.classList.contains('row'))e.parentElement.classList.add('has-current')});
   $('pcount').textContent=(cur+1)+' / '+slides.length;
-  slides[cur].forEach(e=>e.querySelectorAll('.picto svg').forEach(x=>{x.style.animation='none';void x.offsetWidth;x.style.animation=''}));
-  if(cur===0)countUp();
+  slides[cur].forEach(e=>e.querySelectorAll('.picto i').forEach(x=>{x.style.animation='none';void x.offsetWidth;x.style.animation=''}));
+  slides[cur].forEach(e=>{
+    e.querySelectorAll('.kpi b,.score b,.end li b').forEach(countEl);
+    e.querySelectorAll('.chart').forEach(el=>{const c=charts.find(x=>x.getDom()===el);if(c&&c.__opt){c.clear();c.setOption(c.__opt)}});
+  });
   requestAnimationFrame(()=>charts.forEach(c=>c.resize()));
   scrollTo(0,0);
 }
